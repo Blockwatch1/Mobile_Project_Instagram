@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'post.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -27,18 +27,22 @@ class _HomePageState extends State<HomePage> {
             CircleAvatar(radius: 20,backgroundImage: NetworkImage("https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg"),)
           ],
         ))),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currBottomBarIndex,
-          onTap: (newIndex){
-            setState(() {
-              currBottomBarIndex=newIndex;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-            BottomNavigationBarItem(icon: Icon(Icons.mail_outline), label: 'Inbox'),
-          ],
+        body: Post(user: "MeowMan40", image: "", comments: {"me":"yes"}, likeAmount: 50),
+        bottomNavigationBar: GestureDetector(
+
+          child: BottomNavigationBar(
+            currentIndex: currBottomBarIndex,
+            onTap: (newIndex){
+              setState(() {
+                currBottomBarIndex=newIndex;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+              BottomNavigationBarItem(icon: Icon(Icons.mail_outline), label: 'Inbox'),
+            ],
+          ),
         ),
 
       );
