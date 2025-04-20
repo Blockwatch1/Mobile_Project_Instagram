@@ -27,7 +27,11 @@ class _HomePageState extends State<HomePage> {
             CircleAvatar(radius: 20,backgroundImage: NetworkImage("https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg"),)
           ],
         ))),
-        body: Post(user: "MeowMan40", image: "", comments: {"me":"yes"}, likeAmount: 50),
+        body:Expanded(child: ListView(
+          children: [
+             Post(user: "MeowMan40", image: "", comments: {"me":"yes"}, likeAmount: 50),
+          ],
+        )),
         bottomNavigationBar: GestureDetector(
 
           child: BottomNavigationBar(
