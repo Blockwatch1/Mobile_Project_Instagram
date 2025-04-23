@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:insta/User.dart';
+import 'User.dart';
+import 'comments.dart';
 class Post extends StatefulWidget {
   User user;
   String image;
@@ -12,7 +13,7 @@ class Post extends StatefulWidget {
 String porthavenText = "The village of Porthaven nestled beside the whispering willow creek, a place where the air always smelled faintly of brine and woodsmoke. Generations of seafaring folk had carved their lives into the craggy coastline, their days dictated by the tides and the moods of the temperamental Azure Sea. Cobblestone paths wound between houses built from weathered stone, their roofs adorned with seashells and the occasional bleached whalebone. Old Man Tiber, the village's self-proclaimed historian (though his tales often stretched further than any fishing net), claimed that Porthaven was built upon the petrified remains of a giant sea serpent, its slumbering form still influencing the strange currents offshore.\\nThe inhabitants of Porthaven were as unique as their surroundings. There was Elara, the baker whose sourdough loaves tasted inexplicably of the sea, and Finnigan, the lighthouse keeper who communicated primarily through elaborate seagull calls. Young Maeve, with her uncanny ability to find lost trinkets in the sand dunes, was often sought after by frantic tourists who'd misplaced their spectacles or souvenir spoons. And then there were the Whispering Willows themselves, lining the creek bank. Legend had it that they carried the secrets of the village, their leaves rustling with forgotten stories and prophecies that only the truly attuned could understand.\\nOne particularly blustery autumn, a peculiar event stirred the quiet rhythm of Porthaven. A collection of luminous, orb-like creatures began appearing along the shoreline at dusk. They pulsed with a soft, ethereal light, casting an otherworldly glow on the sand and the crashing waves. Some villagers were frightened, whispering of ancient sea spirits and ill omens. Others, like young Maeve, were captivated by their beauty, spending hours observing their gentle undulations. Old Man Tiber, of course, had a fantastical explanation involving bioluminescent plankton brought in by a rare southern current and the tears of a lovesick mermaid.\\n";
 class _PostState extends State<Post> {
   void handleCommentClick(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return CommentsPage(comments: widget.comments,);
     },));
   }
@@ -143,57 +144,3 @@ class _PostTextState extends State<PostText> {
     }
   }
 }
-class CommentsPage extends StatefulWidget {
-  CommentsPage({super.key,required this.comments});
-  Map<User,String> comments;
-  @override
-  State<CommentsPage> createState() => _CommentsPageState();
-}
-
-class _CommentsPageState extends State<CommentsPage> {
-  List<CommentWidget> currentComments =[];
-  @override
-  Widget build(BuildContext context) {
-    widget.comments.forEach((user,comment){
-      currentComments.add(CommentWidget(user: user, comment: comment));
-    });
-    print(currentComments);
-    return ListView(
-          children: currentComments,
-    );
-  }
-}
-class CommentWidget extends StatefulWidget {
-  User user;
-  String comment;
-  CommentWidget({super.key,required this.user,required this.comment});
-
-  @override
-  State<CommentWidget> createState() => _CommentWidgetState();
-}
-
-class _CommentWidgetState extends State<CommentWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Color.fromRGBO(13, 13, 13, 1),
-      margin: EdgeInsets.only(bottom: 10),
-      child: Column(
-        children: [
-          Expanded(
-              child: Row(
-                children: [
-                  SizedBox(width: 15,),
-                  CircleAvatar(backgroundImage: NetworkImage(widget.user.profilePicUrl),radius: 20,),
-                  Text(widget.user.username)
-                ],
-              )
-          ),
-          Text(widget.comment)
-        ],
-      ) ,
-    );
-  }
-}
-
