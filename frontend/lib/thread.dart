@@ -87,6 +87,7 @@ class _ThreadTextState extends State<ThreadText> {
     if(widget.text.length<200){
       return Container(width: double.infinity,
         padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
+
         child: Text(widget.text),
       );
     }
