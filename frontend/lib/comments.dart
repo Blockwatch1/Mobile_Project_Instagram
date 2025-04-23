@@ -22,6 +22,7 @@ class _CommentsPageState extends State<CommentsPage> {
       color: Color.fromRGBO(57, 62, 70, 1),
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(title: Text("Comments"),),
           body: ListView(
             children:currentComments,
@@ -33,7 +34,7 @@ class _CommentsPageState extends State<CommentsPage> {
   }
 }
 
-class BottomCommentTextField extends StatelessWidget {
+class BottomCommentTextField extends StatefulWidget {
   BottomCommentTextField({
     super.key,
     required TextEditingController commentController,
@@ -42,20 +43,34 @@ class BottomCommentTextField extends StatelessWidget {
   final TextEditingController _commentController;
   FocusNode _commentFocusNode = FocusNode();
   @override
+  State<BottomCommentTextField> createState() {
+   return _CommentTextFieldState();
+  }
+
+}
+class _CommentTextFieldState extends State<BottomCommentTextField>{
+  double bottomMargin= 0;
   Widget build(BuildContext context) {
+   bottomMargin=  8.0 + MediaQuery.of(context).viewInsets.bottom;
     return  Container(
       color: Colors.transparent,
       margin: EdgeInsets.only(
           left: 16.0,
           right: 16.0,
-          top: 8.0,
-          bottom: 8.0 + MediaQuery.of(context).padding.bottom // Add padding to account for system intrusions like the home bar on iOS
+          top: 12.0,
+          bottom: bottomMargin
       ),
-      child: TextField(
-          focusNode: _commentFocusNode,
+      child: GestureDetector(
+        child: TextField(
+          onTap: (){
+            setState(() {
+              bottomMargin=  8.0 + MediaQuery.of(context).viewInsets.bottom;
+            });
+          },
+          focusNode: widget._commentFocusNode,
           autofocus:true,
           keyboardType: TextInputType.text,
-          controller: _commentController,
+          controller: widget._commentController,
           decoration: InputDecoration(
             hintText: 'Add a comment...',
             border: OutlineInputBorder(
@@ -65,15 +80,15 @@ class BottomCommentTextField extends StatelessWidget {
             suffixIcon: IconButton(
               icon: Icon(Icons.send, color: Colors.blueAccent),
               onPressed: () {
-                String commentText = _commentController.text;
+                String commentText = widget._commentController.text;
                 if (commentText.isNotEmpty) {
-                  print('Sending comment: $commentText');
-                  _commentController.clear();
+                  widget._commentController.clear();
                   FocusScope.of(context).unfocus();
                 }
               },
             ),
           ),
+        ),
       ),
     );
   }
