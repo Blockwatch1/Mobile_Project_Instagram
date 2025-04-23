@@ -1,5 +1,10 @@
 {
   "devDependencies": {
+    "@types/node": "^22.14.1",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "prettier": "^3.5.3",
     "prisma": "^6.6.0"
   }
 }
