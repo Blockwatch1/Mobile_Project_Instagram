@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import bcryptjs from 'bcryptjs';
 import { PrismaClient } from '../lib/generated/prisma/client.js';
+import { generateJWT } from '../helpers/auth/jwt.js';
 const prisma = new PrismaClient();
 
 const numberRegex = /\d/;
@@ -80,5 +81,66 @@ router.post('/signup', async (req, res) => {
       },
       data: null,
     });
+  }
+});
+
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        //Unauthorized
+        message: 'Invalid email or password',
+        success: false,
+      });
+    }
+
+    //compare this password with the hashed password in the database
+    const isPasswordValid = await bcryptjs.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        message: 'Invalid email or password',
+        success: false,
+      });
+    }
+
+    //now that the credentials are valid, we can generate a JWT to send to the client
+    const token = generateJWT(user);
+
+    //update the lastLogin value in the database
+    await prisma.user.update({
+      where: { userId: user.userId },
+      data: {
+        lastLogin: new Date(),
+      },
+    });
+
+    return res.status(200).json({
+      message: 'Login successful',
+      success: true,
+      token: token,
+      user: {
+        userId: user.userId,
+        username: user.username,
+        email: user.email,
+        bio: user.bio,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not log in',
+      },
+      data: null,
+    });
+    console.error(err);
   }
 });
