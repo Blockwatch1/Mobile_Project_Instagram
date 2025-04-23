@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:insta/User.dart';
 import 'post.dart';
+import 'thread.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -14,7 +16,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
+User test=User("MeowMan40", "https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg");
 class _HomePageState extends State<HomePage> {
   int currBottomBarIndex = 0;
   @override
@@ -24,12 +26,12 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Cornflex",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
-            CircleAvatar(radius: 20,backgroundImage: NetworkImage("https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg"),)
+            CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
           ],
         ))),
         body:Expanded(child: ListView(
           children: [
-             Post(user: "MeowMan40", image: "", comments: {"me":"yes"}, likeAmount: 50),
+             Post(user: test, comments: {test:"yes"}, likeAmount: 50, image: '',),
           ],
         )),
         bottomNavigationBar: GestureDetector(
