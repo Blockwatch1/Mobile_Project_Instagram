@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'User.dart';
-import 'replies.dart';
 class CommentsPage extends StatefulWidget {
   CommentsPage({super.key,required this.comments});
   Map<User,String> comments;
@@ -20,7 +19,7 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(57, 62, 70, 1),
+      color: Colors.black,
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: true,
@@ -109,7 +108,7 @@ class _CommentWidgetState extends State<CommentWidget> {
     return Container(
       padding: EdgeInsets.all(15),
       width: double.infinity,
-      color: Color.fromRGBO(61,54, 92, 1),
+      color: Colors.black,
       margin: EdgeInsets.only(bottom: 10),
       child: Column(
         spacing: 20,
@@ -123,16 +122,7 @@ class _CommentWidgetState extends State<CommentWidget> {
             ],
           ),
           CommentText(text: widget.comment),
-          GestureDetector(
-              child: Text("Replies",style: TextStyle(fontWeight: FontWeight.bold,),),
-              onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context){
-                    return RepliesPage(commentId: 0, user: widget.user, comment: widget.comment);
-                  })
-                );
-              },
-          ),
+          Text("Reply",style: TextStyle(fontWeight: FontWeight.bold,),),
         ],
       ) ,
     );

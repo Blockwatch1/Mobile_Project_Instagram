@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:insta/User.dart';
+import 'User.dart';
+
 class Thread extends StatefulWidget {
   User user;
   Map<User,String>comments;

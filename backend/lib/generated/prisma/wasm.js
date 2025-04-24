@@ -124,7 +124,9 @@ exports.Prisma.UserScalarFieldEnum = {
   bio: 'bio',
   username: 'username',
   password: 'password',
+  pfpPath: 'pfpPath',
   lastLogin: 'lastLogin',
+  lastUsernameChange: 'lastUsernameChange',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -136,7 +138,7 @@ exports.Prisma.PostScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   isThread: 'isThread',
-  userUserId: 'userUserId'
+  userId: 'userId'
 };
 
 exports.Prisma.CommentScalarFieldEnum = {

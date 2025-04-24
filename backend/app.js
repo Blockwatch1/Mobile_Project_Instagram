@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { router as userRouter } from './routes/user.route.js';
+import { router as postRouter } from './routes/post.route.js';
 
 // --- Configuration ---
 const app = express();
@@ -16,8 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // --- Routes ---
 app.use('/user', userRouter);
-
-// Basic root route
+app.use('/post', postRouter);
 
 // --- Server Startup ---
 app.listen(port, () => {
