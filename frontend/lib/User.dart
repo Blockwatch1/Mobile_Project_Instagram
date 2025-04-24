@@ -1,4 +1,4 @@
-import 'package:insta/post.dart';
+import 'post.dart';
 
 class User{
  List<User> _following= [];

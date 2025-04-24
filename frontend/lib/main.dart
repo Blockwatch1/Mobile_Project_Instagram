@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insta/User.dart';
+import 'User.dart';
 import 'post.dart';
 import 'thread.dart';
 
