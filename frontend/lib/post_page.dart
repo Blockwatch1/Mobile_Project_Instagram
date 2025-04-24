@@ -44,7 +44,7 @@ class _PostPageState extends State<PostPage> {
     return ListView.builder(
         itemCount: list1.length,
         itemBuilder: (context, index) {
-          return list1 [index+1];
+          return list1 [index];
         },
       );
   }
