@@ -6,7 +6,13 @@ class Post extends StatefulWidget {
   String image;
   Map<User,String>comments;
   int likeAmount;
-  Post({super.key,required this.user,required this.image,required this.comments,required this.likeAmount});
+  Post({
+    super.key,
+    required this.user,
+    required this.image,
+    required this.comments,
+    required this.likeAmount
+  });
   @override
   State<Post> createState() => _PostState();
 }
