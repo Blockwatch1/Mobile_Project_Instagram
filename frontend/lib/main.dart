@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta/post_page.dart';
 import 'User.dart';
 import 'post.dart';
 import 'thread.dart';
@@ -86,7 +87,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(title: Expanded(child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Cornflex",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
+          Text("InterLinked",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
           Row(
             spacing: 12,
             children: [
@@ -104,11 +105,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ))
       ),
-      body:Expanded(child: ListView(
-        children: [
-          Post(user: test, comments: testComments, likeAmount: 50, image: '',),
-        ],
-      )),
+      body:PostPage(),
     );
   }
 }
