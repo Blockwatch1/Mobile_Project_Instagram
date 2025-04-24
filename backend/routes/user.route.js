@@ -2,6 +2,7 @@ import { Router } from 'express';
 import bcryptjs from 'bcryptjs';
 import { PrismaClient } from '../lib/generated/prisma/client.js';
 import { generateJWT } from '../helpers/auth/jwt.js';
+import authMiddleware from '../helpers/auth/verification.js';
 const prisma = new PrismaClient();
 
 const numberRegex = /\d/;
@@ -9,6 +10,8 @@ const uppercaseRegex = /[A-Z]/;
 const specialCharacterRegex = /[@$!%*?&]/;
 
 export const router = Router();
+
+//AUTHENTICATION ENDPOINTS
 
 router.post('/signup', async (req, res) => {
   try {
@@ -133,6 +136,7 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (err) {
+    console.error(err);
     return res.status(500).json({
       success: false,
       error: {
@@ -141,6 +145,68 @@ router.post('/login', async (req, res) => {
       },
       data: null,
     });
+  }
+});
+
+//USER: READ
+
+//USER WILL REQUEST THIS ENDPOINT WHEN HE ENTERS A USER'S PROFILE PAGE (COULD BE HIS OR NOT HIS)
+router.get('/:userId', authMiddleware, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const myUserId = req?.user;
+
+    const couldNotFetchUserObj = {
+      message: 'Could not fetch user',
+      success: false,
+      data: null,
+    };
+
+    const fetchedData = {
+      message: 'Retreived user successfully',
+      success: true,
+      data: null,
+    };
+
+    if (myUserId && myUserId === userId) {
+      const me = await prisma.user.findUnique({
+        where: { userId: myUserId },
+      });
+
+      if (!me) return couldNotFetchUserObj;
+
+      fetchedData.data = me;
+      return fetchedData;
+    } else {
+      const user = await prisma.user.findUnique({
+        where: { userId },
+        select: {
+          email: true,
+          bio: true,
+          createdAt: true,
+          followedBy: true,
+          following: true,
+          name: true,
+          username: true,
+          posts: true,
+        },
+      });
+
+      if (!user) return couldNotFetchUserObj;
+
+      fetchedData.data = user;
+      return fetchedData;
+    }
+  } catch (err) {
     console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not retreive user information',
+      },
+      data: null,
+    });
   }
 });
