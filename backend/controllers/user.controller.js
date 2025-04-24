@@ -163,9 +163,34 @@ export const getUserProfileInfo = async (req, res) => {
       data: null,
     };
 
+    const followsInclusionObject = {
+      select: {
+        userId: true,
+        username: true,
+        pfpPath: true,
+      },
+    };
+
+    const postInclusionObject = {
+      include: {
+        _count: {
+          select: {
+            likedUsers: true,
+            savedUsers: true,
+            comments: true,
+          },
+        },
+      },
+    };
+
     if (myUserId && myUserId === userId) {
       const me = await prisma.user.findUnique({
         where: { userId: myUserId },
+        include: {
+          posts: postInclusionObject, //saved posts can be fetched when you enter their tab or page
+          followedBy: followsInclusionObject,
+          following: followsInclusionObject,
+        },
       });
 
       if (!me) return res.status(200).json(couldNotFetchUserObj);
@@ -179,11 +204,11 @@ export const getUserProfileInfo = async (req, res) => {
           email: true,
           bio: true,
           createdAt: true,
-          followedBy: true,
-          following: true,
+          followedBy: followsInclusionObject,
+          following: followsInclusionObject,
           name: true,
           username: true,
-          posts: true,
+          posts: postInclusionObject, //saved posts can be fetched when you enter their tab or page
         },
       });
 

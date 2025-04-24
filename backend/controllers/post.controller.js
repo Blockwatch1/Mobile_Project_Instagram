@@ -145,3 +145,153 @@ export const editPost = async (req, res) => {
     });
   }
 };
+
+//READ OPERATIONS
+export const getPosts = async (req, res) => {
+  const postId = req.params;
+
+  try {
+    const posts = await prisma.post.findMany({
+      where: { postId },
+      include: {
+        user: {
+          select: {
+            pfpPath: true,
+            name: true,
+            username: true,
+          },
+        },
+        comments: true,
+        likedUsers: {
+          select: {
+            username: true,
+            pfpPath: true,
+          },
+        },
+        savedUsers: {
+          select: {
+            username: true,
+            pfpPath: true,
+          },
+        },
+      },
+    });
+
+    if (!posts) {
+      return res.status(400).json({
+        message: 'Could not fetch posts',
+        data: null,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: posts,
+      message: 'Retreived posts successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not retreive posts',
+    });
+  }
+};
+
+export const getUserSavedPosts = async (req, res) => {
+  const userId = req.params;
+  if (userId === req?.user?.userId) {
+    try {
+      const savedPosts = await prisma.user.findUnique({
+        where: { userId },
+        select: {
+          savedPosts: {
+            include: {
+              _count: {
+                select: {
+                  likedUsers: true,
+                  savedUsers: true,
+                  comments: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!savedPosts) {
+        return res.status(400).json({
+          message: 'Could not fetch saved posts',
+          data: null,
+          success: false,
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: posts,
+        message: 'Retreived saved posts successfully',
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: 'Could not retreive saved posts',
+      });
+    }
+  } else {
+    return res.status(401).json({
+      message: 'Only the saved posts user can see his saved post',
+      success: false,
+      data: null,
+    });
+  }
+};
+
+export const getPost = async (req, res) => {
+  const postId = req.params;
+
+  try {
+    const post = await prisma.post.findUnique({
+      where: { postId },
+      include: {
+        likedUsers: {
+          select: {
+            username: true,
+            pfpPath: true,
+          },
+        },
+        savedUsers: {
+          select: {
+            username: true,
+            pfpPath: true,
+          },
+        },
+      },
+    });
+
+    if (!post) {
+      return res.status(400).json({
+        message: 'Could not find post',
+        data: null,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: post,
+      message: 'Retreived post successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not retreive post',
+    });
+  }
+};
