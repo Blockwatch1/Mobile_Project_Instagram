@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'replies.dart';
 import 'User.dart';
 class CommentsPage extends StatefulWidget {
   CommentsPage({super.key,required this.comments});
@@ -122,7 +123,16 @@ class _CommentWidgetState extends State<CommentWidget> {
             ],
           ),
           CommentText(text: widget.comment),
-          Text("Reply",style: TextStyle(fontWeight: FontWeight.bold,),),
+          GestureDetector(
+              child: Text("Replies",style: TextStyle(fontWeight: FontWeight.bold,),),
+              onTap:(){
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return RepliesPage(commentId: 0, user: widget.user, comment: widget.comment);
+                  },)
+                );
+              },
+          ),
         ],
       ) ,
     );
