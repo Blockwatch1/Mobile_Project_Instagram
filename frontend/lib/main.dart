@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(title: Expanded(child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Cornflex",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
+          Text("InterLinked",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
           Row(
             spacing: 12,
             children: [
