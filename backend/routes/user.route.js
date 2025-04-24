@@ -5,6 +5,7 @@ import {
   getUserProfileInfo,
   getUsersListOnSearch,
   logIn,
+  savePost,
   signUp,
 } from '../controllers/user.controller.js';
 
@@ -21,5 +22,8 @@ router.post('/login', logIn);
 //USER WILL REQUEST THIS ENDPOINT WHEN HE ENTERS A USER'S PROFILE PAGE (COULD BE HIS OR NOT HIS)
 router.get('/:userId', authMiddleware, getUserProfileInfo);
 
-//READ USERS BASED ON SEARCH (username)
+//GET USERS BASED ON SEARCH (username)
 router.get('/search/:nameusername', authMiddleware, getUsersListOnSearch);
+
+//USER SAVES POST
+router.put('/save-post/:postId', authMiddleware, savePost);

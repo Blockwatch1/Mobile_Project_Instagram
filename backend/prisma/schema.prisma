@@ -28,6 +28,7 @@ model User {
   followedBy User[]    @relation("UserFollows")
   following  User[]    @relation("UserFollows")
   posts      Post[]
+  savedPosts Post[]    @relation("SavedPosts")
 }
 
 model Post {
@@ -39,6 +40,8 @@ model Post {
   isThread    Boolean? @default(false)
   user        User?    @relation(fields: [userId], references: [userId])
   userId      Int?
+
+  savedPosts User[] @relation("SavedPosts")
 }
 
 model Comment {

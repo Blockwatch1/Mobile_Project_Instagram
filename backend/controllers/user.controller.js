@@ -246,3 +246,44 @@ export const getUsersListOnSearch = async (req, res) => {
     });
   }
 };
+
+export const savePost = async (req, res) => {
+  const postId = req.params;
+  const user = req?.user;
+  try {
+    const savePost = await prisma.user.update({
+      where: { userId: user?.userId },
+      data: {
+        savedPosts: {
+          connect: {
+            postId,
+          },
+        },
+      },
+    });
+
+    if (!savePost) {
+      return res.status(200).json({
+        message: 'Could not save post',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Saved post successfully',
+      success: true,
+      data: savePost,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not save post',
+      },
+      data: null,
+    });
+  }
+};
