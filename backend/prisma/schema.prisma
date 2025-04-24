@@ -22,6 +22,7 @@ model User {
   username   String    @unique
   password   String
   lastLogin  DateTime?
+  pfpPath    String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   followedBy User[]    @relation("UserFollows")
@@ -36,8 +37,8 @@ model Post {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   isThread    Boolean? @default(false)
-  User        User?    @relation(fields: [userUserId], references: [userId])
-  userUserId  Int?
+  user        User?    @relation(fields: [userId], references: [userId])
+  userId      Int?
 }
 
 model Comment {

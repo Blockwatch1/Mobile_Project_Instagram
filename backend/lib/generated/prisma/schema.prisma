@@ -15,17 +15,18 @@ datasource db {
 }
 
 model User {
-  userId     Int      @id @default(autoincrement())
+  userId     Int       @id @default(autoincrement())
   name       String
-  email      String   @unique
+  email      String    @unique
   bio        String?
-  username   String   @unique
+  username   String    @unique
   password   String
-  lastLogin  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  followedBy User[]   @relation("UserFollows")
-  following  User[]   @relation("UserFollows")
+  lastLogin  DateTime?
+  pfpPath    String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  followedBy User[]    @relation("UserFollows")
+  following  User[]    @relation("UserFollows")
   posts      Post[]
 }
 
@@ -36,8 +37,8 @@ model Post {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   isThread    Boolean? @default(false)
-  User        User?    @relation(fields: [userUserId], references: [userId])
-  userUserId  Int?
+  user        User?    @relation(fields: [userId], references: [userId])
+  userId      Int?
 }
 
 model Comment {

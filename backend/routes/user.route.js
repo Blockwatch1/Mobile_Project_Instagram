@@ -174,10 +174,10 @@ router.get('/:userId', authMiddleware, async (req, res) => {
         where: { userId: myUserId },
       });
 
-      if (!me) return couldNotFetchUserObj;
+      if (!me) return res.status(200).json(couldNotFetchUserObj);
 
       fetchedData.data = me;
-      return fetchedData;
+      return res.status(200).json(fetchedData);
     } else {
       const user = await prisma.user.findUnique({
         where: { userId },
@@ -196,7 +196,7 @@ router.get('/:userId', authMiddleware, async (req, res) => {
       if (!user) return couldNotFetchUserObj;
 
       fetchedData.data = user;
-      return fetchedData;
+      return res.status(200).json(fetchedData);
     }
   } catch (err) {
     console.error(err);
@@ -205,6 +205,95 @@ router.get('/:userId', authMiddleware, async (req, res) => {
       error: {
         details: err,
         description: 'Could not retreive user information',
+      },
+      data: null,
+    });
+  }
+});
+
+//READ USERS BASED ON SEARCH (username)
+router.get('/search/:nameusername', authMiddleware, async (req, res) => {
+  try {
+    const { nameusername } = req.params;
+
+    //you can search a user using either a username or a name
+    const getUsersOnSearch = await prisma.user.findMany({
+      where: {
+        OR: [{ username: nameusername }, { name: nameusername }],
+      },
+      select: {
+        userId: true,
+        bio: true,
+        pfpPath: true,
+        name: true,
+        username: true,
+      },
+    });
+
+    if (!getUsersOnSearch) {
+      return res.status(200).json({
+        message: 'Could not search for users',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Retreived users successfully',
+      success: true,
+      data: getUsersOnSearch,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not retreive users',
+      },
+      data: null,
+    });
+  }
+});
+
+//USER: CREATE
+
+//USER WILL CREATE A POST
+router.post('/create-post', authMiddleware, async (req, res) => {
+  const user = req?.user;
+  const { description, imageUrl } = req.body;
+
+  try {
+    const createPost = await prisma.post.create({
+      data: {
+        description,
+        imageUrl,
+        userId: user.userId,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!createPost) {
+      return res.status(400).json({
+        message: 'Could not create post',
+        success: false,
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: 'Created post successfully',
+      data: createPost,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not create post',
       },
       data: null,
     });
