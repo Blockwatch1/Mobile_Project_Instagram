@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insta/User.dart';
 import 'post.dart';
 import 'thread.dart';
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -10,12 +11,14 @@ void main() {
     home: SafeArea(child: HomePage()),
   ));
 }
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
 // for testing , remove later
 User test1 = User("MeowMan40", "https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg");
 User test2 = User("MeowMan40", "https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg");
@@ -41,43 +44,71 @@ Map<User, String> testComments = {
   test9: "Those eyes! They're staring into my soul...",
   test10: "Best cat photo I've seen all day. And I've seen a lot!"
 };
+
 User test=User("MeowMan40", "https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg");
+
 class _HomePageState extends State<HomePage> {
-  int currBottomBarIndex = 0;
+  bool isSearch=false;
+  TextEditingController _searchText = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    if(isSearch){
       return Scaffold(
-        appBar: AppBar(title: Expanded(child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Cornflex",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
-            CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
-          ],
-        ))),
-        body:Expanded(child: ListView(
-          children: [
-             Post(user: test, comments: testComments, likeAmount: 50, image: '',),
-          ],
-        )),
-        bottomNavigationBar: GestureDetector(
+          appBar: AppBar(
+            leading: GestureDetector(
+              child: Icon(Icons.arrow_back),
+              onTap: (){
+                setState(() {
+                  isSearch=false;
+                  _searchText.clear();
+                });
+              },
+            ),
+            title: TextField(
+              controller: _searchText,
+              decoration: InputDecoration(
+                  hintText: 'Search a Post...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  suffixIcon: GestureDetector(
+                    child: Icon(Icons.search),
+                  )
 
-          child: BottomNavigationBar(
-            currentIndex: currBottomBarIndex,
-            onTap: (newIndex){
-              setState(() {
-                currBottomBarIndex=newIndex;
-              });
-            },
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-              BottomNavigationBarItem(icon: Icon(Icons.mail_outline), label: 'Inbox'),
-            ],
-          ),
-        ),
-
+              ),
+            ) ,
+          )
       );
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Expanded(child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Cornflex",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
+          Row(
+            spacing: 12,
+            children: [
+              GestureDetector(child:
+              Icon(Icons.search),
+                onTap: (){
+                  setState(() {
+                    isSearch=true;
+                  });
+                },
+              ),
+              CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
+            ],
+          )
+        ],
+      ))
+      ),
+      body:Expanded(child: ListView(
+        children: [
+          Post(user: test, comments: testComments, likeAmount: 50, image: '',),
+        ],
+      )),
+    );
   }
 }
-
-
