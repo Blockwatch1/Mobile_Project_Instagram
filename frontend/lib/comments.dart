@@ -19,7 +19,7 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(57, 62, 70, 1),
+      color: Colors.black,
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: true,
@@ -108,7 +108,7 @@ class _CommentWidgetState extends State<CommentWidget> {
     return Container(
       padding: EdgeInsets.all(15),
       width: double.infinity,
-      color: Color.fromRGBO(82, 5, 123, 1),
+      color: Colors.black,
       margin: EdgeInsets.only(bottom: 10),
       child: Column(
         spacing: 20,
