@@ -124,8 +124,9 @@ exports.Prisma.UserScalarFieldEnum = {
   bio: 'bio',
   username: 'username',
   password: 'password',
-  lastLogin: 'lastLogin',
   pfpPath: 'pfpPath',
+  lastLogin: 'lastLogin',
+  lastUsernameChange: 'lastUsernameChange',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

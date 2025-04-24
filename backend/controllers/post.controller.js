@@ -1,6 +1,7 @@
 import { PrismaClient } from '../lib/generated/prisma/client.js';
 const prisma = new PrismaClient();
 
+//CREATE OPERATIONS
 export const createPost = async (req, res) => {
   const user = req?.user;
   const { description, imageUrl } = req.body;
@@ -42,6 +43,7 @@ export const createPost = async (req, res) => {
   }
 };
 
+//PUT OPERATIONS
 export const editPost = async (req, res) => {
   const postId = req.params;
   const editingUser = req?.user;

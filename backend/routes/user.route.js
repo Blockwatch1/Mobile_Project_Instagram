@@ -8,6 +8,7 @@ import {
   logIn,
   savePost,
   signUp,
+  updateProfile,
 } from '../controllers/user.controller.js';
 
 export const router = Router();
@@ -18,7 +19,7 @@ router.post('/signup', signUp);
 
 router.post('/login', logIn);
 
-//USER: READ
+//READ OPERATIONS
 
 //USER WILL REQUEST THIS ENDPOINT WHEN HE ENTERS A USER'S PROFILE PAGE (COULD BE HIS OR NOT HIS)
 router.get('/:userId', authMiddleware, getUserProfileInfo);
@@ -26,8 +27,13 @@ router.get('/:userId', authMiddleware, getUserProfileInfo);
 //GET USERS BASED ON SEARCH (username)
 router.get('/search/:nameusername', authMiddleware, getUsersListOnSearch);
 
+//PUT OPERATIONS
+
 //USER SAVES POST
 router.put('/save-post/:postId', authMiddleware, savePost);
 
 //USER LIKES POST
 router.put('/like-post/:postId', authMiddleware, likePost);
+
+//UPDATE USER PROFILE
+router.put('/update-profile', authMiddleware, updateProfile);

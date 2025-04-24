@@ -1215,8 +1215,9 @@ export namespace Prisma {
     bio: string | null
     username: string | null
     password: string | null
-    lastLogin: Date | null
     pfpPath: string | null
+    lastLogin: Date | null
+    lastUsernameChange: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1228,8 +1229,9 @@ export namespace Prisma {
     bio: string | null
     username: string | null
     password: string | null
-    lastLogin: Date | null
     pfpPath: string | null
+    lastLogin: Date | null
+    lastUsernameChange: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1241,8 +1243,9 @@ export namespace Prisma {
     bio: number
     username: number
     password: number
-    lastLogin: number
     pfpPath: number
+    lastLogin: number
+    lastUsernameChange: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1264,8 +1267,9 @@ export namespace Prisma {
     bio?: true
     username?: true
     password?: true
-    lastLogin?: true
     pfpPath?: true
+    lastLogin?: true
+    lastUsernameChange?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1277,8 +1281,9 @@ export namespace Prisma {
     bio?: true
     username?: true
     password?: true
-    lastLogin?: true
     pfpPath?: true
+    lastLogin?: true
+    lastUsernameChange?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1290,8 +1295,9 @@ export namespace Prisma {
     bio?: true
     username?: true
     password?: true
-    lastLogin?: true
     pfpPath?: true
+    lastLogin?: true
+    lastUsernameChange?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1390,8 +1396,9 @@ export namespace Prisma {
     bio: string | null
     username: string
     password: string
-    lastLogin: Date | null
     pfpPath: string | null
+    lastLogin: Date | null
+    lastUsernameChange: Date | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1422,8 +1429,9 @@ export namespace Prisma {
     bio?: boolean
     username?: boolean
     password?: boolean
-    lastLogin?: boolean
     pfpPath?: boolean
+    lastLogin?: boolean
+    lastUsernameChange?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     followedBy?: boolean | User$followedByArgs<ExtArgs>
@@ -1441,8 +1449,9 @@ export namespace Prisma {
     bio?: boolean
     username?: boolean
     password?: boolean
-    lastLogin?: boolean
     pfpPath?: boolean
+    lastLogin?: boolean
+    lastUsernameChange?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1454,8 +1463,9 @@ export namespace Prisma {
     bio?: boolean
     username?: boolean
     password?: boolean
-    lastLogin?: boolean
     pfpPath?: boolean
+    lastLogin?: boolean
+    lastUsernameChange?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1467,13 +1477,14 @@ export namespace Prisma {
     bio?: boolean
     username?: boolean
     password?: boolean
-    lastLogin?: boolean
     pfpPath?: boolean
+    lastLogin?: boolean
+    lastUsernameChange?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "name" | "email" | "bio" | "username" | "password" | "lastLogin" | "pfpPath" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "name" | "email" | "bio" | "username" | "password" | "pfpPath" | "lastLogin" | "lastUsernameChange" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     followedBy?: boolean | User$followedByArgs<ExtArgs>
     following?: boolean | User$followingArgs<ExtArgs>
@@ -1501,8 +1512,9 @@ export namespace Prisma {
       bio: string | null
       username: string
       password: string
-      lastLogin: Date | null
       pfpPath: string | null
+      lastLogin: Date | null
+      lastUsernameChange: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1939,8 +1951,9 @@ export namespace Prisma {
     readonly bio: FieldRef<"User", 'String'>
     readonly username: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
-    readonly lastLogin: FieldRef<"User", 'DateTime'>
     readonly pfpPath: FieldRef<"User", 'String'>
+    readonly lastLogin: FieldRef<"User", 'DateTime'>
+    readonly lastUsernameChange: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -4834,8 +4847,9 @@ export namespace Prisma {
     bio: 'bio',
     username: 'username',
     password: 'password',
-    lastLogin: 'lastLogin',
     pfpPath: 'pfpPath',
+    lastLogin: 'lastLogin',
+    lastUsernameChange: 'lastUsernameChange',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -4972,8 +4986,9 @@ export namespace Prisma {
     bio?: StringNullableFilter<"User"> | string | null
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
-    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
     pfpPath?: StringNullableFilter<"User"> | string | null
+    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastUsernameChange?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     followedBy?: UserListRelationFilter
@@ -4990,8 +5005,9 @@ export namespace Prisma {
     bio?: SortOrderInput | SortOrder
     username?: SortOrder
     password?: SortOrder
-    lastLogin?: SortOrderInput | SortOrder
     pfpPath?: SortOrderInput | SortOrder
+    lastLogin?: SortOrderInput | SortOrder
+    lastUsernameChange?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     followedBy?: UserOrderByRelationAggregateInput
@@ -5011,8 +5027,9 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     bio?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
-    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
     pfpPath?: StringNullableFilter<"User"> | string | null
+    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastUsernameChange?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     followedBy?: UserListRelationFilter
@@ -5029,8 +5046,9 @@ export namespace Prisma {
     bio?: SortOrderInput | SortOrder
     username?: SortOrder
     password?: SortOrder
-    lastLogin?: SortOrderInput | SortOrder
     pfpPath?: SortOrderInput | SortOrder
+    lastLogin?: SortOrderInput | SortOrder
+    lastUsernameChange?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -5050,8 +5068,9 @@ export namespace Prisma {
     bio?: StringNullableWithAggregatesFilter<"User"> | string | null
     username?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
-    lastLogin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     pfpPath?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastLogin?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    lastUsernameChange?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -5195,8 +5214,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
@@ -5213,8 +5233,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
@@ -5230,8 +5251,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
@@ -5248,8 +5270,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
@@ -5266,8 +5289,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -5278,8 +5302,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5291,8 +5316,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5522,8 +5548,9 @@ export namespace Prisma {
     bio?: SortOrder
     username?: SortOrder
     password?: SortOrder
-    lastLogin?: SortOrder
     pfpPath?: SortOrder
+    lastLogin?: SortOrder
+    lastUsernameChange?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5539,8 +5566,9 @@ export namespace Prisma {
     bio?: SortOrder
     username?: SortOrder
     password?: SortOrder
-    lastLogin?: SortOrder
     pfpPath?: SortOrder
+    lastLogin?: SortOrder
+    lastUsernameChange?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5552,8 +5580,9 @@ export namespace Prisma {
     bio?: SortOrder
     username?: SortOrder
     password?: SortOrder
-    lastLogin?: SortOrder
     pfpPath?: SortOrder
+    lastLogin?: SortOrder
+    lastUsernameChange?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -6393,8 +6422,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
@@ -6410,8 +6440,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
@@ -6431,8 +6462,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     following?: UserCreateNestedManyWithoutFollowedByInput
@@ -6448,8 +6480,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
@@ -6572,8 +6605,9 @@ export namespace Prisma {
     bio?: StringNullableFilter<"User"> | string | null
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
-    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
     pfpPath?: StringNullableFilter<"User"> | string | null
+    lastLogin?: DateTimeNullableFilter<"User"> | Date | string | null
+    lastUsernameChange?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
@@ -6661,8 +6695,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
@@ -6678,8 +6713,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
@@ -6699,8 +6735,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
@@ -6716,8 +6753,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
@@ -6737,8 +6775,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserCreateNestedManyWithoutFollowingInput
@@ -6754,8 +6793,9 @@ export namespace Prisma {
     bio?: string | null
     username: string
     password: string
-    lastLogin?: Date | string | null
     pfpPath?: string | null
+    lastLogin?: Date | string | null
+    lastUsernameChange?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
@@ -6786,8 +6826,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
@@ -6803,8 +6844,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
@@ -6958,8 +7000,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
@@ -6975,8 +7018,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
@@ -6992,8 +7036,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7004,8 +7049,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     following?: UserUpdateManyWithoutFollowedByNestedInput
@@ -7021,8 +7067,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
@@ -7038,8 +7085,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7142,8 +7190,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
@@ -7159,8 +7208,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
@@ -7176,8 +7226,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7188,8 +7239,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
@@ -7205,8 +7257,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
@@ -7222,8 +7275,9 @@ export namespace Prisma {
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pfpPath?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsernameChange?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

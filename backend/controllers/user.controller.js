@@ -8,6 +8,7 @@ const numberRegex = /\d/;
 const uppercaseRegex = /[A-Z]/;
 const specialCharacterRegex = /[@$!%*?&]/;
 
+//AUTHENTICATION
 export const signUp = async (req, res) => {
   try {
     const { name, email, password, username } = req.body;
@@ -143,6 +144,7 @@ export const logIn = async (req, res) => {
   }
 };
 
+//READ OPERATIONS
 export const getUserProfileInfo = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -247,6 +249,7 @@ export const getUsersListOnSearch = async (req, res) => {
   }
 };
 
+//PUT OPERATIONS
 export const savePost = async (req, res) => {
   const postId = req.params;
   const user = req?.user;
@@ -325,6 +328,75 @@ export const likePost = async (req, res) => {
         description: 'Could not like post',
       },
       data: null,
+    });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  const userId = req.user?.userId;
+
+  const { name, username, pfpPath } = req.body;
+
+  try {
+    const successReponse = {
+      success: true,
+      data: {
+        name: null,
+        username: null,
+        pfpPath: null,
+      },
+      message: '',
+    };
+
+    if (name) {
+      const updateName = await prisma.user.update({
+        where: { userId },
+        data: {
+          name,
+        },
+      });
+
+      if (updateName) {
+        successReponse.message = successReponse.message + 'Updated name successfully\n';
+        successReponse.data.name = name;
+      }
+    }
+
+    if (username) {
+      const updateUsername = await prisma.user.update({
+        where: { userId },
+        data: {
+          username,
+        },
+      });
+
+      if (updateUsername) {
+        successReponse.message = successReponse.message + 'Updated username successfully\n';
+        successReponse.data.username = username;
+      }
+    }
+
+    if (pfpPath) {
+      const updatePfp = await prisma.user.update({
+        where: { userId },
+        data: {
+          pfpPath,
+        },
+      });
+
+      if (updatePfp) {
+        successReponse.message = successReponse.message + 'Updated profile picture successfully\n';
+        successReponse.data.pfpPath = pfpPath;
+      }
+    }
+
+    return res.status(201).json(successReponse);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not update profile',
     });
   }
 };
