@@ -363,10 +363,32 @@ export const updateProfile = async (req, res) => {
     }
 
     if (username) {
+      //check the last time the user changed his username
+      const userSettings = await prisma.user.findUnique({
+        where: { userId },
+        select: {
+          lastUsernameChange: true,
+        },
+      });
+
+      const fourteenDays = 14 * 24 * 60 * 60 * 1000;
+      const now = new Date();
+      if (
+        userSettings?.lastUsernameChange &&
+        now.getTime() - userSettings.lastUsernameChange.getTime() <= fourteenDays
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: 'You can only change your username once every 14 days',
+          data: null,
+        });
+      }
+
       const updateUsername = await prisma.user.update({
         where: { userId },
         data: {
           username,
+          lastUsernameChange: new Date(),
         },
       });
 
