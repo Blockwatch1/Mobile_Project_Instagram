@@ -287,3 +287,44 @@ export const savePost = async (req, res) => {
     });
   }
 };
+
+export const likePost = async (req, res) => {
+  const postId = req.params;
+  const user = req?.user;
+  try {
+    const likePost = await prisma.user.update({
+      where: { userId: user?.userId },
+      data: {
+        likedPosts: {
+          connect: {
+            postId,
+          },
+        },
+      },
+    });
+
+    if (!likePost) {
+      return res.status(200).json({
+        message: 'Could not like post',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Liked post successfully',
+      success: true,
+      data: savePost,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not like post',
+      },
+      data: null,
+    });
+  }
+};

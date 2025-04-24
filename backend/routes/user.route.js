@@ -4,6 +4,7 @@ import authMiddleware from '../helpers/auth/verification.js';
 import {
   getUserProfileInfo,
   getUsersListOnSearch,
+  likePost,
   logIn,
   savePost,
   signUp,
@@ -27,3 +28,6 @@ router.get('/search/:nameusername', authMiddleware, getUsersListOnSearch);
 
 //USER SAVES POST
 router.put('/save-post/:postId', authMiddleware, savePost);
+
+//USER LIKES POST
+router.put('/like-post/:postId', authMiddleware, likePost);

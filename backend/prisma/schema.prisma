@@ -15,20 +15,23 @@ datasource db {
 }
 
 model User {
-  userId     Int       @id @default(autoincrement())
-  name       String
-  email      String    @unique
-  bio        String?
-  username   String    @unique
-  password   String
-  lastLogin  DateTime?
-  pfpPath    String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  followedBy User[]    @relation("UserFollows")
-  following  User[]    @relation("UserFollows")
+  userId    Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  bio       String?
+  username  String    @unique
+  password  String
+  lastLogin DateTime?
+  pfpPath   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  followedBy User[] @relation("UserFollows")
+  following  User[] @relation("UserFollows")
+
   posts      Post[]
-  savedPosts Post[]    @relation("SavedPosts")
+  savedPosts Post[] @relation("SavedPosts")
+  likedPosts Post[] @relation("LikedPosts")
 }
 
 model Post {
@@ -41,7 +44,8 @@ model Post {
   user        User?    @relation(fields: [userId], references: [userId])
   userId      Int?
 
-  savedPosts User[] @relation("SavedPosts")
+  savedUsers User[] @relation("SavedPosts")
+  likedUsers User[] @relation("LikedPosts")
 }
 
 model Comment {
