@@ -31,17 +31,17 @@ class _picture_widgetState extends State<picture_widget> {
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset("", height:30, width:30),
+            Image.network("", height:30, width:30),
             Text(widget.name,style:TextStyle(fontSize: 30)),
           ],
         ),
-        Image.asset(widget.source, height:300, width:300),
+        Image.network(widget.source, height:300, width:300),
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Icon(Icons.favorite_border),
-            Text(widget.likes as String, style: TextStyle(fontSize:20),),
+            Text(widget.likes.toString(), style: TextStyle(fontSize:20),),
             Icon(Icons.comment),
-            Text(widget.comments as String, style: TextStyle(fontSize:20),),
+            Text(widget.comments.toString(), style: TextStyle(fontSize:20),),
             Icon(Icons.send),
             SizedBox(width:30),
             Icon(Icons.save)
