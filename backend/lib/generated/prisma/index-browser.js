@@ -147,8 +147,8 @@ exports.Prisma.CommentScalarFieldEnum = {
   isReply: 'isReply',
   createdAt: 'createdAt',
   replyId: 'replyId',
-  postPostId: 'postPostId',
-  userUserId: 'userUserId'
+  postId: 'postId',
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {

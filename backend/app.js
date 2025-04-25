@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { router as userRouter } from './routes/user.route.js';
 import { router as postRouter } from './routes/post.route.js';
+import { router as commentRouter } from './routes/comment.route.js';
 
 // --- Configuration ---
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 // --- Routes ---
 app.use('/user', userRouter);
 app.use('/post', postRouter);
+app.use('/comment', commentRouter);
 
 // --- Server Startup ---
 app.listen(port, () => {

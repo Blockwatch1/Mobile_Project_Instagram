@@ -64,9 +64,9 @@ model Comment {
   reply   Comment?  @relation("CommentReplies", fields: [replyId], references: [commentId])
   replies Comment[] @relation("CommentReplies")
 
-  Post       Post? @relation(fields: [postPostId], references: [postId])
-  postPostId Int?
+  post   Post? @relation(fields: [postId], references: [postId])
+  postId Int?
 
-  User       User? @relation(fields: [userUserId], references: [userId])
-  userUserId Int?
+  user   User? @relation(fields: [userId], references: [userId])
+  userId Int?
 }
