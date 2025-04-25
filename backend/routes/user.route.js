@@ -10,6 +10,7 @@ import {
   savePost,
   signUp,
   unfollow,
+  updateAccountSettings,
   updateProfile,
 } from '../controllers/user.controller.js';
 
@@ -48,3 +49,5 @@ router.put('/update-profile', authMiddleware, updateProfile);
 router.put('/follow/:followingId', authMiddleware, follow);
 
 router.put('/unfollow/:unfollowingId', authMiddleware, unfollow);
+
+router.put('/update-account-settings/:userId', authMiddleware, updateAccountSettings);

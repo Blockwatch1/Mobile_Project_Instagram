@@ -403,7 +403,7 @@ export const likePost = async (req, res) => {
 export const updateProfile = async (req, res) => {
   const userId = req.user?.userId;
 
-  const { name, username, pfpPath } = req.body;
+  const { name, username, pfpPath, bio } = req.body;
 
   try {
     const successReponse = {
@@ -412,6 +412,7 @@ export const updateProfile = async (req, res) => {
         name: null,
         username: null,
         pfpPath: null,
+        bio: null,
       },
       message: '',
     };
@@ -480,6 +481,20 @@ export const updateProfile = async (req, res) => {
       }
     }
 
+    if (bio) {
+      const updateBio = await prisma.user.update({
+        where: { userId },
+        data: {
+          bio,
+        },
+      });
+
+      if (updateBio) {
+        successReponse.message = successReponse.message + 'Updated bio successfully\n';
+        successReponse.data.bio = bio;
+      }
+    }
+
     return res.status(201).json(successReponse);
   } catch (err) {
     console.error(err);
@@ -487,6 +502,55 @@ export const updateProfile = async (req, res) => {
       success: false,
       data: null,
       message: 'Could not update profile',
+    });
+  }
+};
+
+export const updateAccountSettings = async (req, res) => {
+  const userId = req.user?.userId;
+  const { email, password, confirmPassword } = req.body;
+
+  const updateData = {};
+
+  if (email) updateData.email = email;
+  if (password && confirmPassword && password === confirmPassword) {
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    updateData.password = hashedPassword;
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    return res.status(400).json({
+      message: 'No data to update',
+      success: false,
+      data: null,
+    });
+  }
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { userId },
+      data: updatedData,
+    });
+
+    if (!updatedUser) {
+      return res.status(200).json({
+        message: 'Could not update account settings',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Account settings updated successfully',
+      success: true,
+      data: updatedUser,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not update account settings',
     });
   }
 };
