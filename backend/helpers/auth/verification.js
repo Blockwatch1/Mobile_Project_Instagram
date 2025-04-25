@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
     return res.status(401).json({ message: 'Invalid token format' });
   }
 
-  jwt.verify(token, secretKey, (err, user) => {
+  jwt.verify(token, jwtSecret, (err, user) => {
     if (err) {
       return res.status(403).json({ message: 'Forbidden: Invalid Token' });
     }
