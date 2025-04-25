@@ -149,8 +149,10 @@ export const deleteUser = async (req, res) => {
   try {
     const { userId } = req.params;
 
+    const _userId = Number(userId);
+
     //making sure the user deleting is the same as the user in the token
-    if (userId !== req.user.userId) {
+    if (_userId !== req.user.userId) {
       return res.status(401).json({
         message: 'You are not authorized to delete this user',
         success: false,
@@ -158,7 +160,7 @@ export const deleteUser = async (req, res) => {
     }
 
     const deletedUser = await prisma.user.delete({
-      where: { userId },
+      where: { userId: _userId },
     });
 
     if (!deletedUser) {
@@ -191,6 +193,7 @@ export const deleteUser = async (req, res) => {
 export const getUserProfileInfo = async (req, res) => {
   try {
     const { userId } = req.params;
+    const _userId = Number(userId);
 
     const myUserId = req?.user;
 
@@ -226,7 +229,7 @@ export const getUserProfileInfo = async (req, res) => {
       },
     };
 
-    if (myUserId && myUserId === userId) {
+    if (myUserId && myUserId === _userId) {
       const me = await prisma.user.findUnique({
         where: { userId: myUserId },
         include: {
@@ -242,7 +245,7 @@ export const getUserProfileInfo = async (req, res) => {
       return res.status(200).json(fetchedData);
     } else {
       const user = await prisma.user.findUnique({
-        where: { userId },
+        where: { userId: _userId },
         select: {
           email: true,
           bio: true,
@@ -327,7 +330,7 @@ export const savePost = async (req, res) => {
       data: {
         savedPosts: {
           connect: {
-            postId,
+            postId: Number(postId),
           },
         },
       },
@@ -368,7 +371,7 @@ export const likePost = async (req, res) => {
       data: {
         likedPosts: {
           connect: {
-            postId,
+            postId: Number(postId),
           },
         },
       },
@@ -529,7 +532,7 @@ export const updateAccountSettings = async (req, res) => {
   try {
     const updatedUser = await prisma.user.update({
       where: { userId },
-      data: updatedData,
+      data: updateData,
     });
 
     if (!updatedUser) {
@@ -566,13 +569,13 @@ export const follow = async (req, res) => {
         data: {
           following: {
             connect: {
-              userId: followingId,
+              userId: Number(followingId),
             },
           },
         },
       }),
       prisma.user.update({
-        where: { userId: followingId },
+        where: { userId: Number(followingId) },
         data: {
           followedBy: {
             connect: {
@@ -623,7 +626,7 @@ export const unfollow = async (req, res) => {
         },
       }),
       await prisma.user.update({
-        where: { userId: unfollowingId },
+        where: { userId: Number(unfollowingId) },
         data: {
           followedBy: {
             disconnect: {

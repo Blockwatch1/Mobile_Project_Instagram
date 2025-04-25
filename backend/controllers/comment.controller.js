@@ -9,7 +9,7 @@ export const deleteComment = async (req, res) => {
   try {
     const deleteComment = await prisma.comment.deleteMany({
       where: {
-        commentId,
+        commentId: Number(commentId),
         userId,
       },
     });
@@ -54,7 +54,7 @@ export const editComment = async (req, res) => {
   try {
     const comment = await prisma.comment.update({
       where: {
-        commentId,
+        commentId: Number(commentId),
         userId,
       },
       data: {
@@ -109,7 +109,7 @@ export const createComment = async (req, res) => {
         content,
         isReply: false,
         userId,
-        postId,
+        postId: Number(postId),
       },
     });
 
@@ -157,7 +157,7 @@ export const createReply = async (req, res) => {
         userId,
         replies: {
           connect: {
-            replyId: commentId,
+            replyId: Number(commentId),
           },
         },
         postId: null, //set postId null for replies because a reply's parent is a comment
