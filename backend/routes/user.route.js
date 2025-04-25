@@ -2,12 +2,14 @@ import { Router } from 'express';
 
 import authMiddleware from '../helpers/auth/verification.js';
 import {
+  follow,
   getUserProfileInfo,
   getUsersListOnSearch,
   likePost,
   logIn,
   savePost,
   signUp,
+  unfollow,
   updateProfile,
 } from '../controllers/user.controller.js';
 
@@ -43,4 +45,6 @@ router.put('/like-post/:postId', authMiddleware, likePost);
 router.put('/update-profile', authMiddleware, updateProfile);
 
 //UPDATE FOLLOWINGS LIST BY FOLLOWING/UNFOLLOWING A USER
-router.put('/follow/:followingId', authMiddleware);
+router.put('/follow/:followingId', authMiddleware, follow);
+
+router.put('/unfollow/:unfollowingId', authMiddleware, unfollow);

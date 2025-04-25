@@ -541,3 +541,54 @@ export const follow = async (req, res) => {
     });
   }
 };
+
+export const unfollow = async (req, res) => {
+  const { unfollowingId } = req.params;
+  const userId = req.user?.userId;
+
+  try {
+    const [unfollowUser, removeFollower] = await prisma.$transaction([
+      await prisma.user.update({
+        where: { userId },
+        data: {
+          following: {
+            disconnect: {
+              userId,
+            },
+          },
+        },
+      }),
+      await prisma.user.update({
+        where: { userId: unfollowingId },
+        data: {
+          followedBy: {
+            disconnect: {
+              userId,
+            },
+          },
+        },
+      }),
+    ]);
+
+    if (!unfollowUser || !removeFollower) {
+      return res.status(200).json({
+        message: 'Could not unfollow user',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Unfollowed user successfully',
+      success: true,
+      data: unfollowUser,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not unfollow user',
+    });
+  }
+};
