@@ -19,6 +19,10 @@ router.post('/signup', signUp);
 
 router.post('/login', logIn);
 
+//DELETE OPERATIONS
+
+router.delete('/delete-user/:userId', authMiddleware);
+
 //READ OPERATIONS
 
 //USER WILL REQUEST THIS ENDPOINT WHEN HE ENTERS A USER'S PROFILE PAGE (COULD BE HIS OR NOT HIS)

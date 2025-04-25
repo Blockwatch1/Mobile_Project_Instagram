@@ -1,18 +1,23 @@
 import { PrismaClient } from '../lib/generated/prisma/client.js';
 const prisma = new PrismaClient();
 
-//CREATE OPERATIONS
+//CREATE OPERATIONS (A post can be a thread or a post, if it is a thread, it will not have an image url)
 export const createPost = async (req, res) => {
   const user = req?.user;
-  const { description, imageUrl } = req.body;
+  const { description, imageUrl, isThread } = req.body;
+
+  const createPostQueryObject = {
+    description,
+    userID: user.userId,
+  };
+
+  if (!isThread) {
+    createPostQueryObject.imageUrl = imageUrl;
+  }
 
   try {
     const createPost = await prisma.post.create({
-      data: {
-        description,
-        imageUrl,
-        userId: user.userId,
-      },
+      data: createPostQueryObject,
       include: {
         user: true,
       },

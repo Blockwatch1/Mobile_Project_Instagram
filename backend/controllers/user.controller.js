@@ -144,6 +144,49 @@ export const logIn = async (req, res) => {
   }
 };
 
+//DELETE OPERATIONS
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params;
+
+    //making sure the user deleting is the same as the user in the token
+    if (userId !== req.user.userId) {
+      return res.status(401).json({
+        message: 'You are not authorized to delete this user',
+        success: false,
+      });
+    }
+
+    const deletedUser = await prisma.user.delete({
+      where: { userId },
+    });
+
+    if (!deletedUser) {
+      return res.status(200).json({
+        message: 'Could not delete user',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'User deleted successfully',
+      success: true,
+      data: deletedUser,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not delete user',
+      },
+      data: null,
+    });
+  }
+};
+
 //READ OPERATIONS
 export const getUserProfileInfo = async (req, res) => {
   try {
