@@ -1,6 +1,12 @@
 import { Router } from 'express';
 import authMiddleware from '../helpers/auth/verification.js';
-import { createPost, editPost, getPost, getPosts } from '../controllers/post.controller.js';
+import {
+  createPost,
+  editPost,
+  getPost,
+  getPosts,
+  getUserSavedPosts,
+} from '../controllers/post.controller.js';
 
 export const router = Router();
 
@@ -21,4 +27,4 @@ router.put('/edit-post/:postId', authMiddleware, editPost);
 router.put('/get-posts', authMiddleware, getPosts);
 
 //this is for the page of the saved posts in the user's profile (this is done as an indivual route to make the get profile info route more efficient)
-router.put('/get-saved-posts/:userId', authMiddleware, getPost);
+router.put('/get-saved-posts/:userId', authMiddleware, getUserSavedPosts);

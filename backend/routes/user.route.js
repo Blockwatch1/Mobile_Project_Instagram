@@ -41,3 +41,6 @@ router.put('/like-post/:postId', authMiddleware, likePost);
 
 //UPDATE USER PROFILE
 router.put('/update-profile', authMiddleware, updateProfile);
+
+//UPDATE FOLLOWINGS LIST BY FOLLOWING/UNFOLLOWING A USER
+router.put('/follow/:followingId', authMiddleware);

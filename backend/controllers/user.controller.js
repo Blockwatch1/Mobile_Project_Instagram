@@ -490,3 +490,54 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+
+export const follow = async (req, res) => {
+  const { followingId } = req.params;
+  const userId = req.user?.userId;
+
+  try {
+    const [followUser, addFollower] = await prisma.$transaction([
+      prisma.user.update({
+        where: { userId },
+        data: {
+          following: {
+            connect: {
+              userId: followingId,
+            },
+          },
+        },
+      }),
+      prisma.user.update({
+        where: { userId: followingId },
+        data: {
+          followedBy: {
+            connect: {
+              userId,
+            },
+          },
+        },
+      }),
+    ]);
+
+    if (!followUser || !addFollower) {
+      return res.status(200).json({
+        message: 'Could not follow user',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Followed user successfully',
+      success: true,
+      data: followUser,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not follow user',
+    });
+  }
+};
