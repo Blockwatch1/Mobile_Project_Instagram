@@ -56,7 +56,7 @@ export const deletePost = async (req, res) => {
 
     //fetch post to check if the user is the one that created it
     const postToDelete = await prisma.post.findUnique({
-      where: { postId },
+      where: { postId: Number(postId) },
       select: { userId: true },
     });
 
@@ -77,7 +77,7 @@ export const deletePost = async (req, res) => {
     }
 
     const deletePost = await prisma.post.delete({
-      where: { postId },
+      where: { postId: Number(postId) },
     });
 
     if (!deletePost) {
@@ -122,7 +122,7 @@ export const editPost = async (req, res) => {
 
   //making sure the user that is using the application is the same as the one that created the post
   const postToEdit = await prisma.post.findUnique({
-    where: { postId },
+    where: { postId: Number(postId) },
     select: { userId: true },
   });
 
@@ -138,7 +138,7 @@ export const editPost = async (req, res) => {
 
     if (description && !imageUrl) {
       const editDescription = await prisma.post.update({
-        where: { postId },
+        where: { postId: Number(postId) },
         data: {
           description,
         },
@@ -158,7 +158,7 @@ export const editPost = async (req, res) => {
 
     if (imageUrl && !description) {
       const editImageUrl = await prisma.post.update({
-        where: { postId },
+        where: { postId: Number(postId) },
         data: {
           description,
         },
@@ -178,7 +178,7 @@ export const editPost = async (req, res) => {
 
     if (imageUrl && description) {
       const editDescriptionAndImage = await prisma.post.update({
-        where: { postId },
+        where: { postId: Number(postId) },
         data: {
           description,
           imageUrl,
@@ -215,7 +215,7 @@ export const getPosts = async (req, res) => {
 
   try {
     const posts = await prisma.post.findMany({
-      where: { postId },
+      where: { postId: Number(postId) },
       include: {
         user: {
           select: {
@@ -265,10 +265,10 @@ export const getPosts = async (req, res) => {
 
 export const getUserSavedPosts = async (req, res) => {
   const { userId } = req.params;
-  if (userId === req?.user?.userId) {
+  if (Number(userId) === req?.user?.userId) {
     try {
       const savedPosts = await prisma.user.findUnique({
-        where: { userId },
+        where: { userId: Number(userId) },
         select: {
           savedPosts: {
             include: {
@@ -319,7 +319,7 @@ export const getPost = async (req, res) => {
 
   try {
     const post = await prisma.post.findUnique({
-      where: { postId },
+      where: { postId: Number(postId) },
       include: {
         likedUsers: {
           select: {
