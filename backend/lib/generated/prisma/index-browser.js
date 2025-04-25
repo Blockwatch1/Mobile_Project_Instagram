@@ -146,6 +146,8 @@ exports.Prisma.CommentScalarFieldEnum = {
   content: 'content',
   isReply: 'isReply',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  isEdited: 'isEdited',
   replyId: 'replyId',
   postId: 'postId',
   userId: 'userId'

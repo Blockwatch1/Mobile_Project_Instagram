@@ -149,7 +149,7 @@ export const editPost = async (req, res) => {
           .status(400)
           .json({ message: 'Could not edit description', success: false, data: null });
 
-      return res.status(201).json({
+      return res.status(200).json({
         message: 'Edited post description successfully',
         success: true,
         data: editDescription,
@@ -169,7 +169,7 @@ export const editPost = async (req, res) => {
           .status(400)
           .json({ message: 'Could not edit image', success: false, data: null });
 
-      return res.status(201).json({
+      return res.status(200).json({
         message: 'Edited post image successfully',
         success: true,
         data: editImageUrl,
@@ -190,7 +190,7 @@ export const editPost = async (req, res) => {
           .status(400)
           .json({ message: 'Could not edit image and description', success: false, data: null });
 
-      return res.status(201).json({
+      return res.status(200).json({
         message: 'Edited post description and image successfully',
         success: true,
         data: editDescriptionAndImage,

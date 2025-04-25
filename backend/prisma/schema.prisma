@@ -55,11 +55,15 @@ model Post {
 }
 
 model Comment {
-  commentId Int      @id @default(autoincrement())
+  commentId Int     @id @default(autoincrement())
   content   String
-  isReply   Boolean  @default(false)
+  isReply   Boolean @default(false)
+
   createdAt DateTime @default(now())
-  replyId   Int?
+  updatedAt DateTime @updatedAt
+  isEdited  Boolean? @default(false)
+
+  replyId Int?
 
   reply   Comment?  @relation("CommentReplies", fields: [replyId], references: [commentId])
   replies Comment[] @relation("CommentReplies")

@@ -495,7 +495,7 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    return res.status(201).json(successReponse);
+    return res.status(200).json(successReponse);
   } catch (err) {
     console.error(err);
     return res.status(500).json({
