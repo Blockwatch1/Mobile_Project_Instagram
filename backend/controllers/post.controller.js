@@ -48,9 +48,67 @@ export const createPost = async (req, res) => {
   }
 };
 
+//DELETE OPERATIONS
+export const deletePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req?.user.userId;
+
+    //fetch post to check if the user is the one that created it
+    const postToDelete = await prisma.post.findUnique({
+      where: { postId },
+      select: { userId: true },
+    });
+
+    if (!postToDelete) {
+      return res.status(400).json({
+        message: 'Could not find post',
+        success: false,
+        data: null,
+      });
+    }
+
+    if (postToDelete.userId !== userId) {
+      return res.status(401).json({
+        message: 'User is not authorized to delete another user post',
+        success: false,
+        data: null,
+      });
+    }
+
+    const deletePost = await prisma.post.delete({
+      where: { postId },
+    });
+
+    if (!deletePost) {
+      return res.status(400).json({
+        message: 'Could not delete post',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Deleted post successfully',
+      success: true,
+      data: deletePost,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not delete post',
+      },
+      data: null,
+    });
+  }
+};
+
 //PUT OPERATIONS
 export const editPost = async (req, res) => {
-  const postId = req.params;
+  const { postId } = req.params;
   const editingUser = req?.user;
 
   const { description, imageUrl } = req.body;
@@ -153,7 +211,7 @@ export const editPost = async (req, res) => {
 
 //READ OPERATIONS
 export const getPosts = async (req, res) => {
-  const postId = req.params;
+  const { postId } = req.params;
 
   try {
     const posts = await prisma.post.findMany({
@@ -206,7 +264,7 @@ export const getPosts = async (req, res) => {
 };
 
 export const getUserSavedPosts = async (req, res) => {
-  const userId = req.params;
+  const { userId } = req.params;
   if (userId === req?.user?.userId) {
     try {
       const savedPosts = await prisma.user.findUnique({
@@ -257,7 +315,7 @@ export const getUserSavedPosts = async (req, res) => {
 };
 
 export const getPost = async (req, res) => {
-  const postId = req.params;
+  const { postId } = req.params;
 
   try {
     const post = await prisma.post.findUnique({

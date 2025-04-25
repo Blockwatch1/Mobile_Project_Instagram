@@ -147,7 +147,7 @@ export const logIn = async (req, res) => {
 //DELETE OPERATIONS
 export const deleteUser = async (req, res) => {
   try {
-    const userId = req.params;
+    const { userId } = req.params;
 
     //making sure the user deleting is the same as the user in the token
     if (userId !== req.user.userId) {
@@ -319,7 +319,7 @@ export const getUsersListOnSearch = async (req, res) => {
 
 //PUT OPERATIONS
 export const savePost = async (req, res) => {
-  const postId = req.params;
+  const { postId } = req.params;
   const user = req?.user;
   try {
     const savePost = await prisma.user.update({
@@ -360,7 +360,7 @@ export const savePost = async (req, res) => {
 };
 
 export const likePost = async (req, res) => {
-  const postId = req.params;
+  const { postId } = req.params;
   const user = req?.user;
   try {
     const likePost = await prisma.user.update({

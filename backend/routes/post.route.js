@@ -7,6 +7,9 @@ export const router = Router();
 //CREATE OPERATIONS
 router.post('/create-post', authMiddleware, createPost);
 
+//DELETE OPERATIONS
+router.delete('/delete-post/:postId', authMiddleware);
+
 //PUT OPERATIONS
 
 //USER WILL EDIT A POST (YOU CAN EDIT EITHER THE PROFILE PICTURE, THE DESCRIPTION OR BOTH)
