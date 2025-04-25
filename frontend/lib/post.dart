@@ -46,7 +46,7 @@ class _PostState extends State<Post> {
 
                Container(
                  width: double.infinity,
-                 child: Image.network("https://m.media-amazon.com/images/M/MV5BZTI4ZGMxN2UtODlkYS00MTBjLWE1YzctYzc3NDViMGI0ZmJmXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",fit: BoxFit.fitWidth,),
+                 child: Image.network(widget.image,fit: BoxFit.fitWidth,),
                ),
 
             Container(

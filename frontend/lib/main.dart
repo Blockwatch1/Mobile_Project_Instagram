@@ -49,22 +49,51 @@ Map<User, String> testComments = {
 User test=User("MeowMan40", "https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg");
 
 class _HomePageState extends State<HomePage> {
-  bool isSearch=false;
+  @override
+  Widget build(BuildContext context) {
+
+
+    return Scaffold(
+      appBar: AppBar(title: Expanded(child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("InterLinked",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
+          Row(
+            spacing: 12,
+            children: [
+              GestureDetector(child:
+              Icon(Icons.search),
+                onTap: (){
+                 Navigator.of(context).push(
+                   MaterialPageRoute(builder: (context) {
+                     return SearchPage();
+                   },)
+                 );
+                },
+              ),
+              CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
+            ],
+          )
+        ],
+      ))
+      ),
+      body:PostPage(),
+    );
+  }
+}
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchText = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    if(isSearch){
-      return Scaffold(
+    return Scaffold(
           appBar: AppBar(
-            leading: GestureDetector(
-              child: Icon(Icons.arrow_back),
-              onTap: (){
-                setState(() {
-                  isSearch=false;
-                  _searchText.clear();
-                });
-              },
-            ),
             title: TextField(
               controller: _searchText,
               decoration: InputDecoration(
@@ -83,29 +112,4 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(title: Expanded(child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("InterLinked",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
-          Row(
-            spacing: 12,
-            children: [
-              GestureDetector(child:
-              Icon(Icons.search),
-                onTap: (){
-                  setState(() {
-                    isSearch=true;
-                  });
-                },
-              ),
-              CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
-            ],
-          )
-        ],
-      ))
-      ),
-      body:PostPage(),
-    );
-  }
 }
