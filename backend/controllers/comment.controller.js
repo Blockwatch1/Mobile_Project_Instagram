@@ -1,6 +1,7 @@
 import { PrismaClient } from '../lib/generated/prisma/client.js';
 const prisma = new PrismaClient();
 
+//DELETE OPERATION
 export const deleteComment = async (req, res) => {
   const { commentId } = req.params;
   const userId = req?.user?.userId;
@@ -36,6 +37,7 @@ export const deleteComment = async (req, res) => {
   }
 };
 
+//PUT OPERATIONS
 export const editComment = async (req, res) => {
   const { commentId } = req.params;
   const userId = req?.user?.userId;
@@ -81,6 +83,55 @@ export const editComment = async (req, res) => {
       success: false,
       data: null,
       message: 'Could not edit comment',
+    });
+  }
+};
+
+//CREATE OPERATION
+
+//NORMAL COMMENT CREATION
+export const createComment = async (req, res) => {
+  const { postId } = req.params;
+  const userId = req?.user?.userId;
+  const { content } = req.body;
+
+  try {
+    if (content.length < 1) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        message: 'Comment content cannot be empty',
+      });
+    }
+
+    const comment = await prisma.comment.create({
+      data: {
+        content,
+        isReply: false,
+        userId,
+        postId,
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({
+        success: false,
+        data: null,
+        message: 'Comment not found',
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      data: comment,
+      message: 'Comment created successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not create comment',
     });
   }
 };

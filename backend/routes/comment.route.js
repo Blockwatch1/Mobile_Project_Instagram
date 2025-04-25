@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import authMiddleware from '../helpers/auth/verification.js';
-import { deleteComment, editComment } from '../controllers/comment.controller.js';
+import { createComment, deleteComment, editComment } from '../controllers/comment.controller.js';
 
 export const router = Router();
 
@@ -9,3 +9,6 @@ router.delete('/:commentId', authMiddleware, deleteComment);
 
 //PUT OPERATION
 router.put('/:commentId', authMiddleware, editComment);
+
+//CREATE OPERATION
+router.post('/create/:postId', authMiddleware, createComment);
