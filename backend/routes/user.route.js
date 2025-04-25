@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import authMiddleware from '../helpers/auth/verification.js';
 import {
+  deleteUser,
   follow,
   getUserProfileInfo,
   getUsersListOnSearch,
@@ -24,7 +25,7 @@ router.post('/login', logIn);
 
 //DELETE OPERATIONS
 
-router.delete('/delete-user/:userId', authMiddleware);
+router.delete('/delete-user/:userId', authMiddleware, deleteUser);
 
 //READ OPERATIONS
 
