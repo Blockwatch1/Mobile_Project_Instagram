@@ -75,7 +75,7 @@ export const signUp = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: {
-        details: err,
+        details: err.message,
         description: 'Could not sign up',
       },
       data: null,
@@ -136,7 +136,7 @@ export const logIn = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: {
-        details: err,
+        details: err.message,
         description: 'Could not log in',
       },
       data: null,

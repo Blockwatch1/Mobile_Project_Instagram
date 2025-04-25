@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:insta/post_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'loginPage.dart';
+import 'post_page.dart';
 import 'User.dart';
 import 'post.dart';
 import 'thread.dart';
 
-void main() {
+void main() async{
+  SharedPreferences prefs= await SharedPreferences.getInstance();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     themeMode: ThemeMode.dark,
     darkTheme: ThemeData.dark(),
-    home: SafeArea(child: HomePage()),
+    home: SafeArea(child: Loginpage(prefs: prefs,)),
   ));
 }
 

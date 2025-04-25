@@ -4,6 +4,8 @@ class User{
  List<User> _following= [];
  List<User> _followers= [];
  String _username;
+ //TODO : change this later
+ int id=0;
  String _profilePicUrl;
  List<Post> _posts = [];
  List<Post> _savedPosts = [];
