@@ -135,3 +135,54 @@ export const createComment = async (req, res) => {
     });
   }
 };
+
+export const createReply = async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req?.user?.userId;
+  const { content } = req.body;
+
+  if (content.length < 1) {
+    return res.status(400).json({
+      success: false,
+      data: null,
+      message: 'Comment content cannot be empty',
+    });
+  }
+
+  try {
+    const reply = await prisma.comment.create({
+      data: {
+        content,
+        isReply: true,
+        userId,
+        replies: {
+          connect: {
+            replyId: commentId,
+          },
+        },
+        postId: null, //set postId null for replies because a reply's parent is a comment
+      },
+    });
+
+    if (!reply) {
+      return res.status(404).json({
+        success: false,
+        data: null,
+        message: 'Reply not found',
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      data: reply,
+      message: 'Reply created successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not create reply',
+    });
+  }
+};
