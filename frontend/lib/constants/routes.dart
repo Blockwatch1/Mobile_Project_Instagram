@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:insta/loginPage.dart';
+import 'package:insta/Pages/Auth/loginPage.dart';
+import 'package:insta/Pages/Auth/signUpPage.dart';
+import 'package:insta/post_page.dart';
 
 import '../Pages/searchPage.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
-  '/': (context) => SafeArea(child: Loginpage()),
+  '/login': (context) => SafeArea(child: Loginpage()),
+  '/signup': (context) => SafeArea(child: SignUpPage()),
   '/search': (context) => const SearchPage(),
+  '/home': (context) => PostPage()
 };

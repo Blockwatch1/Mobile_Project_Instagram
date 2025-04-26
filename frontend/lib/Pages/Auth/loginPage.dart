@@ -27,31 +27,6 @@ class _LoginpageState extends State<Loginpage> {
   TextEditingController _nameController= TextEditingController();
   @override
   Widget build(BuildContext context) {
-    if(signUp) {
-      return Scaffold(
-        body:  Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 20,
-            children: [
-              Text("Sign Up with Email",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.orangeAccent),textAlign: TextAlign.center,),
-              InputFieldLogin(userNameController: _userNameController,hintText: "Username",),
-              InputFieldLogin(userNameController: _nameController,hintText: "Name",),
-              InputFieldLogin(userNameController: _emailController,hintText: "Email",),
-              InputFieldLogin(userNameController: _passwordController,hintText: "Password",isPass: true,),
-              ElevatedButton(onPressed: (){}, child: Text("Submit")),
-              GestureDetector(
-                child: Text("Log in?",style: TextStyle(fontWeight: FontWeight.bold),),
-                onTap: (){
-                  setState(() {
-                    signUp=false;
-                  });
-                },
-              )
-            ],
-          ),
-      );
-    }
     return Scaffold(
       body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +37,7 @@ class _LoginpageState extends State<Loginpage> {
               InputFieldLogin(userNameController: _passwordController,hintText: "Password",isPass: true,),
               ElevatedButton(onPressed:()async{
                 var url =
-                Uri.parse('http://10.0.2.2:4001/user/login');
+                Uri.parse('http://localhost:4001/user/login');
                 try{
                   var response = await http.post(url,
                       headers: <String, String>{
@@ -97,9 +72,7 @@ class _LoginpageState extends State<Loginpage> {
               GestureDetector(
                 child: Text("Sign Up?",style: TextStyle(fontWeight: FontWeight.bold),),
                 onTap: (){
-                  setState(() {
-                    signUp=true;
-                  });
+                  Navigator.pushNamed(context, '/signup');
                 },
               )
             ],

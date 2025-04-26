@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta/constants/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'loginPage.dart';
+import 'Pages/Auth/loginPage.dart';
 import 'post_page.dart';
 import 'User.dart';
 import 'post.dart';
@@ -12,7 +12,7 @@ void main(){
     debugShowCheckedModeBanner: false,
     themeMode: ThemeMode.dark,
     darkTheme: ThemeData.dark(),
-    initialRoute: '/',
+    initialRoute: '/login',
     routes: appRoutes
   ));
 }
