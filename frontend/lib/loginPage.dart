@@ -4,8 +4,7 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class Loginpage extends StatefulWidget {
-  SharedPreferences prefs;
-  Loginpage({super.key,required this.prefs});
+  Loginpage({super.key});
   @override
   State<Loginpage> createState() => _LoginpageState();
 }
@@ -14,6 +13,11 @@ class _LoginpageState extends State<Loginpage> {
   @override
   void initState(){
     super.initState();
+  }
+  void addUserToLocalStorage(Map decoded)async{
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    prefs.setString('token', decoded['token']);
+
   }
 
   bool signUp=false;
@@ -71,7 +75,7 @@ class _LoginpageState extends State<Loginpage> {
                   if (response.statusCode == 200) {
                     Map<String, dynamic> decoded = convert
                         .jsonDecode(response.body) as Map<String, dynamic>;
-                    widget.prefs.setString('token', decoded['token']);
+                    addUserToLocalStorage(decoded);
                     Alert(
                         context: context,
                         title: "Login Success",
