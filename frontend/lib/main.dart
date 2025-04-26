@@ -6,13 +6,12 @@ import 'User.dart';
 import 'post.dart';
 import 'thread.dart';
 
-void main() async{
-  SharedPreferences prefs= await SharedPreferences.getInstance();
+void main(){
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     themeMode: ThemeMode.dark,
     darkTheme: ThemeData.dark(),
-    home: SafeArea(child: Loginpage(prefs: prefs,)),
+    home: SafeArea(child: Loginpage()),
   ));
 }
 
