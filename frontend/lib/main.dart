@@ -11,7 +11,11 @@ void main(){
     debugShowCheckedModeBanner: false,
     themeMode: ThemeMode.dark,
     darkTheme: ThemeData.dark(),
-    home: SafeArea(child: Loginpage()),
+    initialRoute: '/',
+    routes: {
+      '/': (context) => SafeArea(child: Loginpage()),
+      '/search': (context) => SearchPage()
+    },
   ));
 }
 
@@ -66,11 +70,7 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(child:
               Icon(Icons.search),
                 onTap: (){
-                 Navigator.of(context).push(
-                   MaterialPageRoute(builder: (context) {
-                     return SearchPage();
-                   },)
-                 );
+                 Navigator.pushNamed(context, '/search');
                 },
               ),
               CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
@@ -82,36 +82,4 @@ class _HomePageState extends State<HomePage> {
       body:PostPage(),
     );
   }
-}
-class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
-
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchText = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-          appBar: AppBar(
-            title: TextField(
-              controller: _searchText,
-              decoration: InputDecoration(
-                  hintText: 'Search a Post...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24.0),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  suffixIcon: GestureDetector(
-                    child: Icon(Icons.search),
-                  )
-
-              ),
-            ) ,
-          )
-      );
-    }
-
 }
