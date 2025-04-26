@@ -20,11 +20,8 @@ class _LoginpageState extends State<Loginpage> {
 
   }
 
-  bool signUp=false;
-  TextEditingController _userNameController= TextEditingController();
   TextEditingController _emailController= TextEditingController();
   TextEditingController _passwordController= TextEditingController();
-  TextEditingController _nameController= TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +29,9 @@ class _LoginpageState extends State<Loginpage> {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 20,
             children: [
-              Text("Log In with Email",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.orangeAccent),textAlign: TextAlign.center,),
-              InputFieldLogin(userNameController: _emailController,hintText: "Email",),
-              InputFieldLogin(userNameController: _passwordController,hintText: "Password",isPass: true,),
+              Text("Interlinked Log In",style: TextStyle(fontSize: 50, fontFamily: "Insta",color: Colors.purpleAccent),textAlign: TextAlign.center,),
+              InputFieldLogin(controller: _emailController,hintText: "Email",),
+              InputFieldLogin(controller: _passwordController,hintText: "Password",isPass: true, ),
               ElevatedButton(onPressed:()async{
                 var url =
                 Uri.parse('http://localhost:4001/user/login');
@@ -85,30 +82,36 @@ class _LoginpageState extends State<Loginpage> {
 class InputFieldLogin extends StatelessWidget {
   bool? isPass=false;
   String hintText;
+  final TextEditingController _controller;
+
   InputFieldLogin({
     super.key,
-    required TextEditingController userNameController,
+    required TextEditingController controller,
     required this.hintText,
     this.isPass
-  }) : _userNameController = userNameController;
+  }) : _controller = controller;
 
-  final TextEditingController _userNameController;
 
   @override
   Widget build(BuildContext context) {
     isPass= isPass?? false;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),
-      child: TextField(
-        keyboardType: isPass! ? TextInputType.visiblePassword : TextInputType.text,
-        controller:_userNameController ,
+      child: TextFormField(
+        obscureText: isPass == true ? true : false,
+        controller: _controller,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
           hintText: hintText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24),
-          )
+          labelText: hintText,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter a username';
+          }
+          return null;
+        },
       ),
     );
   }
