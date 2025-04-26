@@ -9,11 +9,11 @@ import 'thread.dart';
 
 void main(){
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    themeMode: ThemeMode.dark,
-    darkTheme: ThemeData.dark(),
-    initialRoute: '/login',
-    routes: appRoutes
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData.dark(),
+      initialRoute: '/home',
+      routes: appRoutes
   ));
 }
 
@@ -53,29 +53,53 @@ Map<User, String> testComments = {
 User test=User("MeowMan40", "https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg");
 
 class _HomePageState extends State<HomePage> {
+
+  Future<void> _checkForSession() async {
+    print('Fetching SharedPreferences...');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    print('Token from SharedPreferences: ${prefs.getString('token')}');
+    print('HELLO'); // This should print before the check
+
+    if(prefs.getString('token') == null){
+      print('Token is null, navigating to login...');
+      Navigator.pushNamed(context, '/login');
+      return;
+    }
+    print('Token found, staying on homepage.');
+    return;
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _checkForSession();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
-      appBar: AppBar(title: Expanded(child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("InterLinked",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
-          Row(
-            spacing: 12,
+      appBar: AppBar(
+          title: Row( // Removed Expanded here
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(child:
-              Icon(Icons.search),
-                onTap: (){
-                 Navigator.pushNamed(context, '/search');
-                },
-              ),
-              CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
+              Text("InterLinked",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
+              Row(
+                // Removed spacing property as it's not valid for Row
+                children: [
+                  GestureDetector(child:
+                  Icon(Icons.search),
+                    onTap: (){
+                      Navigator.pushNamed(context, '/search');
+                    },
+                  ),
+                  SizedBox(width: 12), // Added SizedBox for spacing
+                  CircleAvatar(radius: 20,backgroundImage: NetworkImage(test.profilePicUrl),)
+                ],
+              )
             ],
           )
-        ],
-      ))
       ),
       body:PostPage(),
     );

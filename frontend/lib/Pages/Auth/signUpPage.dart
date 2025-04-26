@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
       try {
         print('Attempting to sign up with data: $signUpData');
-        ActionResponse response = await _authService.signUp(signUpData);
+        ActionResponse response = await _authService.auth(signUpData, 'signUp');
 
         print(response.success);
 
