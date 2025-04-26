@@ -9,5 +9,5 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/login': (context) => SafeArea(child: Loginpage()),
   '/signup': (context) => SafeArea(child: SignUpPage()),
   '/search': (context) => const SearchPage(),
-  '/home': (context) => PostPage()
+  '/home': (context) => PostPage(),
 };
