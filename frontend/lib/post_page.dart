@@ -41,11 +41,13 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return Scaffold(
+      body: ListView.builder(
         itemCount: list1.length,
         itemBuilder: (context, index) {
           return list1 [index];
         },
-      );
+      ),
+    );
   }
 }

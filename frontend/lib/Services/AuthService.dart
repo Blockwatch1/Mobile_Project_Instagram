@@ -14,7 +14,7 @@ class AuthService {
       jsonEncode(signUpData));
 
 
-      final response = await http.post(httpConfigObj.uri as Uri, body: httpConfigObj.body, headers: httpConfigObj.headers);
+      final response = await http.post(httpConfigObj.uri, body: httpConfigObj.body, headers: httpConfigObj.headers);
 
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);

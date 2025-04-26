@@ -60,7 +60,11 @@ class _SignUpPageState extends State<SignUpPage> {
         print('Attempting to sign up with data: $signUpData');
         ActionResponse response = await _authService.signUp(signUpData);
 
+        print(response.success);
+
         if(response.success){
+          if(!mounted) return;
+
           setState(() {
             _loading = false;
           });
@@ -175,7 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       return 'Please enter a password';
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
+                      return 'Password must be at least 8 characters long with a special character and one capital letter';
                     }
                     return null;
                   },
