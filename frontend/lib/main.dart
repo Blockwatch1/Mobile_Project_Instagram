@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta/constants/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'loginPage.dart';
 import 'post_page.dart';
@@ -12,10 +13,7 @@ void main(){
     themeMode: ThemeMode.dark,
     darkTheme: ThemeData.dark(),
     initialRoute: '/',
-    routes: {
-      '/': (context) => SafeArea(child: Loginpage()),
-      '/search': (context) => SearchPage()
-    },
+    routes: appRoutes
   ));
 }
 
