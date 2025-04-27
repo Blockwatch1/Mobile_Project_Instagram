@@ -186,3 +186,52 @@ export const createReply = async (req, res) => {
     });
   }
 };
+
+export const getComments = async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const comments = await prisma.comment.findMany({
+      where: {
+        postId: Number(postId),
+        isReply: false,
+      },
+      include: {
+        user: {
+          select: {
+            userId: true,
+            username: true,
+            pfpPath: true,
+            name: true,
+          },
+        },
+        _count: {
+          select: {
+            replies: true,
+          },
+        },
+      },
+    });
+
+    if (!comments) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        message: 'Couldnt fetch comments',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: comments,
+      message: 'Fetched comments successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Could not get comments',
+    });
+  }
+};

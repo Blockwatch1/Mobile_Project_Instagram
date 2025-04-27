@@ -5,6 +5,7 @@ import {
   createReply,
   deleteComment,
   editComment,
+  getComments,
 } from '../controllers/comment.controller.js';
 
 export const router = Router();
@@ -19,3 +20,6 @@ router.put('/:commentId', authMiddleware, editComment);
 router.post('/create/:postId', authMiddleware, createComment);
 
 router.post('/reply/:commentId', authMiddleware, createReply);
+
+//READ OPERATION
+router.get('/get-comments/:postId', authMiddleware, getComments);
