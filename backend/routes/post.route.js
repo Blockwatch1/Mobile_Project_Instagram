@@ -24,7 +24,9 @@ router.put('/edit-post/:postId', authMiddleware, editPost);
 //READ OPERATIONS
 
 //this is for the main page
-router.put('/get-posts', authMiddleware, getPosts);
+router.get('/get-posts', authMiddleware, getPosts);
 
 //this is for the page of the saved posts in the user's profile (this is done as an indivual route to make the get profile info route more efficient)
-router.put('/get-saved-posts/:userId', authMiddleware, getUserSavedPosts);
+router.get('/get-saved-posts/:userId', authMiddleware, getUserSavedPosts);
+
+router.get('/get-post/:postId', authMiddleware, getPost);

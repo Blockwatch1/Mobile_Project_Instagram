@@ -5,6 +5,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 
 class Loginpage extends StatefulWidget {
   Loginpage({super.key});
@@ -26,10 +28,14 @@ class _LoginpageState extends State<Loginpage> {
     super.initState();
   }
 
-  void addUserToLocalStorage(String? token) async {
+  void addUserToLocalStorage(String? token, dynamic? userData) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (token != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', token);
+      await prefs.setString('token', token);
+    }
+    
+    if(userData != null){
+      await prefs.setString('user', jsonEncode(userData));
     }
   }
 
@@ -55,7 +61,9 @@ class _LoginpageState extends State<Loginpage> {
       if (response.success) {
         if (!mounted) return;
 
-        addUserToLocalStorage(response.token);
+        if(response.token != null && response.user != null) {
+          addUserToLocalStorage(response.token, response.user);
+        }
         
         Navigator.pushNamed(context, '/home');
 

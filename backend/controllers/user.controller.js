@@ -129,6 +129,7 @@ export const logIn = async (req, res) => {
         username: user.username,
         email: user.email,
         bio: user.bio,
+        pfpPath: user.pfpPath
       },
     });
   } catch (err) {

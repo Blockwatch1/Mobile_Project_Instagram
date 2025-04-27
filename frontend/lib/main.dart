@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:insta/constants/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,19 +56,25 @@ User test=User("MeowMan40", "https://static.tvtropes.org/pmwiki/pub/images/b76t_
 
 class _HomePageState extends State<HomePage> {
 
+  Map<String, dynamic>? _userData;
+
   Future<void> _checkForSession() async {
-    print('Fetching SharedPreferences...');
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    print('Token from SharedPreferences: ${prefs.getString('token')}');
-    print('HELLO'); // This should print before the check
 
     if(prefs.getString('token') == null){
-      print('Token is null, navigating to login...');
       Navigator.pushNamed(context, '/login');
       return;
     }
-    print('Token found, staying on homepage.');
+
+    String? userJson = prefs.getString('user');
+
+    if(userJson != null) {
+      Map<String, dynamic> userMap = jsonDecode(userJson);
+      _userData = userMap;
+      print(_userData);
+    }
+
     return;
   }
 
@@ -81,12 +89,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Row( // Removed Expanded here
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("InterLinked",style: TextStyle(fontFamily: "Insta",fontSize: 40),),
               Row(
-                // Removed spacing property as it's not valid for Row
                 children: [
                   GestureDetector(child:
                   Icon(Icons.search),
@@ -101,7 +108,7 @@ class _HomePageState extends State<HomePage> {
             ],
           )
       ),
-      body:PostPage(),
+      body:PostPage(userData: _userData,),
     );
   }
 }

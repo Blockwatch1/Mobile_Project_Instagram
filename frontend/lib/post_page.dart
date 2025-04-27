@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:insta/Models/ActionResponse.dart';
+import 'package:insta/Services/PostService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'post.dart';
 import 'User.dart';
 
 class PostPage extends StatefulWidget {
-  const PostPage({super.key});
+
+  final Map<String, dynamic>? _userData;
+  const PostPage({super.key, Map<String, dynamic>? userData}) : _userData = userData;
 
   @override
   State<PostPage> createState() => _PostPageState();
@@ -38,6 +43,40 @@ class _PostPageState extends State<PostPage> {
     Post(user: user7, image: 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fcdn.lucidpic.com%2Fcdn-cgi%2Fimage%2Fw%3D600%2Cformat%3Dauto%2Cmetadata%3Dnone%2F66c43abe18502.png&imgrefurl=https%3A%2F%2Flucidpic.com%2F&docid=dC2HIqlL7ly1GM&tbnid=0OIzPFwXZ4vZQM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECGkQAA..i&w=600&h=728&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECGkQAA', comments: userComments, likeAmount: 108),
     Post(user: user8, image: 'https://www.google.com/imgres?q=profile%20picture%20.jpg&imgurl=https%3A%2F%2Fimg.freepik.com%2Fpremium-vector%2Favatar-profile-icon-flat-style-female-user-profile-vector-illustration-isolated-background-women-profile-sign-business-concept_157943-38866.jpg%3Fsemt%3Dais_hybrid%26w%3D740&imgrefurl=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fprofile&docid=WIYPytbMl_8XfM&tbnid=k8d3RtLsuhGNfM&vet=12ahUKEwiljLqzofGMAxXnhf0HHUWELtIQM3oECGcQAA..i&w=740&h=740&hcb=2&ved=2ahUKEwiljLqzofGMAxXnhf0HHUWELtIQM3oECGcQAA', comments: userComments, likeAmount: 99),
   ];
+
+  List<dynamic>? _posts;
+  bool loading = false;
+
+  Postservice _postService = Postservice();
+
+
+  Future<void> _fetchPosts() async {
+    setState(() {
+      loading = true;
+      _posts = null;
+    });
+    
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    try{
+      ActionResponse postResponse = await _postService.getPosts('/get-posts', prefs.getString('token'));
+      print(postResponse.data);
+      print(postResponse.success);
+
+    } catch(e) {
+      print('Error fetching posts: $e');
+      throw e;
+    }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+
+    //fetch Posts
+    _fetchPosts();
+  }
+
 
   @override
   Widget build(BuildContext context) {
