@@ -24,7 +24,7 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   void handleCommentClick() {
-
+    Navigator.of(context).pushNamed('/postPage');
   }
 
   @override

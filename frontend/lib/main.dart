@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:insta/Routes/RouteGenerator.dart';
 import 'package:insta/constants/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Pages/Auth/loginPage.dart';
@@ -10,12 +11,14 @@ import 'Widgets/post.dart';
 import 'Widgets/thread.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark(),
       initialRoute: '/home',
-      routes: appRoutes));
+      onGenerateRoute: RouteGenerator.generateRoute
+    ));
 }
 
 class HomePage extends StatefulWidget {
@@ -39,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.getString('token') == null) {
-      Navigator.pushNamed(context, '/login');
+      Navigator.of(context).pushNamed('/login');
       return;
     }
 
