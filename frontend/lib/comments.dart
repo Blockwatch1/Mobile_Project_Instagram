@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'replies.dart';
-import 'User.dart';
+import 'Models/User.dart';
 class CommentsPage extends StatefulWidget {
   CommentsPage({super.key,required this.comments});
   Map<User,String> comments;

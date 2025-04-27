@@ -15,6 +15,7 @@ class PostService {
       print('\n\nTHIS IS THE PATH: $path');
 
       print(httpConfigObj.uri);
+      print(httpConfigObj.headers);
 
       final response = await http.get(httpConfigObj.uri, headers: httpConfigObj.headers);
 

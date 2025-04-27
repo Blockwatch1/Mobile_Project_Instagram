@@ -280,15 +280,24 @@ export const getUserProfileInfo = async (req, res) => {
 export const getUsersListOnSearch = async (req, res) => {
   try {
     const { nameusername } = req.params;
+    const searchTerm = nameusername?.trim();
 
-    console.log('hey');
+    if (!searchTerm) {
+      return res.status(400).json({
+        message: 'Search term is required',
+        success: false,
+        data: null,
+      });
+    }
 
-    //you can search a user using either a username or a name
+    console.log('Searching for:', searchTerm);
+
+    // Search users using either username or name with case-insensitive partial matching
     const getUsersOnSearch = await prisma.user.findMany({
       where: {
         OR: [
-          { username: { contains: nameusername, mode: 'insensitive' } },
-          { name: { contains: nameusername, mode: 'insensitive' } },
+          { username: { contains: searchTerm, mode: 'insensitive' } },
+          { name: { contains: searchTerm, mode: 'insensitive' } },
         ],
       },
       select: {
@@ -300,26 +309,18 @@ export const getUsersListOnSearch = async (req, res) => {
       },
     });
 
-    if (!getUsersOnSearch) {
-      return res.status(200).json({
-        message: 'Could not search for users',
-        success: false,
-        data: null,
-      });
-    }
-
     return res.status(200).json({
-      message: 'Retreived users successfully',
+      message: 'Retrieved users successfully',
       success: true,
       data: getUsersOnSearch,
     });
   } catch (err) {
-    console.error(err);
+    console.error('Error searching users:', err);
     return res.status(500).json({
       success: false,
       error: {
-        details: err,
-        description: 'Could not retreive users',
+        details: err.message, // Only send the message in production
+        description: 'Could not retrieve users',
       },
       data: null,
     });

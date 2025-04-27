@@ -15,12 +15,14 @@ const authMiddleware = (req, res, next) => {
 
   if (bearer !== 'Bearer' || !token) {
     console.log('Invalid token');
-    return res.status(401).json({ message: 'Invalid token format' });
+    return res.status(401).json({ message: 'Invalid token format', success: false });
   }
 
   jwt.verify(token, jwtSecret, (err, user) => {
     if (err) {
-      return res.status(403).json({ message: 'Forbidden: Invalid Token' });
+      console.log('Invalid token')
+      console.log(token)
+      return res.status(403).json({ message: 'Forbidden: Invalid Token', success: false });
     }
 
     req.user = user;

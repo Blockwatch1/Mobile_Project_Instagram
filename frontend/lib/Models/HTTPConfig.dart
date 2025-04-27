@@ -11,7 +11,7 @@ class HTTPConfig {
         body: body ?? null,
         headers: {
           'Content-Type': 'application/json',
-          if(token != null) 'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token',
         }
     );
   }

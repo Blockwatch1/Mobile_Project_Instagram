@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'User.dart';
+import '../Models/User.dart';
 
 class Thread extends StatefulWidget {
   User user;
@@ -23,7 +23,7 @@ class _ThreadState extends State<Thread> {
               child: Expanded(child: Row(
                 children: [
                   SizedBox(width:20),
-                  CircleAvatar(backgroundImage: NetworkImage(widget.user.profilePicUrl),radius: 20,),
+                  CircleAvatar(backgroundImage: NetworkImage(widget.user.pfpPath!),radius: 20,),
                   SizedBox(width:40),
                   Text(widget.user.username)
                 ],

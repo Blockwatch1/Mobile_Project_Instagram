@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Services/PostService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'post.dart';
-import 'User.dart';
+import 'Widgets/post.dart';
+import 'Models/User.dart';
 
 class PostPage extends StatefulWidget {
 
@@ -15,34 +15,6 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  // User instances
-  final User user1 = User("User 1", 'https://staticg.sportskeeda.com/editor/2023/08/18467-16921881485426-1920.jpg');
-  final User user2 = User("User 2", 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Germany_%281935%E2%80%931945%29.svg/250px-Flag_of_Germany_%281935%E2%80%931945%29.svg.png');
-  final User user3 = User("User 3", 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2024%2F03%2F31%2F05%2F00%2Fai-generated-8665996_1280.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fillustrations%2Fai-generated-indian-man-young-male-8665996%2F&docid=jntnjGArChuCxM&tbnid=gKzRoG3YG4ImVM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECE4QAA..i&w=958&h=1280&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECE4QAA');
-  final User user4 = User("User 4", 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fimg.freepik.com%2Fpremium-photo%2Fportrait-happy-young-man-ai-generated_804788-34413.jpg&imgrefurl=https%3A%2F%2Fwww.freepik.com%2Fpremium-ai-image%2Fportrait-happy-young-man-ai-generated_65725337.htm&docid=zhka0W-QQe77tM&tbnid=JPWsETaayEV3OM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHIQAA..i&w=626&h=626&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHIQAA');
-  final User user5 = User("User 5", 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fthumbnails%2F036%2F442%2F721%2Fsmall_2x%2Fai-generated-portrait-of-a-young-man-no-facial-expression-facing-the-camera-isolated-white-background-ai-generative-photo.jpg&imgrefurl=https%3A%2F%2Fwww.vecteezy.com%2Ffree-photos%2Fai-generated-man&docid=mced-E7J-ayyWM&tbnid=A4rrskdV78dBqM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHkQAA..i&w=301&h=400&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHkQAA');
-  final User user6 = User("User 6", 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fcdn.prod.website-files.com%2F624ac40503a527cf47af4192%2F655c6883100932e9fcc96f7a_11.jpeg&imgrefurl=https%3A%2F%2Fwww.plugger.ai%2Ftasks%2Fai-person-generator&docid=-I201ya6HGJ3gM&tbnid=rLHbOB_7lYz8_M&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECDkQAA..i&w=450&h=450&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECDkQAA');
-  final User user7 = User("User 7", 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fcdn.lucidpic.com%2Fcdn-cgi%2Fimage%2Fw%3D600%2Cformat%3Dauto%2Cmetadata%3Dnone%2F66c43abe18502.png&imgrefurl=https%3A%2F%2Flucidpic.com%2F&docid=dC2HIqlL7ly1GM&tbnid=0OIzPFwXZ4vZQM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECGkQAA..i&w=600&h=728&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECGkQAA');
-  final User user8 = User("User 8", 'https://www.google.com/imgres?q=profile%20picture%20.jpg&imgurl=https%3A%2F%2Fimg.freepik.com%2Fpremium-vector%2Favatar-profile-icon-flat-style-female-user-profile-vector-illustration-isolated-background-women-profile-sign-business-concept_157943-38866.jpg%3Fsemt%3Dais_hybrid%26w%3D740&imgrefurl=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fprofile&docid=WIYPytbMl_8XfM&tbnid=k8d3RtLsuhGNfM&vet=12ahUKEwiljLqzofGMAxXnhf0HHUWELtIQM3oECGcQAA..i&w=740&h=740&hcb=2&ved=2ahUKEwiljLqzofGMAxXnhf0HHUWELtIQM3oECGcQAA');
-
-  // Comments map
- late final Map<User, String> userComments = {
-   user1: "cool pic 🔥",
-   user2: "nice 👍",
-   user3: "❤️❤️",
-  };
-
-  // List of posts
-  late final List<Post> list1 = [
-    Post(user: user1, image: 'https://staticg.sportskeeda.com/editor/2023/08/18467-16921881485426-1920.jpg', comments: userComments, likeAmount: 359),
-    // Post(user: user2, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Frank_Green_TLN_1869.jpg/500px-Frank_Green_TLN_1869.jpg', comments: userComments, likeAmount: 100),
-    // Post(user: user3, image: 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2024%2F03%2F31%2F05%2F00%2Fai-generated-8665996_1280.jpg&imgrefurl=https%3A%2F%2Fpixabay.com%2Fillustrations%2Fai-generated-indian-man-young-male-8665996%2F&docid=jntnjGArChuCxM&tbnid=gKzRoG3YG4ImVM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECE4QAA..i&w=958&h=1280&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECE4QAA', comments: userComments, likeAmount: 87),
-    // Post(user: user4, image: 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fimg.freepik.com%2Fpremium-photo%2Fportrait-happy-young-man-ai-generated_804788-34413.jpg&imgrefurl=https%3A%2F%2Fwww.freepik.com%2Fpremium-ai-image%2Fportrait-happy-young-man-ai-generated_65725337.htm&docid=zhka0W-QQe77tM&tbnid=JPWsETaayEV3OM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHIQAA..i&w=626&h=626&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHIQAA', comments: userComments, likeAmount: 43),
-    // Post(user: user5, image: 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fthumbnails%2F036%2F442%2F721%2Fsmall_2x%2Fai-generated-portrait-of-a-young-man-no-facial-expression-facing-the-camera-isolated-white-background-ai-generative-photo.jpg&imgrefurl=https%3A%2F%2Fwww.vecteezy.com%2Ffree-photos%2Fai-generated-man&docid=mced-E7J-ayyWM&tbnid=A4rrskdV78dBqM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHkQAA..i&w=301&h=400&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECHkQAA', comments: userComments, likeAmount: 328),
-    // Post(user: user6, image: 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fcdn.prod.website-files.com%2F624ac40503a527cf47af4192%2F655c6883100932e9fcc96f7a_11.jpeg&imgrefurl=https%3A%2F%2Fwww.plugger.ai%2Ftasks%2Fai-person-generator&docid=-I201ya6HGJ3gM&tbnid=rLHbOB_7lYz8_M&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECDkQAA..i&w=450&h=450&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECDkQAA', comments: userComments, likeAmount: 56),
-    // Post(user: user7, image: 'https://www.google.com/imgres?q=ai%20person%20jpg&imgurl=https%3A%2F%2Fcdn.lucidpic.com%2Fcdn-cgi%2Fimage%2Fw%3D600%2Cformat%3Dauto%2Cmetadata%3Dnone%2F66c43abe18502.png&imgrefurl=https%3A%2F%2Flucidpic.com%2F&docid=dC2HIqlL7ly1GM&tbnid=0OIzPFwXZ4vZQM&vet=12ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECGkQAA..i&w=600&h=728&hcb=2&ved=2ahUKEwjGi8-1ovGMAxVzgP0HHZUGCX4QM3oECGkQAA', comments: userComments, likeAmount: 108),
-    // Post(user: user8, image: 'https://www.google.com/imgres?q=profile%20picture%20.jpg&imgurl=https%3A%2F%2Fimg.freepik.com%2Fpremium-vector%2Favatar-profile-icon-flat-style-female-user-profile-vector-illustration-isolated-background-women-profile-sign-business-concept_157943-38866.jpg%3Fsemt%3Dais_hybrid%26w%3D740&imgrefurl=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fprofile&docid=WIYPytbMl_8XfM&tbnid=k8d3RtLsuhGNfM&vet=12ahUKEwiljLqzofGMAxXnhf0HHUWELtIQM3oECGcQAA..i&w=740&h=740&hcb=2&ved=2ahUKEwiljLqzofGMAxXnhf0HHUWELtIQM3oECGcQAA', comments: userComments, likeAmount: 99),
-  ];
 
   List<dynamic>? _posts;
   bool loading = false;
@@ -55,15 +27,26 @@ class _PostPageState extends State<PostPage> {
       loading = true;
       _posts = null;
     });
-    
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try{
       ActionResponse postResponse = await _postService.getPosts('get-posts', prefs.getString('token'));
-      print(postResponse.data);
-      print(postResponse.success);
+
+      if(postResponse.success && postResponse.data != null) {
+        setState(() {
+          _posts = postResponse.data;
+        });
+      }
+
+      setState(() {
+        loading = false;
+      });
 
     } catch(e) {
+      setState(() {
+        loading = false;
+      });
       print('Error fetching posts: $e');
       throw e;
     }
@@ -73,20 +56,40 @@ class _PostPageState extends State<PostPage> {
   void initState(){
     super.initState();
 
-    //fetch Posts
+
     _fetchPosts();
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: list1.length,
-        itemBuilder: (context, index) {
-          return list1 [index];
-        },
-      ),
-    );
+    if (loading) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: ListView.builder(
+          itemCount: _posts?.length,
+          itemBuilder: (context, index) {
+            final Map<String, dynamic> postData = _posts![index];
+            Map<String, dynamic> counts = {
+              'comments': postData['_count']['comments'],
+              'likes': postData['_count']['likedUsers'],
+              'saves': postData['_count']['likedUsers']
+            };
+            print(postData['user']);
+
+            final Map<String, dynamic> userInfo = postData['user'];
+            final user = User.fromJson(userInfo);
+
+
+            return Post(description: postData['description'], user: User(userId: user.userId, name: user.name, username: user.username), image: postData['imageUrl'], commentCount: counts['comments'], likeAmount: counts['likes'], saveAmount: counts['saves'],);
+          },
+        ),
+      );
+    }
   }
 }

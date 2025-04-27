@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'User.dart';
+import 'Models/User.dart';
 import 'comments.dart';
 class RepliesPage extends StatefulWidget {
   int commentId;

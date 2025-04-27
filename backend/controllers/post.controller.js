@@ -211,6 +211,7 @@ export const editPost = async (req, res) => {
 
 //READ OPERATIONS
 export const getPosts = async (_req, res) => {
+    console.log('hello')
   try {
     const posts = await prisma.post.findMany({
       include: {
@@ -230,6 +231,8 @@ export const getPosts = async (_req, res) => {
         },
       },
     });
+
+    console.log(posts)
 
     if (!posts) {
       return res.status(400).json({

@@ -3,10 +3,12 @@ import cors from 'cors';
 import { router as userRouter } from './routes/user.route.js';
 import { router as commentRouter } from './routes/comment.route.js';
 import { postRouter } from './routes/post.route.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // --- Configuration ---
 const app = express();
-const port = process.env.PORT || 3000; //it must be 4001
+const port = process.env.PORT || 4001; //it must be 4001
 
 // --- Middleware ---
 
@@ -24,5 +26,4 @@ app.use('/comment', commentRouter);
 // --- Server Startup ---
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log(`Access it at http://localhost:${port}`);
 });

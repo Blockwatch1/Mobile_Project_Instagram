@@ -19,11 +19,11 @@ class ActionResponse {
 
   factory ActionResponse.fromJson(Map<String, dynamic> actionResponse) {
     return ActionResponse(
-      success: actionResponse['success'] as bool,
+      success: actionResponse['success'] ?? null,
       data: actionResponse['data'] ?? null,
-      message: actionResponse['message'] as String?,
-      token: actionResponse['token'] as String ?? null,
-      user: actionResponse['user'] as Map<String, dynamic> ?? null, //the map here must contain "userId", "username", "email" and "bio" just like the backend
+      message: actionResponse['message'] ?? null,
+      token: actionResponse['token'] ?? null,
+      user: actionResponse['user'] ?? null, //the map here must contain "userId", "username", "email" and "bio" just like the backend
       error: actionResponse['error'] != null ? ErrorDetails.fromJson(actionResponse['error'] as Map<String, dynamic>): null,
 
     );
