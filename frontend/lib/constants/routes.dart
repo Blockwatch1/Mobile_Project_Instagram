@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insta/Pages/Auth/loginPage.dart';
 import 'package:insta/Pages/Auth/signUpPage.dart';
 import 'package:insta/main.dart';
-import 'package:insta/post_page.dart';
+import 'package:insta/postList.dart';
 
 import '../Pages/searchPage.dart';
 

@@ -5,22 +5,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Widgets/post.dart';
 import 'Models/User.dart';
 
-class PostPage extends StatefulWidget {
-
+class PostList extends StatefulWidget {
   final Map<String, dynamic>? _userData;
-  const PostPage({super.key, Map<String, dynamic>? userData}) : _userData = userData;
+  const PostList({super.key, Map<String, dynamic>? userData})
+      : _userData = userData;
 
   @override
-  State<PostPage> createState() => _PostPageState();
+  State<PostList> createState() => _PostPageState();
 }
 
-class _PostPageState extends State<PostPage> {
-
+class _PostListState extends State<PostList> {
   List<dynamic>? _posts;
   bool loading = false;
 
   PostService _postService = PostService();
-
 
   Future<void> _fetchPosts() async {
     setState(() {
@@ -30,10 +28,11 @@ class _PostPageState extends State<PostPage> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    try{
-      ActionResponse postResponse = await _postService.getPosts('get-posts', prefs.getString('token'));
+    try {
+      ActionResponse postResponse =
+          await _postService.getPosts('get-posts', prefs.getString('token'));
 
-      if(postResponse.success && postResponse.data != null) {
+      if (postResponse.success && postResponse.data != null) {
         setState(() {
           _posts = postResponse.data;
         });
@@ -42,8 +41,7 @@ class _PostPageState extends State<PostPage> {
       setState(() {
         loading = false;
       });
-
-    } catch(e) {
+    } catch (e) {
       setState(() {
         loading = false;
       });
@@ -53,13 +51,11 @@ class _PostPageState extends State<PostPage> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-
 
     _fetchPosts();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +81,17 @@ class _PostPageState extends State<PostPage> {
             final Map<String, dynamic> userInfo = postData['user'];
             final user = User.fromJson(userInfo);
 
-
-            return Post(description: postData['description'], user: User(userId: user.userId, name: user.name, username: user.username), image: postData['imageUrl'], commentCount: counts['comments'], likeAmount: counts['likes'], saveAmount: counts['saves'],);
+            return Post(
+              description: postData['description'],
+              user: User(
+                  userId: user.userId,
+                  name: user.name,
+                  username: user.username),
+              image: postData['imageUrl'],
+              commentCount: counts['comments'],
+              likeAmount: counts['likes'],
+              saveAmount: counts['saves'],
+            );
           },
         ),
       );
