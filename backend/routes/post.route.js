@@ -8,25 +8,25 @@ import {
   getUserSavedPosts,
 } from '../controllers/post.controller.js';
 
-export const router = Router();
+export const postRouter = Router();
 
 //CREATE OPERATIONS
-router.post('/create-post', authMiddleware, createPost);
+postRouter.post('/create-post', authMiddleware, createPost);
 
 //DELETE OPERATIONS
-router.delete('/delete-post/:postId', authMiddleware);
+postRouter.delete('/delete-post/:postId', authMiddleware);
 
 //PUT OPERATIONS
 
 //USER WILL EDIT A POST (YOU CAN EDIT EITHER THE PROFILE PICTURE, THE DESCRIPTION OR BOTH)
-router.put('/edit-post/:postId', authMiddleware, editPost);
+postRouter.put('/edit-post/:postId', authMiddleware, editPost);
 
 //READ OPERATIONS
 
 //this is for the main page
-router.get('/get-posts', authMiddleware, getPosts);
+postRouter.get('/get-posts', authMiddleware, getPosts);
 
 //this is for the page of the saved posts in the user's profile (this is done as an indivual route to make the get profile info route more efficient)
-router.get('/get-saved-posts/:userId', authMiddleware, getUserSavedPosts);
+postRouter.get('/get-saved-posts/:userId', authMiddleware, getUserSavedPosts);
 
-router.get('/get-post/:postId', authMiddleware, getPost);
+postRouter.get('/get-post/:postId', authMiddleware, getPost);

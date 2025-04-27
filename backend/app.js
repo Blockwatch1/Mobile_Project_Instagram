@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { router as userRouter } from './routes/user.route.js';
-import { router as postRouter } from './routes/post.route.js';
 import { router as commentRouter } from './routes/comment.route.js';
+import { postRouter } from './routes/post.route.js';
 
 // --- Configuration ---
 const app = express();

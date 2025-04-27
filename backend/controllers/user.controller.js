@@ -129,7 +129,7 @@ export const logIn = async (req, res) => {
         username: user.username,
         email: user.email,
         bio: user.bio,
-        pfpPath: user.pfpPath
+        pfpPath: user.pfpPath,
       },
     });
   } catch (err) {
@@ -281,10 +281,15 @@ export const getUsersListOnSearch = async (req, res) => {
   try {
     const { nameusername } = req.params;
 
+    console.log('hey');
+
     //you can search a user using either a username or a name
     const getUsersOnSearch = await prisma.user.findMany({
       where: {
-        OR: [{ username: nameusername }, { name: nameusername }],
+        OR: [
+          { username: { contains: nameusername, mode: 'insensitive' } },
+          { name: { contains: nameusername, mode: 'insensitive' } },
+        ],
       },
       select: {
         userId: true,

@@ -14,6 +14,8 @@ class PostService {
       print('TOKENNNN\n\n: $token');
       print('\n\nTHIS IS THE PATH: $path');
 
+      print(httpConfigObj.uri);
+
       final response = await http.get(httpConfigObj.uri, headers: httpConfigObj.headers);
 
       if(response.statusCode != 200) {
