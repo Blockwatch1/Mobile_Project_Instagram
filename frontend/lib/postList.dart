@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
+import 'package:insta/Models/PostModel.dart';
 import 'package:insta/Services/PostService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Widgets/post.dart';
@@ -11,7 +12,7 @@ class PostList extends StatefulWidget {
       : _userData = userData;
 
   @override
-  State<PostList> createState() => _PostPageState();
+  State<PostList> createState() => _PostListState();
 }
 
 class _PostListState extends State<PostList> {
@@ -81,17 +82,12 @@ class _PostListState extends State<PostList> {
             final Map<String, dynamic> userInfo = postData['user'];
             final user = User.fromJson(userInfo);
 
-            return Post(
-              description: postData['description'],
-              user: User(
-                  userId: user.userId,
-                  name: user.name,
-                  username: user.username),
-              image: postData['imageUrl'],
-              commentCount: counts['comments'],
-              likeAmount: counts['likes'],
-              saveAmount: counts['saves'],
-            );
+            PostModel post = PostModel(postId: postData['postId'], description: postData['description'],
+            imageUrl: postData['imageUrl'], isThread: postData['isThread'],
+            commentAmount: counts['comments'], likeAmount: counts['likes'], saveAmount: counts['saves'],
+            user: user);
+
+            return Post(post: post);
           },
         ),
       );

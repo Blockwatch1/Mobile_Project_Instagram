@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:insta/Models/PostModel.dart';
 import '../Models/User.dart';
 
 class Post extends StatefulWidget {
-  User user;
-  String image;
-  String? description;
-  int commentCount;
-  int likeAmount;
-  int saveAmount;
+  PostModel _post;
   Post({
     super.key,
-    required this.user,
-    required this.image,
-    required this.commentCount,
-    required this.likeAmount,
-    required this.saveAmount,
-    this.description
-  });
+    required post
+  }) : _post = post;
 
   @override
   State<Post> createState() => _PostState();
@@ -24,7 +15,8 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   void handleCommentClick() {
-    Navigator.of(context).pushNamed('/postPage');
+
+    Navigator.of(context).pushNamed('/postPage', arguments: widget._post);
   }
 
   @override
@@ -51,8 +43,8 @@ class _PostState extends State<Post> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: (widget.user.pfpPath != null && widget.user.pfpPath!.isNotEmpty) ? NetworkImage(widget.user.pfpPath!) : null,
-                    child: (widget.user.pfpPath == null || widget.user.pfpPath!.isEmpty) ? Text(widget.user.name.isNotEmpty ? widget.user.name[0].toUpperCase() : '', style: TextStyle(color: Colors.white)) : null,
+                    backgroundImage: (widget._post.user?.pfpPath != null) ? NetworkImage(widget._post.user!.pfpPath!) : null,
+                    child: (widget._post.user?.pfpPath == null) ? Text(widget._post.user!.name.isNotEmpty ? widget._post.user!.name[0].toUpperCase() : '', style: TextStyle(color: Colors.white)) : null,
                     radius: 20,
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
@@ -61,11 +53,11 @@ class _PostState extends State<Post> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.user.name,
+                        widget._post.user!.name,
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Text(
-                        '@${widget.user.username}',
+                        '@${widget._post.user?.username}',
                         style: TextStyle(color: Colors.grey[600], fontSize: 13.0),
                       ),
                     ],
@@ -75,20 +67,22 @@ class _PostState extends State<Post> {
             ),
 
             Container(
-              child: (widget?.description != null) ? PostText(text: widget.description!) : null,
+              child: (widget._post.description != null) ? PostText(text: widget._post.description!) : null,
             ),
 
-            Image.network(
-              widget.image,
-              fit: BoxFit.fitWidth,
-              width: double.infinity,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: 200,
-                  color: Colors.grey[300],
-                  child: Icon(Icons.error),
-                );
-              },
+            Container(
+              child: (widget._post.imageUrl != null) ? Image.network(
+                widget._post.imageUrl!,
+                fit: BoxFit.fitWidth,
+                width: double.infinity,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 200,
+                    color: Colors.grey[300],
+                    child: Icon(Icons.error),
+                  );
+                },
+              ) : null,
             ),
 
             Padding(
@@ -100,7 +94,7 @@ class _PostState extends State<Post> {
                     children: [
                       Icon(Icons.favorite_border),
                       SizedBox(width: 4),
-                      Text(widget.likeAmount.toString()),
+                      Text(widget._post.likeAmount.toString()),
                     ],
                   ),
                   Row(
@@ -110,7 +104,7 @@ class _PostState extends State<Post> {
                         child: Icon(Icons.comment_rounded),
                       ),
                       SizedBox(width: 4),
-                      Text(widget.commentCount.toString()),
+                      Text(widget._post.commentAmount.toString()),
                     ],
                   ),
                   Row(

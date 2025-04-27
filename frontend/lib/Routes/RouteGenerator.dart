@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:insta/Models/PostModel.dart';
+import 'package:insta/Pages/Post/PostPage.dart';
 
 import '../Pages/Auth/loginPage.dart';
 import '../Pages/Auth/signUpPage.dart';
@@ -15,6 +17,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SafeArea(child: SignUpPage()));
       case '/search':
         return MaterialPageRoute(builder: (_) => const SearchPage());
+      case '/postPage':
+        if((args as PostModel) == true){
+          return MaterialPageRoute(builder: (_) => PostPage(post: args));
+        }
+        
+        return _errorRoute();
 
       default:
         return _errorRoute();
