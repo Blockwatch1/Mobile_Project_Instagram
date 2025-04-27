@@ -2713,8 +2713,8 @@ export namespace Prisma {
     postId: number
     description: string | null
     imageUrl: string | null
-    createdAt: Date
-    updatedAt: Date
+    createdAt: Date | null
+    updatedAt: Date | null
     isThread: boolean | null
     userId: number | null
     _count: PostCountAggregateOutputType | null
@@ -2812,8 +2812,8 @@ export namespace Prisma {
       postId: number
       description: string | null
       imageUrl: string | null
-      createdAt: Date
-      updatedAt: Date
+      createdAt: Date | null
+      updatedAt: Date | null
       isThread: boolean | null
       userId: number | null
     }, ExtArgs["result"]["post"]>
@@ -3468,7 +3468,7 @@ export namespace Prisma {
     /**
      * The data needed to create a Post.
      */
-    data: XOR<PostCreateInput, PostUncheckedCreateInput>
+    data?: XOR<PostCreateInput, PostUncheckedCreateInput>
   }
 
   /**
@@ -5277,8 +5277,8 @@ export namespace Prisma {
     postId?: IntFilter<"Post"> | number
     description?: StringNullableFilter<"Post"> | string | null
     imageUrl?: StringNullableFilter<"Post"> | string | null
-    createdAt?: DateTimeFilter<"Post"> | Date | string
-    updatedAt?: DateTimeFilter<"Post"> | Date | string
+    createdAt?: DateTimeNullableFilter<"Post"> | Date | string | null
+    updatedAt?: DateTimeNullableFilter<"Post"> | Date | string | null
     isThread?: BoolNullableFilter<"Post"> | boolean | null
     userId?: IntNullableFilter<"Post"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -5291,8 +5291,8 @@ export namespace Prisma {
     postId?: SortOrder
     description?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
+    createdAt?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     isThread?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
@@ -5308,8 +5308,8 @@ export namespace Prisma {
     NOT?: PostWhereInput | PostWhereInput[]
     description?: StringNullableFilter<"Post"> | string | null
     imageUrl?: StringNullableFilter<"Post"> | string | null
-    createdAt?: DateTimeFilter<"Post"> | Date | string
-    updatedAt?: DateTimeFilter<"Post"> | Date | string
+    createdAt?: DateTimeNullableFilter<"Post"> | Date | string | null
+    updatedAt?: DateTimeNullableFilter<"Post"> | Date | string | null
     isThread?: BoolNullableFilter<"Post"> | boolean | null
     userId?: IntNullableFilter<"Post"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -5322,8 +5322,8 @@ export namespace Prisma {
     postId?: SortOrder
     description?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
+    createdAt?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     isThread?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     _count?: PostCountOrderByAggregateInput
@@ -5340,8 +5340,8 @@ export namespace Prisma {
     postId?: IntWithAggregatesFilter<"Post"> | number
     description?: StringNullableWithAggregatesFilter<"Post"> | string | null
     imageUrl?: StringNullableWithAggregatesFilter<"Post"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
+    createdAt?: DateTimeNullableWithAggregatesFilter<"Post"> | Date | string | null
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"Post"> | Date | string | null
     isThread?: BoolNullableWithAggregatesFilter<"Post"> | boolean | null
     userId?: IntNullableWithAggregatesFilter<"Post"> | number | null
   }
@@ -5554,8 +5554,8 @@ export namespace Prisma {
   export type PostCreateInput = {
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     user?: UserCreateNestedOneWithoutPostsInput
     savedUsers?: UserCreateNestedManyWithoutSavedPostsInput
@@ -5567,8 +5567,8 @@ export namespace Prisma {
     postId?: number
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     userId?: number | null
     savedUsers?: UserUncheckedCreateNestedManyWithoutSavedPostsInput
@@ -5579,8 +5579,8 @@ export namespace Prisma {
   export type PostUpdateInput = {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     user?: UserUpdateOneWithoutPostsNestedInput
     savedUsers?: UserUpdateManyWithoutSavedPostsNestedInput
@@ -5592,8 +5592,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     savedUsers?: UserUncheckedUpdateManyWithoutSavedPostsNestedInput
@@ -5605,8 +5605,8 @@ export namespace Prisma {
     postId?: number
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     userId?: number | null
   }
@@ -5614,8 +5614,8 @@ export namespace Prisma {
   export type PostUpdateManyMutationInput = {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
@@ -5623,8 +5623,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -6898,8 +6898,8 @@ export namespace Prisma {
   export type PostCreateWithoutUserInput = {
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     savedUsers?: UserCreateNestedManyWithoutSavedPostsInput
     likedUsers?: UserCreateNestedManyWithoutLikedPostsInput
@@ -6910,8 +6910,8 @@ export namespace Prisma {
     postId?: number
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     savedUsers?: UserUncheckedCreateNestedManyWithoutSavedPostsInput
     likedUsers?: UserUncheckedCreateNestedManyWithoutLikedPostsInput
@@ -6931,8 +6931,8 @@ export namespace Prisma {
   export type PostCreateWithoutSavedUsersInput = {
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     user?: UserCreateNestedOneWithoutPostsInput
     likedUsers?: UserCreateNestedManyWithoutLikedPostsInput
@@ -6943,8 +6943,8 @@ export namespace Prisma {
     postId?: number
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     userId?: number | null
     likedUsers?: UserUncheckedCreateNestedManyWithoutLikedPostsInput
@@ -6959,8 +6959,8 @@ export namespace Prisma {
   export type PostCreateWithoutLikedUsersInput = {
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     user?: UserCreateNestedOneWithoutPostsInput
     savedUsers?: UserCreateNestedManyWithoutSavedPostsInput
@@ -6971,8 +6971,8 @@ export namespace Prisma {
     postId?: number
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     userId?: number | null
     savedUsers?: UserUncheckedCreateNestedManyWithoutSavedPostsInput
@@ -7089,8 +7089,8 @@ export namespace Prisma {
     postId?: IntFilter<"Post"> | number
     description?: StringNullableFilter<"Post"> | string | null
     imageUrl?: StringNullableFilter<"Post"> | string | null
-    createdAt?: DateTimeFilter<"Post"> | Date | string
-    updatedAt?: DateTimeFilter<"Post"> | Date | string
+    createdAt?: DateTimeNullableFilter<"Post"> | Date | string | null
+    updatedAt?: DateTimeNullableFilter<"Post"> | Date | string | null
     isThread?: BoolNullableFilter<"Post"> | boolean | null
     userId?: IntNullableFilter<"Post"> | number | null
   }
@@ -7477,8 +7477,8 @@ export namespace Prisma {
   export type PostCreateWithoutCommentsInput = {
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     user?: UserCreateNestedOneWithoutPostsInput
     savedUsers?: UserCreateNestedManyWithoutSavedPostsInput
@@ -7489,8 +7489,8 @@ export namespace Prisma {
     postId?: number
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
     userId?: number | null
     savedUsers?: UserUncheckedCreateNestedManyWithoutSavedPostsInput
@@ -7608,8 +7608,8 @@ export namespace Prisma {
   export type PostUpdateWithoutCommentsInput = {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     user?: UserUpdateOneWithoutPostsNestedInput
     savedUsers?: UserUpdateManyWithoutSavedPostsNestedInput
@@ -7620,8 +7620,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     savedUsers?: UserUncheckedUpdateManyWithoutSavedPostsNestedInput
@@ -7680,8 +7680,8 @@ export namespace Prisma {
     postId?: number
     description?: string | null
     imageUrl?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isThread?: boolean | null
   }
 
@@ -7801,8 +7801,8 @@ export namespace Prisma {
   export type PostUpdateWithoutUserInput = {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     savedUsers?: UserUpdateManyWithoutSavedPostsNestedInput
     likedUsers?: UserUpdateManyWithoutLikedPostsNestedInput
@@ -7813,8 +7813,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     savedUsers?: UserUncheckedUpdateManyWithoutSavedPostsNestedInput
     likedUsers?: UserUncheckedUpdateManyWithoutLikedPostsNestedInput
@@ -7825,16 +7825,16 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type PostUpdateWithoutSavedUsersInput = {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     user?: UserUpdateOneWithoutPostsNestedInput
     likedUsers?: UserUpdateManyWithoutLikedPostsNestedInput
@@ -7845,8 +7845,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     likedUsers?: UserUncheckedUpdateManyWithoutLikedPostsNestedInput
@@ -7857,8 +7857,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -7866,8 +7866,8 @@ export namespace Prisma {
   export type PostUpdateWithoutLikedUsersInput = {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     user?: UserUpdateOneWithoutPostsNestedInput
     savedUsers?: UserUpdateManyWithoutSavedPostsNestedInput
@@ -7878,8 +7878,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     savedUsers?: UserUncheckedUpdateManyWithoutSavedPostsNestedInput
@@ -7890,8 +7890,8 @@ export namespace Prisma {
     postId?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isThread?: NullableBoolFieldUpdateOperationsInput | boolean | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
