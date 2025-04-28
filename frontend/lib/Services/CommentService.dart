@@ -19,7 +19,7 @@ class CommentService {
       final response = await http.get(httpConfigObj.uri, headers: httpConfigObj.headers);
 
       if(response.statusCode != 200) {
-        print('HEY THER HAS BEEN SOMETHING WRONG IN THE FETCHING REQUEST\n\n: ${response.statusCode}');
+        print('THERE HAS BEEN SOMETHING WRONG IN THE FETCHING REQUEST\n\n: ${response.statusCode}');
       }
 
       final Map<String, dynamic> responseBody = jsonDecode(response.body);

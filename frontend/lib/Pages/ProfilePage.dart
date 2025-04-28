@@ -58,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
           });
         }
       }
+
       
       setState(() {
         _loading = false;
@@ -103,6 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+
       body: Column(
         children: [
           TopSection(user: _user, isSameUser: _isSameUser,),
