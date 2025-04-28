@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       return null;
     }
     print(prefs.getString('token'));
-    service.addPostOrThread('/create-post', prefs.getString('token'), 'heheh', 'https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg' , false);
+    //service.addPostOrThread('create-post', prefs.getString('token'), 'heheh', 'https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg' , false);
     // https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg
 
     String? userJson = prefs.getString('user');

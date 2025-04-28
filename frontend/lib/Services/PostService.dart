@@ -37,23 +37,25 @@ class PostService {
   }
   Future<ActionResponse> addPostOrThread(String path, String? token,String description, String imageUrl,bool isThread)async{
     final String starting = '$_baseUrl/post';
+
     try {
+      print("lek hl token shu 7elwe : $token");
       final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse('$starting/$path'), token: token);
+      print("url? tkrm ${httpConfigObj.uri}");
       //const { description, imageUrl, isThread } = req.body;
       final response = await http.post(httpConfigObj.uri, headers: httpConfigObj.headers, body:
         jsonEncode(
         {
-          "description": description,
-          "imageUrl": imageUrl,
-          "isThread": isThread
+          "description": "hehehehe",
+          "imageUrl": "https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg",
+          "isThread": false
         }
         )
-
       );
       if(response.statusCode != 200) {
-        print('HEY THER HAS BEEN SOMETHING WRONG IN THE FETCHING REQUEST\n\n: ${response.statusCode}');
+        print('HEY THER HAS BEEN SOMETHING WRONG IN POSTING YOUR POST\n\n: ${response.statusCode}');
       }
-
+      print(response.body);
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       print(responseBody);
       final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);
@@ -62,7 +64,7 @@ class PostService {
 
     } catch(e){
       print('API call failed: $e');
-      throw Exception('Failed to fetch posts: $e');
+      throw Exception('Failed to send post: $e');
     }
 
   }

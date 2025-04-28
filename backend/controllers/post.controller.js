@@ -3,7 +3,8 @@ const prisma = new PrismaClient();
 
 //CREATE OPERATIONS (A post can be a thread or a post, if it is a thread, it will not have an image url)
 export const createPost = async (req, res) => {
-  const {user ,description, imageUrl, isThread } = req.body;
+  const user = req?.user;
+  const { description, imageUrl, isThread } = req.body;
 
   const createPostQueryObject = {
     description,
@@ -210,7 +211,7 @@ export const editPost = async (req, res) => {
 
 //READ OPERATIONS
 export const getPosts = async (_req, res) => {
-  console.log('hello');
+    console.log('hello')
   try {
     const posts = await prisma.post.findMany({
       include: {
@@ -231,7 +232,7 @@ export const getPosts = async (_req, res) => {
       },
     });
 
-    console.log(posts);
+    console.log(posts)
 
     if (!posts) {
       return res.status(400).json({
