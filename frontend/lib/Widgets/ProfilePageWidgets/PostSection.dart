@@ -35,7 +35,7 @@ class PostSection extends StatelessWidget {
           imageUrl: imageUrl,
           description: description,
         );
-        return Post(post: post);
+        return Post(post: post, inProfilePage: true,);
       },
     );
   }

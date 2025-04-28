@@ -3,9 +3,11 @@ import 'package:insta/Models/PostModel.dart';
 
 class Post extends StatefulWidget {
   PostModel _post;
+  bool? inProfilePage = false;
   Post({
     super.key,
-    required post
+    required post,
+    this.inProfilePage
   }) : _post = post;
 
   @override
@@ -43,8 +45,12 @@ class _PostState extends State<Post> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Map<String, dynamic> args = {'userId': widget._post.user?.userId};
-                      Navigator.of(context).pushNamed('/profilePage', arguments: args);
+                      if(widget.inProfilePage != true){
+                        Map<String, dynamic> args = {'userId': widget._post.user?.userId};
+                        Navigator.of(context).pushNamed('/profilePage', arguments: args);
+                      } else {
+                        return; //you cannot navigate to the profile from the profile
+                      }
                     },
                     child: CircleAvatar(
                       backgroundImage: (widget._post.user?.pfpPath != null) ? NetworkImage(widget._post.user!.pfpPath!) : null,
