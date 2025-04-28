@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Models/User.dart';
@@ -18,6 +20,7 @@ class _SearchPageState extends State<SearchPage> {
   List<dynamic> _users = [];
   bool noUsers = true;
   final UserService _searchService = UserService();
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -27,66 +30,71 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _searchText.removeListener(_onSearch);
     _searchText.dispose();
     super.dispose();
   }
 
   Future<void> _onSearch() async {
-    String query = _searchText.text;
+    if(_debounce?.isActive ?? false) _debounce!.cancel();
 
-    if (query.isEmpty) {
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      String query = _searchText.text;
+
+      if (query.isEmpty) {
+        setState(() {
+          _users = [];
+          noUsers = true;
+          _loading = false;
+        });
+        return;
+      }
+
       setState(() {
+        _loading = true;
+        noUsers = false;
         _users = [];
-        noUsers = true;
-        _loading = false;
       });
-      return;
-    }
 
-    setState(() {
-      _loading = true;
-      noUsers = false;
-      _users = [];
-    });
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String? token = prefs.getString('token');
 
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token');
+        ActionResponse getUsers = await _searchService.getUsersOnSearch('search/$query', token);
 
-      ActionResponse getUsers = await _searchService.getUsersOnSearch('search/$query', token);
-
-      if (getUsers.success) {
-        if (getUsers.data is List && getUsers.data.isNotEmpty) {
-          setState(() {
-            _users = getUsers.data;
-            noUsers = false;
-          });
+        if (getUsers.success) {
+          if (getUsers.data is List && getUsers.data.isNotEmpty) {
+            setState(() {
+              _users = getUsers.data;
+              noUsers = false;
+            });
+          } else {
+            setState(() {
+              _users = [];
+              noUsers = true;
+            });
+          }
         } else {
+          print('API Error: ${getUsers.message}');
           setState(() {
             _users = [];
             noUsers = true;
           });
         }
-      } else {
-        print('API Error: ${getUsers.message}');
+
+      } catch (e) {
+        print('API call failed: $e');
         setState(() {
           _users = [];
           noUsers = true;
         });
+      } finally {
+        setState(() {
+          _loading = false;
+        });
       }
-
-    } catch (e) {
-      print('API call failed: $e');
-      setState(() {
-        _users = [];
-        noUsers = true;
-      });
-    } finally {
-      setState(() {
-        _loading = false;
-      });
-    }
+    });
   }
 
   @override
