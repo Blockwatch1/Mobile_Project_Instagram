@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:insta/Routes/RouteGenerator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'Pages/account_page.dart';
 import 'postList.dart';
 import 'Models/User.dart';
 
@@ -85,10 +86,19 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               SizedBox(width: 12),
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(test.pfpPath!),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AccountPage()),
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(test.pfpPath!),
+                ),
               )
+
             ],
           )
         ],
