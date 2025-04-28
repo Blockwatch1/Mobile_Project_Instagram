@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/PostModel.dart';
+import 'package:insta/Pages/FollowersList.dart';
 import 'package:insta/Pages/Post/PostPage.dart';
 import 'package:insta/Pages/ProfilePage.dart';
 import 'package:insta/main.dart';
@@ -34,6 +35,20 @@ class RouteGenerator {
 
         return _errorRoute();
 
+      case '/followersList':
+        if(args is Map<String, dynamic>){
+          return MaterialPageRoute(builder: (_) => SafeArea(child: Followerslist(followers: args['followers'], name: args['name'])));
+        }
+
+        return _errorRoute();
+
+      case '/followingsList':
+        if(args is Map<String, dynamic>){
+          return MaterialPageRoute(builder: (_) => SafeArea(child: Followerslist(followers: args['followings'], name: args['name'])));
+        }
+
+        return _errorRoute();
+
       default:
         return _errorRoute();
     }
@@ -52,7 +67,7 @@ class RouteGenerator {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("This route does not exist!", style: TextStyle(fontSize: 50, fontFamily: "Insta"),),
-                ElevatedButton(onPressed: () => Navigator.of(context).pushNamed('/home'),
+                ElevatedButton(onPressed: () => Navigator.of(context).pushReplacementNamed('/home'),
                   style: ButtonStyle(
                       elevation: MaterialStateProperty.all(2.5),
                       backgroundColor:  MaterialStateProperty.all(Colors.purpleAccent)

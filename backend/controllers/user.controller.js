@@ -216,6 +216,7 @@ export const getUserProfileInfo = async (req, res) => {
       select: {
         userId: true,
         username: true,
+        name: true,
         pfpPath: true,
       },
     };

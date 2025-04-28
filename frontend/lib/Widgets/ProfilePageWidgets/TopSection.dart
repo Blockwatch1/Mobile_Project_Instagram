@@ -46,6 +46,14 @@ class TopSection extends StatelessWidget {
              mainAxisAlignment: MainAxisAlignment.spaceBetween,
              children: [
                GestureDetector(
+                 onTap: () {
+                   Map<String, dynamic> args = {
+                     'followings': _user?.following,
+                     'name': _user?.name
+                   };
+
+                   Navigator.of(context).pushNamed('/followingsList', arguments: args);
+                 },
                  child: Column(
                    children: [
                      Text("${_user?.following?.length}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
@@ -55,6 +63,14 @@ class TopSection extends StatelessWidget {
                  ),
                ),
                GestureDetector(
+                 onTap: () {
+                   Map<String, dynamic> args = {
+                     'followers': _user?.followedBy,
+                     'name': _user?.name
+                   };
+
+                   Navigator.of(context).pushNamed('/followersList', arguments: args);
+                 },
                  child: Column(
                    children: [
                      Text("${_user?.followedBy?.length}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
