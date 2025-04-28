@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/PostModel.dart';
 import 'package:insta/Pages/Post/PostPage.dart';
+import 'package:insta/Pages/ProfilePage.dart';
 import 'package:insta/main.dart';
 
 import '../Pages/Auth/loginPage.dart';
@@ -26,7 +27,8 @@ class RouteGenerator {
         }
         
         return _errorRoute();
-
+      case '/profilePage': 
+        return MaterialPageRoute(builder: (_) => ProfilePage());
       default:
         return _errorRoute();
     }

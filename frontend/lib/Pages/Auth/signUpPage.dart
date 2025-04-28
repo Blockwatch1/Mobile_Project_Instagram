@@ -21,7 +21,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _loading = false;
   String? _errorMessage;
 
-  final AuthService _authService = AuthService();
+  final UserService _authService = UserService();
 
   @override
   void initState() {
