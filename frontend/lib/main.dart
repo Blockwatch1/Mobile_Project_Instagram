@@ -41,12 +41,12 @@ User test = User(
 class _HomePageState extends State<HomePage> {
   Map<String, dynamic>? _userData;
 
-  Future<void> _checkForSession() async {
+  Future<User?> _checkForSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.getString('token') == null) {
       Navigator.of(context).pushNamed('/login');
-      return;
+      return null;
     }
 
     String? userJson = prefs.getString('user');
@@ -55,14 +55,24 @@ class _HomePageState extends State<HomePage> {
       Map<String, dynamic> userMap = jsonDecode(userJson);
       _userData = userMap;
     }
-
-    return;
+    if(_userData==null){
+      Navigator.of(context).pushNamed('/login');
+      return null;
+    }
+    return User(userId: _userData!["userId"], username: _userData!["username"]);
   }
-
+  Future<void> setUser() async{
+    User? storedUser = await _checkForSession();
+    if(storedUser!=null){
+      setState(() {
+        test=storedUser;
+      });
+    }
+  }
   @override
   void initState() {
     super.initState();
-    // _checkForSession();
+    setUser();
   }
 
   @override
@@ -87,7 +97,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(width: 12),
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(test.pfpPath!),
+                backgroundImage: NetworkImage(test.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
               )
             ],
           )
