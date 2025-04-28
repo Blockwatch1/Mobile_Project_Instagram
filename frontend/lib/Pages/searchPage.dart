@@ -5,6 +5,7 @@ import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Models/User.dart';
 import 'package:insta/Services/UserService.dart';
 import 'package:insta/Widgets/UserCard.dart';
+import 'package:insta/Widgets/UserList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchPage extends StatefulWidget {
@@ -135,20 +136,7 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             const SizedBox(height: 30,),
             Expanded(
-              child: ListView.builder(
-                itemCount: _users.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final userData = _users[index];
-                  final dynamic userId = userData['userId'];
-                  final String? bio = userData['bio'];
-                  final String? pfpPath = userData['pfpPath'];
-                  final String name = userData['name'];
-                  final String username = userData['username'];
-
-                  User user = User(userId: userId, name: name, username: username, bio: bio, pfpPath: pfpPath);
-                  return UserCard(user: user);
-                },
-              ),
+              child: UserList(users: _users)
             ),
           ],
         )
