@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insta/Models/PostModel.dart';
 import 'package:insta/Pages/AccountSettings.dart';
 import 'package:insta/Pages/FollowersList.dart';
+import 'package:insta/Pages/Post/CreatePost.dart';
 import 'package:insta/Pages/Post/PostPage.dart';
 import 'package:insta/Pages/ProfilePage.dart';
 import 'package:insta/main.dart';
@@ -57,6 +58,9 @@ class RouteGenerator {
         }
 
         return _errorRoute();
+
+      case '/createPost':
+        return MaterialPageRoute(builder: (_) => const CreatePostPage());
 
       default:
         return _errorRoute();
