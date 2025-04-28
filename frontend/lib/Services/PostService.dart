@@ -46,9 +46,9 @@ class PostService {
       final response = await http.post(httpConfigObj.uri, headers: httpConfigObj.headers, body:
         jsonEncode(
         {
-          "description": "hehehehe",
-          "imageUrl": "https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg",
-          "isThread": false
+          "description": description,
+          "imageUrl": imageUrl,
+          "isThread": isThread
         }
         )
       );
