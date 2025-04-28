@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:insta/Routes/RouteGenerator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Pages/account_page.dart';
 import 'postList.dart';
 import 'Models/User.dart';
 
