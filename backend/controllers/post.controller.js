@@ -8,7 +8,7 @@ export const createPost = async (req, res) => {
 
   const createPostQueryObject = {
     description,
-    userID: user.userId,
+    userId: user.userId,
   };
 
   if (!isThread) {
@@ -211,7 +211,7 @@ export const editPost = async (req, res) => {
 
 //READ OPERATIONS
 export const getPosts = async (_req, res) => {
-    console.log('hello')
+  console.log('hello');
   try {
     const posts = await prisma.post.findMany({
       include: {
@@ -232,7 +232,7 @@ export const getPosts = async (_req, res) => {
       },
     });
 
-    console.log(posts)
+    console.log(posts);
 
     if (!posts) {
       return res.status(400).json({
