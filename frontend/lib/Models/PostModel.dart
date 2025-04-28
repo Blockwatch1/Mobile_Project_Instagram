@@ -38,7 +38,13 @@ class PostModel {
         imageUrl: json['imageUrl'] ?? null,
         updatedAt: json['updatedAt'] ?? null,
         isThread: json['isThread'] ?? false,
-        createdAt: json['createdAt'] ?? ''
+        createdAt: json['createdAt'] ?? '',
+        user: json['user'] ?? null,
+        savedUsers: json['savedUsers'] ?? [],
+        likedUsers: json['likedUsers'] ?? [],
+        saveAmount: json['savedAmount'] ?? 0,
+        likeAmount: json['likeAmount'] ?? 0,
+        commentAmount: json['commentAmount'] ?? 0
     );
   }
 

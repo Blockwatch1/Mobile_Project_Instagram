@@ -220,6 +220,7 @@ export const getPosts = async (_req, res) => {
             pfpPath: true,
             name: true,
             username: true,
+            userId: true
           },
         },
         _count: {

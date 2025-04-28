@@ -40,43 +40,31 @@ User test = User(
     username: "marwanmoub");
 
 class _HomePageState extends State<HomePage> {
+  PostService service = PostService();
   Map<String, dynamic>? _userData;
 
-  Future<User?> _checkForSession() async {
+  Future<void> _checkForSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.getString('token') == null) {
-      Navigator.of(context).pushNamed('/login');
-      return null;
-    }
-    print(prefs.getString('token'));
-    //
-    // https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg
-
     String? userJson = prefs.getString('user');
 
-    if (userJson != null) {
-      Map<String, dynamic> userMap = jsonDecode(userJson);
-      _userData = userMap;
-    }
-    if(_userData==null){
+    if (prefs.getString('token') == null || userJson == null) {
       Navigator.of(context).pushNamed('/login');
-      return null;
+      return;
     }
-    return User(userId: _userData!["userId"], username: _userData!["username"]);
+
+    Map<String, dynamic> userMap = jsonDecode(userJson);
+    User? testUser = User.fromJson(userMap);
+    setState(() {
+      _userData = userMap;
+      test = testUser;
+    });
+
   }
-  Future<void> setUser() async{
-    User? storedUser = await _checkForSession();
-    if(storedUser!=null){
-      setState(() {
-        test=storedUser;
-      });
-    }
-  }
+
   @override
   void initState() {
     super.initState();
-    setUser();
+    _checkForSession();
   }
 
   @override
@@ -99,10 +87,16 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               SizedBox(width: 12),
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(test.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
-              )
+              GestureDetector(
+                  onTap: () {
+                    Map<String, dynamic> args = {'userId': _userData?['userId']};
+                    Navigator.of(context).pushNamed('/profilePage', arguments: args);
+                  },
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(test.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
+                ),
+              ),
             ],
           )
         ],
@@ -218,4 +212,3 @@ class _addPostPageState extends State<addPostPage> {
     );
   }
 }
-
