@@ -2,6 +2,7 @@ import { Router } from 'express';
 import authMiddleware from '../helpers/auth/verification.js';
 import {
   createPost,
+  deletePost,
   editPost,
   getPost,
   getPosts,
@@ -14,7 +15,7 @@ export const postRouter = Router();
 postRouter.post('/create-post', authMiddleware, createPost);
 
 //DELETE OPERATIONS
-postRouter.delete('/delete-post/:postId', authMiddleware);
+postRouter.delete('/delete-post/:postId', authMiddleware, deletePost);
 
 //PUT OPERATIONS
 
