@@ -120,6 +120,8 @@ export const logIn = async (req, res) => {
       },
     });
 
+    console.log('login was successfull')
+
     return res.status(200).json({
       message: 'Login successful',
       success: true,

@@ -2,11 +2,11 @@ import 'package:insta/Models/ErrorDetails.dart';
 
 class ActionResponse {
   final bool success;
-  final dynamic? data;
+  final dynamic data;
   final String? message;
   final ErrorDetails? error;
   final String? token;
-  final dynamic? user;
+  final dynamic user;
 
   ActionResponse({
     required this.success,

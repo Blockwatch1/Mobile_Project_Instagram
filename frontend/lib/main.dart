@@ -2,13 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:insta/Routes/RouteGenerator.dart';
-import 'package:insta/constants/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Pages/Auth/loginPage.dart';
 import 'postList.dart';
 import 'Models/User.dart';
-import 'Widgets/post.dart';
-import 'Widgets/thread.dart';
 
 void main() {
   runApp(
@@ -41,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _checkForSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    print('HELLO\n\n\nHELLOOO');
     if (prefs.getString('token') == null) {
       Navigator.of(context).pushNamed('/login');
       return;
@@ -60,6 +57,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    print('HELLOO');
     _checkForSession();
   }
 

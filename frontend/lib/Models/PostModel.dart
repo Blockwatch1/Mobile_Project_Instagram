@@ -1,7 +1,7 @@
 import 'package:insta/Models/User.dart';
 
 class PostModel {
-  final String postId;
+  final dynamic postId;
   final String? description;
   final String? imageUrl;
   final DateTime? createdAt;

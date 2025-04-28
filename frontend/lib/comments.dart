@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:insta/Models/CommentModel.dart';
+import 'Widgets/Comment.dart';
 import 'replies.dart';
 import 'Models/User.dart';
-class CommentsPage extends StatefulWidget {
-  CommentsPage({super.key,required this.comments});
-  Map<User,String> comments;
+class CommentList extends StatefulWidget {
+  CommentList({super.key,required this.comments});
+  List<dynamic>comments;
   @override
-  State<CommentsPage> createState() => _CommentsPageState();
+  State<CommentList> createState() => _CommentsPageState();
 }
 
-class _CommentsPageState extends State<CommentsPage> {
-  List<CommentWidget> currentComments =[];
+class _CommentsPageState extends State<CommentList> {
   TextEditingController _commentController = TextEditingController();
   void initState() {
     super.initState();
-    widget.comments.forEach((user, comment) {
-      currentComments.add(CommentWidget(user: user, comment: comment));
-    });
   }
   @override
   Widget build(BuildContext context) {
@@ -25,10 +23,32 @@ class _CommentsPageState extends State<CommentsPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(title: Text("Comments"),),
-          body: ListView(
-            children:currentComments,
+          body: ListView.builder(
+            itemCount: widget.comments?.length,
+            itemBuilder: (context, index) {
+              final Map<String, dynamic> commentData = widget.comments![index];
+              Map<String, dynamic> counts = {
+                'replies': commentData['replies']
+              };
+
+              final Map<String, dynamic> userInfo = commentData['user'];
+              final user = User.fromJson(userInfo);
+
+              CommentModel comment = CommentModel(
+                postId: commentData['postId'],
+                content: commentData['content'],
+                isReply: commentData['isReply'],
+                commentId: commentData['commentId'],
+                user: user,
+                replyAmount: counts['replies'],
+                isEdited: commentData['isEdited'],
+              );
+
+
+              return CommentWidget(user: user, comment: comment);
+            },
           ),
-            bottomNavigationBar:  BottomCommentTextField(commentController: _commentController),
+          bottomNavigationBar:  BottomCommentTextField(commentController: _commentController),
         ),
       ),
     );
@@ -45,14 +65,14 @@ class BottomCommentTextField extends StatefulWidget {
   FocusNode _commentFocusNode = FocusNode();
   @override
   State<BottomCommentTextField> createState() {
-   return _CommentTextFieldState();
+    return _CommentTextFieldState();
   }
 
 }
 class _CommentTextFieldState extends State<BottomCommentTextField>{
   double bottomMargin= 0;
   Widget build(BuildContext context) {
-   bottomMargin=  8.0 + MediaQuery.of(context).viewInsets.bottom;
+    bottomMargin=  8.0 + MediaQuery.of(context).viewInsets.bottom;
     return  Container(
       color: Colors.transparent,
       margin: EdgeInsets.only(
@@ -94,117 +114,3 @@ class _CommentTextFieldState extends State<BottomCommentTextField>{
     );
   }
 }
-class CommentWidget extends StatefulWidget {
-  User user;
-  String comment;
-  CommentWidget({super.key,required this.user,required this.comment});
-
-  @override
-  State<CommentWidget> createState() => _CommentWidgetState();
-}
-
-class _CommentWidgetState extends State<CommentWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(15),
-      width: double.infinity,
-      color: Colors.black,
-      margin: EdgeInsets.only(bottom: 10),
-      child: Column(
-        spacing: 20,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            spacing: 15,
-            children: [
-              CircleAvatar(backgroundImage: NetworkImage(widget.user.profilePicUrl),radius: 20,),
-              Text(widget.user.username)
-            ],
-          ),
-          CommentText(text: widget.comment),
-          GestureDetector(
-              child: Text("Replies",style: TextStyle(fontWeight: FontWeight.bold,),),
-              onTap:(){
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) {
-                    return RepliesPage(commentId: 0, user: widget.user, comment: widget.comment);
-                  },)
-                );
-              },
-          ),
-        ],
-      ) ,
-    );
-  }
-}
-class CommentText extends StatefulWidget {
-  String text;
-  CommentText({super.key,required this.text});
-  @override
-  State<CommentText> createState() => _CommentTextState();
-}
-class _CommentTextState extends State<CommentText> {
-  bool showAll=false;
-  @override
-  Widget build(BuildContext context) {
-    if(widget.text.length<200){
-      return Container(width: double.infinity,
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.only(bottom: 3),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Color.fromRGBO(57,62,70,1)
-        ),
-        child: Text(widget.text),
-      );
-    }
-    if(showAll) {
-      return Container(width: double.infinity,
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.only(bottom: 3),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Color.fromRGBO(57,62,70,1)
-        ),
-        child: Column(
-          children: [
-            Text(widget.text),
-            GestureDetector(
-              onTap: (){
-                setState(() {
-                  showAll=!showAll;
-                });
-              },
-              child: Text("Show less", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold ),),
-            )
-          ],
-        ),
-      );
-    }else{
-      return Container(width: double.infinity,
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.only(bottom: 3),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Color.fromRGBO(57,62,70,1)
-          ),
-          child: Column(
-            children: [
-              Text(widget.text.substring(0,200)),
-              GestureDetector(
-                onTap: (){
-                  setState(() {
-                    showAll=!showAll;
-                  });
-                },
-                child: Text("Show more", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold ),),
-              )
-            ],
-          )
-      );
-    }
-  }
-}
-
-

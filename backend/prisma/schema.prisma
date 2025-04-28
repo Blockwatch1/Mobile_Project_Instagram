@@ -59,8 +59,8 @@ model Comment {
   content   String
   isReply   Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
   isEdited  Boolean? @default(false)
 
   replyId Int?

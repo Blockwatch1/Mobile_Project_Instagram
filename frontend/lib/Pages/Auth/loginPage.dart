@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Services/AuthService.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -28,7 +26,7 @@ class _LoginpageState extends State<Loginpage> {
     super.initState();
   }
 
-  void addUserToLocalStorage(String? token, dynamic? userData) async {
+  void addUserToLocalStorage(String? token, dynamic userData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (token != null) {
       await prefs.setString('token', token);
@@ -57,6 +55,7 @@ class _LoginpageState extends State<Loginpage> {
 
       print(response.success);
       print(response.data);
+      print(response.token);
 
       if (response.success) {
         if (!mounted) return;

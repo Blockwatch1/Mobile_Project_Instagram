@@ -39,13 +39,13 @@ model User {
 }
 
 model Post {
-  postId      Int      @id @default(autoincrement())
+  postId      Int       @id @default(autoincrement())
   description String?
   imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  isThread    Boolean? @default(false)
-  user        User?    @relation(fields: [userId], references: [userId])
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  isThread    Boolean?  @default(false)
+  user        User?     @relation(fields: [userId], references: [userId])
   userId      Int?
 
   savedUsers User[] @relation("SavedPosts")
@@ -59,9 +59,9 @@ model Comment {
   content   String
   isReply   Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isEdited  Boolean? @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  isEdited  Boolean?  @default(false)
 
   replyId Int?
 

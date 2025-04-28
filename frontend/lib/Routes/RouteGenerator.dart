@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/PostModel.dart';
 import 'package:insta/Pages/Post/PostPage.dart';
+import 'package:insta/main.dart';
 
 import '../Pages/Auth/loginPage.dart';
 import '../Pages/Auth/signUpPage.dart';
@@ -12,13 +13,15 @@ class RouteGenerator {
 
     switch(settings.name) {
       case '/home':
+        return MaterialPageRoute(builder: (_) => SafeArea(child: HomePage()));
+      case '/login':
         return MaterialPageRoute(builder: (_) => SafeArea(child: Loginpage()));
       case '/signup':
         return MaterialPageRoute(builder: (_) => SafeArea(child: SignUpPage()));
       case '/search':
         return MaterialPageRoute(builder: (_) => const SearchPage());
       case '/postPage':
-        if((args as PostModel) == true){
+        if(args is PostModel){
           return MaterialPageRoute(builder: (_) => PostPage(post: args));
         }
         
@@ -36,18 +39,22 @@ class RouteGenerator {
           title: Text('Error', style: TextStyle(color: Colors.red),),
         ),
         body: Center(
-          child: Column(
-            children: [
-              Text("This route does not exist!"),
-              ElevatedButton(onPressed: () => Navigator.of(context).pushNamed('/home'),
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all(2.5),
-                backgroundColor:  MaterialStateProperty.all(Colors.purpleAccent)
-              ),
-              child: Center(
-                child: Text("Go Back to Home Screen", style: TextStyle(color: Colors.white),),
-              ),)
-            ],
+          child: Container(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("This route does not exist!", style: TextStyle(fontSize: 50, fontFamily: "Insta"),),
+                ElevatedButton(onPressed: () => Navigator.of(context).pushNamed('/home'),
+                  style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(2.5),
+                      backgroundColor:  MaterialStateProperty.all(Colors.purpleAccent)
+                  ),
+                  child: Center(
+                    child: Text("Go Back to Home Screen", style: TextStyle(color: Colors.white, fontSize: 20),),
+                  ),)
+              ],
+            ),
           ),
         ),
       );

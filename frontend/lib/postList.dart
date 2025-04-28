@@ -31,7 +31,7 @@ class _PostListState extends State<PostList> {
 
     try {
       ActionResponse postResponse =
-          await _postService.getPosts('get-posts', prefs.getString('token'));
+          await _postService.GET('get-posts', prefs.getString('token'));
 
       if (postResponse.success && postResponse.data != null) {
         setState(() {

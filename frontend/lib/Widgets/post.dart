@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/PostModel.dart';
-import '../Models/User.dart';
 
 class Post extends StatefulWidget {
   PostModel _post;

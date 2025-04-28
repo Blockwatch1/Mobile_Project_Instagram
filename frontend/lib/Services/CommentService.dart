@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:insta/Models/ActionResponse.dart';
-import 'package:insta/Models/HTTPConfig.dart';
+import '../Models/ActionResponse.dart';
+import '../Models/HTTPConfig.dart';
 import 'package:http/http.dart' as http;
 
-class PostService {
-  final String _baseUrl = 'http://192.168.177.200:4001/post';
+
+class CommentService {
+  final String _baseUrl = 'http://192.168.177.200:4001/comment';
 
   Future<ActionResponse> GET(String path, String? token) async {
     try {
@@ -24,7 +25,7 @@ class PostService {
 
     } catch(e){
       print('API call failed: $e');
-      throw Exception('Failed to fetch posts: $e');
+      throw Exception('Failed to fetch comments: $e');
     }
   }
 }

@@ -3960,8 +3960,8 @@ export namespace Prisma {
     commentId: number
     content: string
     isReply: boolean
-    createdAt: Date
-    updatedAt: Date
+    createdAt: Date | null
+    updatedAt: Date | null
     isEdited: boolean | null
     replyId: number | null
     postId: number | null
@@ -4077,8 +4077,8 @@ export namespace Prisma {
       commentId: number
       content: string
       isReply: boolean
-      createdAt: Date
-      updatedAt: Date
+      createdAt: Date | null
+      updatedAt: Date | null
       isEdited: boolean | null
       replyId: number | null
       postId: number | null
@@ -5353,8 +5353,8 @@ export namespace Prisma {
     commentId?: IntFilter<"Comment"> | number
     content?: StringFilter<"Comment"> | string
     isReply?: BoolFilter<"Comment"> | boolean
-    createdAt?: DateTimeFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeFilter<"Comment"> | Date | string
+    createdAt?: DateTimeNullableFilter<"Comment"> | Date | string | null
+    updatedAt?: DateTimeNullableFilter<"Comment"> | Date | string | null
     isEdited?: BoolNullableFilter<"Comment"> | boolean | null
     replyId?: IntNullableFilter<"Comment"> | number | null
     postId?: IntNullableFilter<"Comment"> | number | null
@@ -5369,8 +5369,8 @@ export namespace Prisma {
     commentId?: SortOrder
     content?: SortOrder
     isReply?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
+    createdAt?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     isEdited?: SortOrderInput | SortOrder
     replyId?: SortOrderInput | SortOrder
     postId?: SortOrderInput | SortOrder
@@ -5388,8 +5388,8 @@ export namespace Prisma {
     NOT?: CommentWhereInput | CommentWhereInput[]
     content?: StringFilter<"Comment"> | string
     isReply?: BoolFilter<"Comment"> | boolean
-    createdAt?: DateTimeFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeFilter<"Comment"> | Date | string
+    createdAt?: DateTimeNullableFilter<"Comment"> | Date | string | null
+    updatedAt?: DateTimeNullableFilter<"Comment"> | Date | string | null
     isEdited?: BoolNullableFilter<"Comment"> | boolean | null
     replyId?: IntNullableFilter<"Comment"> | number | null
     postId?: IntNullableFilter<"Comment"> | number | null
@@ -5404,8 +5404,8 @@ export namespace Prisma {
     commentId?: SortOrder
     content?: SortOrder
     isReply?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
+    createdAt?: SortOrderInput | SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     isEdited?: SortOrderInput | SortOrder
     replyId?: SortOrderInput | SortOrder
     postId?: SortOrderInput | SortOrder
@@ -5424,8 +5424,8 @@ export namespace Prisma {
     commentId?: IntWithAggregatesFilter<"Comment"> | number
     content?: StringWithAggregatesFilter<"Comment"> | string
     isReply?: BoolWithAggregatesFilter<"Comment"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Comment"> | Date | string
+    createdAt?: DateTimeNullableWithAggregatesFilter<"Comment"> | Date | string | null
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"Comment"> | Date | string | null
     isEdited?: BoolNullableWithAggregatesFilter<"Comment"> | boolean | null
     replyId?: IntNullableWithAggregatesFilter<"Comment"> | number | null
     postId?: IntNullableWithAggregatesFilter<"Comment"> | number | null
@@ -5632,8 +5632,8 @@ export namespace Prisma {
   export type CommentCreateInput = {
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     reply?: CommentCreateNestedOneWithoutRepliesInput
     replies?: CommentCreateNestedManyWithoutReplyInput
@@ -5645,8 +5645,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replyId?: number | null
     postId?: number | null
@@ -5657,8 +5657,8 @@ export namespace Prisma {
   export type CommentUpdateInput = {
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     reply?: CommentUpdateOneWithoutRepliesNestedInput
     replies?: CommentUpdateManyWithoutReplyNestedInput
@@ -5670,8 +5670,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replyId?: NullableIntFieldUpdateOperationsInput | number | null
     postId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -5683,8 +5683,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replyId?: number | null
     postId?: number | null
@@ -5694,8 +5694,8 @@ export namespace Prisma {
   export type CommentUpdateManyMutationInput = {
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
@@ -5703,8 +5703,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replyId?: NullableIntFieldUpdateOperationsInput | number | null
     postId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -6987,8 +6987,8 @@ export namespace Prisma {
   export type CommentCreateWithoutUserInput = {
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     reply?: CommentCreateNestedOneWithoutRepliesInput
     replies?: CommentCreateNestedManyWithoutReplyInput
@@ -6999,8 +6999,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replyId?: number | null
     postId?: number | null
@@ -7150,8 +7150,8 @@ export namespace Prisma {
     commentId?: IntFilter<"Comment"> | number
     content?: StringFilter<"Comment"> | string
     isReply?: BoolFilter<"Comment"> | boolean
-    createdAt?: DateTimeFilter<"Comment"> | Date | string
-    updatedAt?: DateTimeFilter<"Comment"> | Date | string
+    createdAt?: DateTimeNullableFilter<"Comment"> | Date | string | null
+    updatedAt?: DateTimeNullableFilter<"Comment"> | Date | string | null
     isEdited?: BoolNullableFilter<"Comment"> | boolean | null
     replyId?: IntNullableFilter<"Comment"> | number | null
     postId?: IntNullableFilter<"Comment"> | number | null
@@ -7287,8 +7287,8 @@ export namespace Prisma {
   export type CommentCreateWithoutPostInput = {
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     reply?: CommentCreateNestedOneWithoutRepliesInput
     replies?: CommentCreateNestedManyWithoutReplyInput
@@ -7299,8 +7299,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replyId?: number | null
     userId?: number | null
@@ -7416,8 +7416,8 @@ export namespace Prisma {
   export type CommentCreateWithoutRepliesInput = {
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     reply?: CommentCreateNestedOneWithoutRepliesInput
     post?: PostCreateNestedOneWithoutCommentsInput
@@ -7428,8 +7428,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replyId?: number | null
     postId?: number | null
@@ -7444,8 +7444,8 @@ export namespace Prisma {
   export type CommentCreateWithoutReplyInput = {
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replies?: CommentCreateNestedManyWithoutReplyInput
     post?: PostCreateNestedOneWithoutCommentsInput
@@ -7456,8 +7456,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     postId?: number | null
     userId?: number | null
@@ -7558,8 +7558,8 @@ export namespace Prisma {
   export type CommentUpdateWithoutRepliesInput = {
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     reply?: CommentUpdateOneWithoutRepliesNestedInput
     post?: PostUpdateOneWithoutCommentsNestedInput
@@ -7570,8 +7570,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replyId?: NullableIntFieldUpdateOperationsInput | number | null
     postId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -7689,8 +7689,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replyId?: number | null
     postId?: number | null
@@ -7899,8 +7899,8 @@ export namespace Prisma {
   export type CommentUpdateWithoutUserInput = {
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     reply?: CommentUpdateOneWithoutRepliesNestedInput
     replies?: CommentUpdateManyWithoutReplyNestedInput
@@ -7911,8 +7911,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replyId?: NullableIntFieldUpdateOperationsInput | number | null
     postId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -7923,8 +7923,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replyId?: NullableIntFieldUpdateOperationsInput | number | null
     postId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -7934,8 +7934,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     replyId?: number | null
     userId?: number | null
@@ -8046,8 +8046,8 @@ export namespace Prisma {
   export type CommentUpdateWithoutPostInput = {
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     reply?: CommentUpdateOneWithoutRepliesNestedInput
     replies?: CommentUpdateManyWithoutReplyNestedInput
@@ -8058,8 +8058,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replyId?: NullableIntFieldUpdateOperationsInput | number | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -8070,8 +8070,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replyId?: NullableIntFieldUpdateOperationsInput | number | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -8081,8 +8081,8 @@ export namespace Prisma {
     commentId?: number
     content: string
     isReply?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    createdAt?: Date | string | null
+    updatedAt?: Date | string | null
     isEdited?: boolean | null
     postId?: number | null
     userId?: number | null
@@ -8091,8 +8091,8 @@ export namespace Prisma {
   export type CommentUpdateWithoutReplyInput = {
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replies?: CommentUpdateManyWithoutReplyNestedInput
     post?: PostUpdateOneWithoutCommentsNestedInput
@@ -8103,8 +8103,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     postId?: NullableIntFieldUpdateOperationsInput | number | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -8115,8 +8115,8 @@ export namespace Prisma {
     commentId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     isReply?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isEdited?: NullableBoolFieldUpdateOperationsInput | boolean | null
     postId?: NullableIntFieldUpdateOperationsInput | number | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null

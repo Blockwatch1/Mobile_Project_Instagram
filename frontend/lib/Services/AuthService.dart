@@ -5,7 +5,7 @@ import 'package:insta/Models/HTTPConfig.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  final String _baseUrl = 'http://192.168.1.109:4001/user';
+  final String _baseUrl = 'http://192.168.177.200:4001/user';
 
   Future<ActionResponse> auth(Map<String, dynamic> data, String path) async {
     try {
