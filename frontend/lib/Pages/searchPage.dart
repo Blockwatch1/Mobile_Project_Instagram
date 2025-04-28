@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Models/User.dart';
-import 'package:insta/Services/AuthService.dart';
+import 'package:insta/Services/UserService.dart';
 import 'package:insta/Widgets/UserCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,7 +61,7 @@ class _SearchPageState extends State<SearchPage> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final String? token = prefs.getString('token');
 
-        ActionResponse getUsers = await _searchService.getUsersOnSearch('search/$query', token);
+        ActionResponse getUsers = await _searchService.getNoBody('search/$query', token);
 
         if (getUsers.success) {
           if (getUsers.data is List && getUsers.data.isNotEmpty) {

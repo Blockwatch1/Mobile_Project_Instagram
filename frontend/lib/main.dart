@@ -44,9 +44,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> _checkForSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    print('HELLO\n\n\nHELLOOO');
     if (prefs.getString('token') == null) {
-      Navigator.of(context).pushNamed('/login');
+      Navigator.of(context).pushReplacementNamed('/login');
       return;
     }
 
@@ -55,7 +54,6 @@ class _HomePageState extends State<HomePage> {
     if (userJson != null) {
       Map<String, dynamic> userMap = jsonDecode(userJson);
       _userData = userMap;
-      print(_userData);
     }
 
     return;
@@ -64,7 +62,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    print('HELLOO');
     _checkForSession();
   }
 

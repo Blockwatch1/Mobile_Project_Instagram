@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 
-import '../../Services/AuthService.dart';
+import '../../Services/UserService.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
             _loading = false;
           });
           
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/home');
         } else {
           setState(() {
             _errorMessage = response.error?.description;

@@ -15,7 +15,8 @@ class _UserCardState extends State<UserCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed('/profilePage');
+        Map<String, dynamic> args = {'userId': widget._user.userId};
+        Navigator.of(context).pushNamed('/profilePage', arguments: args);
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),

@@ -198,7 +198,7 @@ export const getUserProfileInfo = async (req, res) => {
     const { userId } = req.params;
     const _userId = Number(userId);
 
-    const myUserId = req?.user;
+    const myUserId = req?.user?.userId;
 
     const couldNotFetchUserObj = {
       message: 'Could not fetch user',

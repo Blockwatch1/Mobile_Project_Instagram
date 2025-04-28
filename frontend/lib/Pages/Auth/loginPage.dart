@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
-import 'package:insta/Services/AuthService.dart';
+import 'package:insta/Services/UserService.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -64,7 +64,7 @@ class _LoginpageState extends State<Loginpage> {
           addUserToLocalStorage(response.token, response.user);
         }
         
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/home');
 
         setState(() {
           _loading = false;

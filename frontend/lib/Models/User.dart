@@ -1,3 +1,5 @@
+import 'package:insta/Models/PostModel.dart';
+
 class User {
  final dynamic userId;
  final String name;
@@ -5,8 +7,13 @@ class User {
  final String? bio;
  final String username;
  final String? pfpPath;
- final DateTime? lastLogin;
- final DateTime? createdAt;
+ final String? lastLogin;
+ final String? createdAt;
+ final String? lastUsernameChange;
+ final String? password;
+ final List<dynamic>? followedBy;
+ final List<dynamic>? following;
+ final List<dynamic>? posts;
 
  User({
   required this.userId,
@@ -16,7 +23,12 @@ class User {
   this.bio,
   this.pfpPath,
   this.lastLogin,
-  this.createdAt
+  this.createdAt,
+  this.password,
+  this.lastUsernameChange,
+  this.followedBy,
+  this.following,
+  this.posts
  });
 
  factory User.fromJson(Map<String, dynamic> json){
@@ -28,7 +40,12 @@ class User {
       bio: json['bio'] ?? '',
       pfpPath: json['pfpPath'] ?? null,
       lastLogin: json['lastLogin'] ?? null,
-      createdAt: json['createdAt'] ?? null
+      createdAt: json['createdAt'] ?? null,
+      password: json['password'] ?? null,
+      lastUsernameChange: json['lastUsernameChange'] ?? null,
+      followedBy: json['followedBy'] ?? [],
+      following: json['following'] ?? [],
+      posts: json['posts'] ?? []
   );
  }
 

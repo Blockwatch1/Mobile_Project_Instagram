@@ -27,8 +27,13 @@ class RouteGenerator {
         }
         
         return _errorRoute();
-      case '/profilePage': 
-        return MaterialPageRoute(builder: (_) => ProfilePage());
+      case '/profilePage':
+        if(args is Map<String, dynamic> && args.containsKey('userId')){
+          return MaterialPageRoute(builder: (_) => ProfilePage(userId: args['userId'],));
+        }
+
+        return _errorRoute();
+
       default:
         return _errorRoute();
     }

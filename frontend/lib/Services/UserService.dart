@@ -30,7 +30,7 @@ class UserService {
     }
   }
 
-  Future<ActionResponse> getUsersOnSearch(String path, String? token) async {
+  Future<ActionResponse> getNoBody(String path, String? token) async {
     final String starting = '$_baseUrl/user';
 
     try {
@@ -50,4 +50,6 @@ class UserService {
       throw Exception('Failed to sign up: $e');
     }
   }
+
+
 }
