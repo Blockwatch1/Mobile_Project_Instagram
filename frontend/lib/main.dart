@@ -6,6 +6,7 @@ import 'package:insta/Routes/RouteGenerator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'postList.dart';
 import 'Models/User.dart';
+import 'Services/PostService.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,7 @@ User test = User(
     username: "marwanmoub");
 
 class _HomePageState extends State<HomePage> {
+  PostService service = PostService();
   Map<String, dynamic>? _userData;
 
   Future<User?> _checkForSession() async {
@@ -48,6 +50,9 @@ class _HomePageState extends State<HomePage> {
       Navigator.of(context).pushNamed('/login');
       return null;
     }
+    print(prefs.getString('token'));
+    service.addPostOrThread('/create-post', prefs.getString('token'), 'heheh', 'https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg' , false);
+    // https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg
 
     String? userJson = prefs.getString('user');
 

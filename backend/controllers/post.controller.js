@@ -3,8 +3,7 @@ const prisma = new PrismaClient();
 
 //CREATE OPERATIONS (A post can be a thread or a post, if it is a thread, it will not have an image url)
 export const createPost = async (req, res) => {
-  const user = req?.user;
-  const { description, imageUrl, isThread } = req.body;
+  const {user ,description, imageUrl, isThread } = req.body;
 
   const createPostQueryObject = {
     description,
