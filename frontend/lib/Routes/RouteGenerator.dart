@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insta/Models/PostModel.dart';
+import 'package:insta/Pages/AccountSettings.dart';
 import 'package:insta/Pages/FollowersList.dart';
 import 'package:insta/Pages/Post/PostPage.dart';
 import 'package:insta/Pages/ProfilePage.dart';
@@ -45,6 +46,14 @@ class RouteGenerator {
       case '/followingsList':
         if(args is Map<String, dynamic>){
           return MaterialPageRoute(builder: (_) => SafeArea(child: Followerslist(followers: args['followings'], name: args['name'])));
+        }
+
+        return _errorRoute();
+
+      case '/accountSettings':
+        if(args is Map<String, dynamic>) {
+          return MaterialPageRoute(builder: (_) => SafeArea(child: AccountSettings(email: args['email'], password: args['password'],
+          userId: args['userId'], lastLogin: args['lastLogin'], lastUsernameChange: args['lastUsernameChange'], name: args['name'])));
         }
 
         return _errorRoute();

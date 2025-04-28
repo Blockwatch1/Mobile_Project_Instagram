@@ -96,12 +96,25 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         title: Center(child: Text("${_user?.name}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),),
         actions: [
-          IconButton(
-            onPressed: () {
-              //add settings page later
-            },
-            icon: Icon(Icons.settings),
-          ),
+          Container(
+            child: _isSameUser == true ?
+            IconButton(
+              onPressed: () {
+                Map<String, dynamic> emailAndPass = {
+                  'email': _user?.email,
+                  'password': _user?.password,
+                  'userId': _user?.userId,
+                  'lastLogin': _user?.lastLogin,
+                  'lastUsernameChange': _user?.lastUsernameChange,
+                  'name': _user?.name
+                };
+
+                print(emailAndPass);
+                Navigator.of(context).pushNamed('/accountSettings', arguments: emailAndPass);
+              },
+              icon: Icon(Icons.settings),
+            ) : null,
+          )
         ],
       ),
 
