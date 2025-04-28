@@ -31,7 +31,7 @@ class _UserCardState extends State<UserCard> {
                     : null,
                 child: (widget._user.pfpPath == null || widget._user.pfpPath!.isEmpty)
                     ? Text(
-                  widget._user.name.isNotEmpty ? widget._user.name[0].toUpperCase() : '',
+                 widget._user.name!.isNotEmpty ? widget._user.name![0].toUpperCase() : '',
                   style: const TextStyle(color: Colors.white),
                 )
                     : null,
@@ -44,7 +44,7 @@ class _UserCardState extends State<UserCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget._user.name,
+                      widget._user.name!,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

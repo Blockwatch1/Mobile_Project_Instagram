@@ -10,6 +10,7 @@ class PostService {
   final _baseUrl = dotenv.env['BASE_URL'];
 
   Future<ActionResponse> GET(String path, String? token) async {
+    print("5od he url : $_baseUrl");
     final String starting = '$_baseUrl/post';
 
     try {
@@ -22,6 +23,7 @@ class PostService {
       }
 
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      print(responseBody);
       final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);
 
       return actionResponse;

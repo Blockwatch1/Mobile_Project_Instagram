@@ -43,16 +43,16 @@ class _PostState extends State<Post> {
                 children: [
                   CircleAvatar(
                     backgroundImage: (widget._post.user?.pfpPath != null) ? NetworkImage(widget._post.user!.pfpPath!) : null,
-                    child: (widget._post.user?.pfpPath == null) ? Text(widget._post.user!.name.isNotEmpty ? widget._post.user!.name[0].toUpperCase() : '', style: TextStyle(color: Colors.white)) : null,
                     radius: 20,
                     backgroundColor: Theme.of(context).primaryColor,
+                    child: (widget._post.user?.pfpPath == null) ? Text(widget._post.user!.name![0], style: TextStyle(color: Colors.white)) : null,
                   ),
                   SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget._post.user!.name,
+                        widget._post.user!.name!,
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Text(

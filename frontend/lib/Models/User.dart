@@ -2,7 +2,7 @@ import 'package:insta/Models/PostModel.dart';
 
 class User {
  final dynamic userId;
- final String name;
+ final String? name;
  final String? email;
  final String? bio;
  final String username;
@@ -17,7 +17,7 @@ class User {
 
  User({
   required this.userId,
-  required this.name,
+  this.name,
   required this.username,
   this.email,
   this.bio,

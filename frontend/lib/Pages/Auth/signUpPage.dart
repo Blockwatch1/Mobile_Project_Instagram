@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
             _loading = false;
           });
           
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/login');
         } else {
           setState(() {
             _errorMessage = response.error?.description;

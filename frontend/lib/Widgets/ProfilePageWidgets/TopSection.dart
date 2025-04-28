@@ -29,7 +29,7 @@ class TopSection extends StatelessWidget {
               backgroundImage: (_user?.pfpPath != null) ? NetworkImage(_user!.pfpPath!) : null,
               child: (_user?.pfpPath == null)
                   ? Text(
-                _user!.name.isNotEmpty ? _user!.name[0].toUpperCase() : '',
+                _user!.name!.isNotEmpty ? _user!.name![0].toUpperCase() : '',
                 style: const TextStyle(color: Colors.white),
               )
                   : null,

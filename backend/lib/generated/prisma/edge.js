@@ -157,7 +157,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\ASUS\\Desktop\\instaclone\\Mobile_Project_Instagram\\backend\\lib\\generated\\prisma",
+      "value": "C:\\Users\\HP\\StudioProjects\\Inst\\Mobile_Project_Instagram\\backend\\lib\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -171,7 +171,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\ASUS\\Desktop\\instaclone\\Mobile_Project_Instagram\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\HP\\StudioProjects\\Inst\\Mobile_Project_Instagram\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -185,11 +185,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:marwan2006@localhost:5432/interlinked?schema=public"
+        "value": null
       }
     }
   },
