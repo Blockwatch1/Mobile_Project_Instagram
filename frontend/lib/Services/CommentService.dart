@@ -3,14 +3,18 @@ import 'dart:convert';
 import '../Models/ActionResponse.dart';
 import '../Models/HTTPConfig.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 
 class CommentService {
-  final String _baseUrl = 'http://192.168.177.200:4001/comment';
+  final _baseUrl = dotenv.env['BASE_URL'];
 
   Future<ActionResponse> GET(String path, String? token) async {
+    final String starting = '$_baseUrl/comment';
+
     try {
-      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse('$_baseUrl/$path'), token: token);
+      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse('$starting/$path'), token: token);
 
       final response = await http.get(httpConfigObj.uri, headers: httpConfigObj.headers);
 

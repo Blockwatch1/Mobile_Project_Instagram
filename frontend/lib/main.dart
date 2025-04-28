@@ -1,12 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:insta/Routes/RouteGenerator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'postList.dart';
 import 'Models/User.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print("Error loading .env file: $e");
+  }
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,

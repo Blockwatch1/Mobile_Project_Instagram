@@ -3,14 +3,17 @@ import 'dart:convert';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Models/HTTPConfig.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthService {
-  final String _baseUrl = 'http://192.168.177.200:4001/user';
+  final _baseUrl = dotenv.env['BASE_URL'];
 
   Future<ActionResponse> auth(Map<String, dynamic> data, String path) async {
+    final String starting = '$_baseUrl/user';
+
     try {
 
-      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse('$_baseUrl/$path'),
+      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse('$starting/$path'),
       body: jsonEncode(data));
 
 
