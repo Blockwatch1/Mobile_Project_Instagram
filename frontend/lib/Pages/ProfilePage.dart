@@ -9,9 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/User.dart';
 
 class ProfilePage extends StatefulWidget {
-  final dynamic userId;
+  final dynamic _userId;
   Map<String, dynamic>? _myUser = {};
-  ProfilePage({super.key, required this.userId});
+  ProfilePage({super.key, required userId}): _userId = userId;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -29,8 +29,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if(jsonUser != null) {
       widget._myUser = jsonDecode(jsonUser);
-
-      if (widget._myUser?['userId'] == _user?.userId) {
+      print('MY USER: ${widget._myUser}');
+      print(_user?.userId);
+      if (widget._myUser?['userId'] == widget._userId) {
         setState(() {
           _isSameUser = true;
         });
@@ -44,10 +45,10 @@ class _ProfilePageState extends State<ProfilePage> {
         _loading = true;
       });
       
-      if(widget.userId != null) {
+      if(widget._userId != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String? token = prefs.getString('token');
-        ActionResponse userResponse = await _fetchUserService.getNoBody('${widget.userId}', token);
+        ActionResponse userResponse = await _fetchUserService.getNoBody('${widget._userId}', token);
 
         if(userResponse.success && userResponse.data is Map<String, dynamic>) {
           User newUser = User.fromJson(userResponse.data);

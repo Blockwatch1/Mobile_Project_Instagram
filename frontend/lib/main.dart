@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.getString('token') == null) {
-      Navigator.of(context).pushReplacementNamed('/login');
+      Navigator.of(context).pushNamed('/login');
       return;
     }
 
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _checkForSession();
+    // _checkForSession();
   }
 
   @override

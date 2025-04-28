@@ -31,7 +31,8 @@ class _LoginpageState extends State<Loginpage> {
     if (token != null) {
       await prefs.setString('token', token);
     }
-    
+
+    print('userDATAAAA ' + jsonEncode(userData));
     if(userData != null){
       await prefs.setString('user', jsonEncode(userData));
     }
@@ -157,6 +158,7 @@ class _LoginpageState extends State<Loginpage> {
               const SizedBox(height: 20),
               GestureDetector(
                 child: Text(
+                  textAlign: TextAlign.center,
                   "Sign Up?",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
