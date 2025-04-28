@@ -58,16 +58,24 @@ class _PostListState extends State<PostList> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
+    if (loading && (_posts == null || _posts!.isEmpty)) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (_posts == null || _posts!.isEmpty) {
+
+      return Center(
+        child: Text(
+          "No posts available.",
+          style: TextStyle(color: Colors.white70, fontSize: 18),
         ),
       );
     } else {
-      return Scaffold(
-        body: ListView.builder(
-          itemCount: _posts?.length,
+
+      return RefreshIndicator(
+        onRefresh: _fetchPosts,
+        child: ListView.builder(
+          itemCount: _posts!.length,
           itemBuilder: (context, index) {
             final Map<String, dynamic> postData = _posts![index];
             Map<String, dynamic> counts = {
@@ -79,10 +87,15 @@ class _PostListState extends State<PostList> {
             final Map<String, dynamic> userInfo = postData['user'];
             final user = User.fromJson(userInfo);
 
-            PostModel post = PostModel(postId: postData['postId'], description: postData['description'],
-            imageUrl: postData['imageUrl'], isThread: postData['isThread'],
-            commentAmount: counts['comments'], likeAmount: counts['likes'], saveAmount: counts['saves'],
-            user: user);
+            PostModel post = PostModel(
+                postId: postData['postId'],
+                description: postData['description'],
+                imageUrl: postData['imageUrl'],
+                isThread: postData['isThread'],
+                commentAmount: counts['comments'],
+                likeAmount: counts['likes'],
+                saveAmount: counts['saves'],
+                user: user);
 
             return Post(post: post);
           },
