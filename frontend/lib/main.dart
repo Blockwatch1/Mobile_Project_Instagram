@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   PostService service = PostService();
   Map<String, dynamic>? _userData;
 
-  Future<User?> _checkForSession() async {
+  Future<void> _checkForSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.getString('token') == null) {
@@ -51,33 +51,28 @@ class _HomePageState extends State<HomePage> {
       return null;
     }
     print(prefs.getString('token'));
-    //service.addPostOrThread('create-post', prefs.getString('token'), 'heheh', 'https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg' , false);
-    // https://ih1.redbubble.net/image.5598421008.7018/raf,360x360,075,t,fafafa:ca443f4786.u1.jpg
 
     String? userJson = prefs.getString('user');
 
     if (userJson != null) {
       Map<String, dynamic> userMap = jsonDecode(userJson);
       _userData = userMap;
-    }
-    if(_userData==null){
-      Navigator.of(context).pushNamed('/login');
-      return null;
-    }
-    return User(userId: _userData!["userId"], username: _userData!["username"]);
-  }
-  Future<void> setUser() async{
-    User? storedUser = await _checkForSession();
-    if(storedUser!=null){
+      User? testUser = User.fromJson(userMap);
       setState(() {
-        test=storedUser;
+        test = testUser;
       });
     }
+
+    if(_userData == null){
+      Navigator.of(context).pushNamed('/login');
+      return;
+    }
   }
+
   @override
   void initState() {
     super.initState();
-    setUser();
+    _checkForSession();
   }
 
   @override

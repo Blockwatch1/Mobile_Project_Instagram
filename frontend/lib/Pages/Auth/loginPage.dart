@@ -32,7 +32,6 @@ class _LoginpageState extends State<Loginpage> {
       await prefs.setString('token', token);
     }
 
-    print('userDATAAAA ' + jsonEncode(userData));
     if(userData != null){
       await prefs.setString('user', jsonEncode(userData));
     }
