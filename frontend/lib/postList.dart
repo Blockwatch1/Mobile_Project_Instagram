@@ -7,9 +7,7 @@ import 'Widgets/post.dart';
 import 'Models/User.dart';
 
 class PostList extends StatefulWidget {
-  final Map<String, dynamic>? _userData;
-  const PostList({super.key, Map<String, dynamic>? userData})
-      : _userData = userData;
+  const PostList({super.key});
 
   @override
   State<PostList> createState() => _PostListState();

@@ -93,9 +93,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       )),
-      body: PostList(
-        userData: _userData,
-      ),
+      body: PostList(),
     );
   }
 }

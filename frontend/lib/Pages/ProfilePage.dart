@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Services/UserService.dart';
+import 'package:insta/Widgets/ProfilePageWidgets/PostSection.dart';
 import 'package:insta/Widgets/ProfilePageWidgets/TopSection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -104,7 +105,10 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Column(
         children: [
-          TopSection(user: _user, isSameUser: _isSameUser,)
+          TopSection(user: _user, isSameUser: _isSameUser,),
+          Expanded(
+            child: PostSection(posts: _user?.posts, user: _user,),
+          )
         ],
       ),
     );
