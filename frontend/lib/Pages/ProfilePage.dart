@@ -1,13 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Services/UserService.dart';
+import 'package:insta/Widgets/ProfilePageWidgets/TopSection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/User.dart';
 
 class ProfilePage extends StatefulWidget {
   final dynamic userId;
-  const ProfilePage({super.key, required this.userId});
+  Map<String, dynamic>? _myUser = {};
+  ProfilePage({super.key, required this.userId});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -17,6 +21,22 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _loading = false;
   User? _user;
   UserService _fetchUserService = UserService();
+  bool _isSameUser = false;
+
+  Future<void> _checkIfSameUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    dynamic jsonUser = prefs.getString('user');
+
+    if(jsonUser != null) {
+      widget._myUser = jsonDecode(jsonUser);
+
+      if (widget._myUser?['userId'] == _user?.userId) {
+        setState(() {
+          _isSameUser = true;
+        });
+      }
+    }
+  }
 
   Future<void> _fetchUser() async {
     try {
@@ -52,10 +72,17 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState(){
     super.initState();
     _fetchUser();
+    _checkIfSameUser();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    if(_loading) {
+      return Center(
+        child: const CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton( 
@@ -64,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           icon: Icon(Icons.arrow_back),
         ),
-        title: Center(child: Text("${_user?.username}", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),),),
+        title: Center(child: Text("${_user?.name}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),),
         actions: [
           IconButton(
             onPressed: () {
@@ -76,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Column(
         children: [
-
+          TopSection(user: _user, isSameUser: _isSameUser,)
         ],
       ),
     );
