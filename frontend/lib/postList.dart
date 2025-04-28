@@ -75,7 +75,6 @@ class _PostListState extends State<PostList> {
               'likes': postData['_count']['likedUsers'],
               'saves': postData['_count']['likedUsers']
             };
-            print(postData['user']);
 
             final Map<String, dynamic> userInfo = postData['user'];
             final user = User.fromJson(userInfo);

@@ -41,11 +41,17 @@ class _PostState extends State<Post> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: (widget._post.user?.pfpPath != null) ? NetworkImage(widget._post.user!.pfpPath!) : null,
-                    radius: 20,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: (widget._post.user?.pfpPath == null) ? Text(widget._post.user!.name![0], style: TextStyle(color: Colors.white)) : null,
+                  GestureDetector(
+                    onTap: () {
+                      Map<String, dynamic> args = {'userId': widget._post.user?.userId};
+                      Navigator.of(context).pushNamed('/profilePage', arguments: args);
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: (widget._post.user?.pfpPath != null) ? NetworkImage(widget._post.user!.pfpPath!) : null,
+                      radius: 20,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: (widget._post.user?.pfpPath == null) ? Text(widget._post.user!.name![0], style: TextStyle(color: Colors.white)) : null,
+                    ),
                   ),
                   SizedBox(width: 12),
                   Column(

@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           TopSection(user: _user, isSameUser: _isSameUser,),
           Expanded(
-            child: PostSection(posts: _user?.posts, user: _user,),
+            child: PostSection(posts: _user?.posts, user: _user),
           )
         ],
       ),

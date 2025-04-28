@@ -23,8 +23,8 @@ class PostSection extends StatelessWidget {
         };
 
         dynamic postId = _posts[index]['postId'];
-        String description = _posts[index]['description'];
-        String imageUrl = _posts[index]['imageUrl'];
+        String? description = _posts[index]['description'];
+        String? imageUrl = _posts[index]['imageUrl'];
 
         PostModel post = PostModel(
           postId: postId,
