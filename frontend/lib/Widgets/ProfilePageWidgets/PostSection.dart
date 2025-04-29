@@ -36,6 +36,8 @@ class PostSection extends StatelessWidget {
     }
 
     return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       itemCount: _posts.length,
       itemBuilder: (BuildContext context, int index) {

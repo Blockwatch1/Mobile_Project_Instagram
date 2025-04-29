@@ -27,7 +27,13 @@ class _CommentWidgetState extends State<CommentWidget> {
           Row(
             spacing: 15,
             children: [
-              CircleAvatar(backgroundImage: NetworkImage(widget.user.pfpPath!),radius: 20,),
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  widget.user.pfpPath ?? "https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
+                ),
+                radius: 20,
+              ),
+
               Text(widget.user.username)
             ],
           ),

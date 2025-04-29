@@ -19,6 +19,7 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
 
+  TextEditingController _commentController = TextEditingController();
   CommentService _commentService = CommentService();
   bool _loading = false;
   List<dynamic>? _comments;
@@ -69,19 +70,80 @@ class _PostPageState extends State<PostPage> {
         leading: IconButton(onPressed: () => {Navigator.of(context).pop()}, icon: Icon(Icons.arrow_back)),
         title: Text("Post"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(15.0),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Post(post: widget._post),
-            SizedBox(height: 10,),
-            Text("Comments", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),),
-            SizedBox(height: 10,),
-            CommentList(comments: testComments)
-          ],
+      body: RefreshIndicator(
+        onRefresh: () => _fetchPostComments(),
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              Post(post: widget._post),
+              SizedBox(height: 10,),
+              CommentList(comments: _comments),
+            ],
+          ),
         ),
-      )
+      ),
+        bottomNavigationBar:  BottomCommentTextField(commentController: _commentController)
+    );
+  }
+}
+
+class BottomCommentTextField extends StatefulWidget {
+  BottomCommentTextField({
+    super.key,
+    required TextEditingController commentController,
+  }) : _commentController = commentController;
+
+  final TextEditingController _commentController;
+  FocusNode _commentFocusNode = FocusNode();
+  @override
+  State<BottomCommentTextField> createState() {
+    return _CommentTextFieldState();
+  }
+
+}
+class _CommentTextFieldState extends State<BottomCommentTextField>{
+  double bottomMargin= 0;
+  Widget build(BuildContext context) {
+    bottomMargin=  8.0 + MediaQuery.of(context).viewInsets.bottom;
+    return  Container(
+      color: Colors.transparent,
+      margin: EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+          top: 12.0,
+          bottom: bottomMargin
+      ),
+      child: GestureDetector(
+        child: TextField(
+          onTap: (){
+            setState(() {
+              bottomMargin=  8.0 + MediaQuery.of(context).viewInsets.bottom;
+            });
+          },
+          focusNode: widget._commentFocusNode,
+          autofocus:true,
+          keyboardType: TextInputType.text,
+          controller: widget._commentController,
+          decoration: InputDecoration(
+            hintText: 'Add a comment...',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(24.0),
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.send, color: Colors.blueAccent),
+              onPressed: () {
+                String commentText = widget._commentController.text;
+                if (commentText.isNotEmpty) {
+                  widget._commentController.clear();
+                  FocusScope.of(context).unfocus();
+                }
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

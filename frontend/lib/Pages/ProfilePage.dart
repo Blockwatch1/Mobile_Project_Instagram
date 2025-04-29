@@ -128,38 +128,43 @@ class _ProfilePageState extends State<ProfilePage> {
             )
         ],
       ),
-      body: Column(
-        children: [
-          Topsection(user: _user, isSameUser: _isSameUser),
-          Divider(
-            color: Colors.grey.withOpacity(0.3),
-            thickness: 0.5,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.grid_on,
-                  color: Colors.purpleAccent,
+      body: RefreshIndicator(
+        onRefresh: () => _fetchUser(),
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              Topsection(user: _user, isSameUser: _isSameUser),
+              Divider(
+                color: Colors.grey.withOpacity(0.3),
+                thickness: 0.5,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.grid_on,
+                      color: Colors.purpleAccent,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      "Posts",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 8),
-                Text(
-                  "Posts",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
+              ),
+              PostSection(posts: _user?.posts, user: _user),
+            ],
           ),
-          Expanded(
-            child: PostSection(posts: _user?.posts, user: _user),
-          )
-        ],
+        ),
       ),
+
     );
   }
 }
