@@ -39,6 +39,7 @@ class UserService {
 
 
       final response = await http.get(httpConfigObj.uri, headers: httpConfigObj.headers);
+      print("rou777777 ${response.body}");
 
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);
@@ -71,7 +72,7 @@ class UserService {
       throw Exception('Failed to sign up: $e');
     }
   }
-  Future<ActionResponse> updateProfile(int userId,Map<String,String>data,String? token) async{
+  Future<ActionResponse> updateProfile(int userId,Map<String,String?>data,String? token) async{
     final String starting = '$_baseUrl/user/update-profile';
 
     try {

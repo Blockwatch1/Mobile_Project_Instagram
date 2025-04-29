@@ -69,7 +69,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: TextField(controller: _usernameController,keyboardType: TextInputType.text,
                 maxLength: 40,
                 decoration: InputDecoration(
-                  hintText: "Change your Username",
+                  hintText: "Change your Username : Leave Empty for no Username Change",
                   contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 16),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)
@@ -94,18 +94,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 GestureDetector(
                   onTap: () async{
                     // const { name, username, pfpPath, bio } = req.body;
-                    if(_nameController.text.isNotEmpty||_usernameController.text.isNotEmpty){
+                    if(_nameController.text.isNotEmpty){
                           setState(() {
                             _loading=true;
                           });
                           UserService service =  UserService();
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          service.updateProfile(widget.user.userId, {
-                            "name": _nameController.text,
-                            "username": _usernameController.text,
-                            "pfpPath": _pfpController.text,
-                            "bio": _bioController.text
-                          }, prefs.getString('token'));
+                          if(_usernameController.text.isNotEmpty) {
+                            service.updateProfile(widget.user.userId, {
+                              "name": _nameController.text,
+                              "username": _usernameController.text,
+                              "pfpPath": _pfpController.text,
+                              "bio": _bioController.text
+                            }, prefs.getString('token'));
+                          }else{
+                            service.updateProfile(widget.user.userId, {
+                              "name": _nameController.text,
+                              "username": null,
+                              "pfpPath": _pfpController.text,
+                              "bio": _bioController.text
+                            }, prefs.getString('token'));
+                          }
                           setState(() {
                             _loading=false;
                           });

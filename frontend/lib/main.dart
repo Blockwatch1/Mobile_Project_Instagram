@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Routes/RouteGenerator.dart';
+import 'package:insta/Services/UserService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'postList.dart';
 import 'Models/User.dart';
@@ -48,7 +50,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     Map<String, dynamic> userMap = jsonDecode(userJson);
-    User? testUser = User.fromJson(userMap);
+    UserService service = UserService();
+     ActionResponse? response = await service.getNoBody("${userMap['userId']}", prefs.getString('token'));
+    User? testUser = User.fromJson(response.data);
     setState(() {
       _userData = userMap;
       test = testUser;
@@ -60,6 +64,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _checkForSession();
+
   }
 
   @override
@@ -89,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(test!.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
+                  backgroundImage: NetworkImage(test?.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
                 ),
               ),
             ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSettings extends StatefulWidget {
   final String _email;
@@ -213,8 +214,13 @@ class _AccountSettingsState extends State<AccountSettings> {
                   _buildActionButton(
                     title: "Log out",
                     icon: Icons.logout,
-                    onTap: () {
-                      // Add your privacy settings logic here
+                    onTap: () async{
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.remove('user');
+                      prefs.remove('token');
+                      Navigator.of(context).popUntil((route) {
+                        return route.isFirst;
+                      },);
                     },
                   ),
 
