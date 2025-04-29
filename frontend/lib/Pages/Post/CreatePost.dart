@@ -102,10 +102,10 @@ class _addPostPageState extends State<CreatePostPage> {
                   padding: EdgeInsets.symmetric(vertical: 10,horizontal: 60),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.purple,
+                    color: Colors.white,
                   ),
                   alignment: Alignment.center,
-                  child: _loading == true ? const CircularProgressIndicator() : Text("Post",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                  child: _loading == true ? const CircularProgressIndicator() : Text("Post",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.black),),
                 ),
               )
             ],

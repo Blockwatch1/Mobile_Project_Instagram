@@ -97,7 +97,15 @@ class _PostListState extends State<PostList> {
                 saveAmount: counts['saves'],
                 user: user);
 
-            return Post(post: post);
+            return Container(
+              child: Column(
+                children: [
+                  SizedBox(height: 10.0,),
+                  Post(post: post),
+                  SizedBox(height: 10.0,)
+                ],
+              ),
+            );
           },
         ),
       );

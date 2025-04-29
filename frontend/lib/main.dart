@@ -104,7 +104,9 @@ class _HomePageState extends State<HomePage> {
       body: PostList(),
       floatingActionButton: FloatingActionButton(onPressed:(){
         Navigator.of(context).pushReplacementNamed('/createPost');
-      } ,child: Icon(Icons.add),backgroundColor: Colors.purple,),
+      } ,
+        child: Icon(Icons.add, color: Colors.white, size: 25,),backgroundColor: Colors.purpleAccent,
+      ),
 
     );
   }

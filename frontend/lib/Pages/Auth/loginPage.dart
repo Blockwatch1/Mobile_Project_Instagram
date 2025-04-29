@@ -133,7 +133,7 @@ class _LoginpageState extends State<Loginpage> {
                 style: TextStyle(
                     fontSize: 50,
                     fontFamily: "Insta",
-                    color: Colors.purpleAccent),
+                    color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
