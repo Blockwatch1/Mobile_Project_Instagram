@@ -32,12 +32,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-User test = User(
-    userId: 1,
-    name: "MeowMan40",
-    pfpPath:
-        "https://static.tvtropes.org/pmwiki/pub/images/b76t_vciaaejpb2.jpg",
-    username: "marwanmoub");
+User? test =null;
 
 class _HomePageState extends State<HomePage> {
   PostService service = PostService();
@@ -94,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(test.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
+                  backgroundImage: NetworkImage(test!.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
                 ),
               ),
             ],

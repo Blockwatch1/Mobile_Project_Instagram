@@ -71,5 +71,27 @@ class UserService {
       throw Exception('Failed to sign up: $e');
     }
   }
+  Future<ActionResponse> updateProfile(int userId,Map<String,String>data,String? token) async{
+    final String starting = '$_baseUrl/user/update-profile';
+
+    try {
+
+      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse(starting), token: token);
+
+
+      final response = await http.put(httpConfigObj.uri, headers: httpConfigObj.headers, body: 
+          jsonEncode(data)
+      );
+
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);
+
+      return actionResponse;
+
+    } catch(e){
+      print('API call failed: $e');
+      throw Exception('Failed to sign up: $e');
+    }
+  }
 
 }

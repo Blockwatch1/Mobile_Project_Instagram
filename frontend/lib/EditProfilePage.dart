@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:insta/Pages/ProfilePage.dart';
 import 'package:insta/Routes/RouteGenerator.dart';
+import 'package:insta/Services/UserService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'postList.dart';
 import 'Models/User.dart';
@@ -90,11 +92,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
             Row(mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: (){
+                  onTap: () async{
+                    // const { name, username, pfpPath, bio } = req.body;
                     if(_nameController.text.isNotEmpty||_usernameController.text.isNotEmpty){
                           setState(() {
                             _loading=true;
                           });
+                          UserService service =  UserService();
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          service.updateProfile(widget.user.userId, {
+                            "name": _nameController.text,
+                            "username": _usernameController.text,
+                            "pfpPath": _pfpController.text,
+                            "bio": _bioController.text
+                          }, prefs.getString('token'));
+                          setState(() {
+                            _loading=false;
+                          });
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context){
+                              return ProfilePage(userId: widget.user.userId);
+                            })
+                          );
                     }
                   },
                   child: Container(
