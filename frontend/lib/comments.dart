@@ -17,10 +17,14 @@ class _CommentsListState extends State<CommentList> {
   }
   @override
   Widget build(BuildContext context) {
+    if(widget.comments == null || widget.comments!.isEmpty) {
+      return _noCommentsBuilder();
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: widget.comments?.length,
+      itemCount: widget.comments!.length,
       itemBuilder: (context, index) {
         final Map<String, dynamic> commentData = widget.comments![index];
         Map<String, dynamic> counts = {
@@ -32,12 +36,12 @@ class _CommentsListState extends State<CommentList> {
 
         CommentModel comment = CommentModel(
           postId: commentData['postId'],
-          content: commentData['content'],
-          isReply: commentData['isReply'],
-          commentId: commentData['commentId'],
+          content: commentData['content'] ?? "Could not load comment content",
+          isReply: commentData['isReply'] ?? false,
+          commentId: commentData['commentId'] ?? 0,
           user: user,
-          replyAmount: counts['replies'],
-          isEdited: commentData['isEdited'],
+          replyAmount: counts['replies'] ?? 0,
+          isEdited: commentData['isEdited'] ?? false,
         );
 
 
@@ -60,7 +64,7 @@ class _CommentsListState extends State<CommentList> {
           Text(
             "Post a comment",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.purpleAccent,
               fontSize: 22,
               fontWeight: FontWeight.bold,
               fontFamily: "Insta",
