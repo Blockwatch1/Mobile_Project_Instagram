@@ -9,8 +9,15 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       itemCount: _users.length,
+      separatorBuilder: (context, index) => Divider(
+        color: Colors.grey.withOpacity(0.1),
+        height: 1,
+        indent: 70,
+        endIndent: 16,
+      ),
       itemBuilder: (BuildContext context, int index) {
         final userData = _users[index];
         final dynamic userId = userData['userId'];
@@ -19,7 +26,14 @@ class UserList extends StatelessWidget {
         final String name = userData['name'];
         final String username = userData['username'];
 
-        User user = User(userId: userId, name: name, username: username, bio: bio, pfpPath: pfpPath);
+        User user = User(
+            userId: userId,
+            name: name,
+            username: username,
+            bio: bio,
+            pfpPath: pfpPath
+        );
+
         return UserCard(user: user);
       },
     );
