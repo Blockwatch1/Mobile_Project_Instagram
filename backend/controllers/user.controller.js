@@ -230,6 +230,14 @@ export const getUserProfileInfo = async (req, res) => {
             comments: true,
           },
         },
+        likedUsers: {
+          where: { userId },
+          select: { userId: true },
+        },
+        savedUsers: {
+          where: { userId },
+          select: { userId: true },
+        },
       },
     };
 
@@ -408,6 +416,47 @@ export const likePost = async (req, res) => {
       error: {
         details: err,
         description: 'Could not like post',
+      },
+      data: null,
+    });
+  }
+};
+
+export const unlikePost = async (req, res) => {
+  const { postId } = req.params;
+  const user = req?.user;
+  try {
+    const unlikePost = await prisma.user.update({
+      where: { userId: user?.userId },
+      data: {
+        likedPosts: {
+          disconnect: {
+            postId: Number(postId),
+          },
+        },
+      },
+    });
+
+    if (!unlikePost) {
+      return res.status(200).json({
+        message: 'Could not unlike post',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Unliked post successfully',
+      success: true,
+      data: savePost,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Error unliking post',
       },
       data: null,
     });

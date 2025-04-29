@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Models/PostModel.dart';
+import 'package:insta/Services/UserService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Post extends StatefulWidget {
@@ -19,9 +24,86 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   bool isLiked = false;
   bool isSaved = false;
+  UserService _service = UserService();
 
   void handleCommentClick() {
     Navigator.of(context).pushNamed('/postPage', arguments: widget._post);
+  }
+
+  Future<void> _likedSavedPost() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? jsonUserInfo = prefs.getString('user');
+    dynamic myUserId;
+
+    if(jsonUserInfo != null) {
+      Map<String, dynamic> userInfoDecoded = jsonDecode(jsonUserInfo);
+      myUserId = userInfoDecoded['userId'];
+    } else {
+      return;
+    }
+
+    try {
+      //check for likes
+      if(widget._post.likedUsers != null) {
+
+        if(widget._post.likedUsers!.length >= 1) {
+          for(Map<String, dynamic> user in widget._post.likedUsers!){
+            if(user['userId'] == myUserId){
+              setState(() {
+                isLiked = true;
+              });
+
+              break;
+            }
+          }
+        }
+
+      }
+
+      if(widget._post.savedUsers != null) {
+
+        if(widget._post.savedUsers!.length >= 1) {
+          for(Map<String, dynamic> user in widget._post.savedUsers!){
+            if(user['userId'] == myUserId){
+              setState(() {
+                isSaved = true;
+              });
+
+              break;
+            }
+          }
+        }
+
+      }
+
+    } catch(e) {
+      throw e;
+    }
+  }
+
+  Future<void> _likeUnlikePost(String type) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    
+    if(type == 'Like') {
+      ActionResponse like = await _service.putNoBody('like-post/${widget._post.postId}', token);
+
+      if(like.success) {
+        print('Liked!');
+      }
+    } else {
+      ActionResponse unlike = await _service.putNoBody('unlike-post/${widget._post.postId}', token);
+
+      if(unlike.success) {
+        print('Liked!');
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _likedSavedPost();
   }
 
   @override
@@ -187,9 +269,17 @@ class _PostState extends State<Post> {
                         color: isLiked ? Colors.purpleAccent : Colors.white,
                       ),
                       onPressed: () {
-                        setState(() {
-                          isLiked = !isLiked;
-                        });
+                        if(isLiked) {
+                          setState(() {
+                            isLiked = false;
+                          });
+                          _likeUnlikePost('Unlike');
+                        } else {
+                          setState(() {
+                            isLiked = true;
+                          });
+                          _likeUnlikePost('Like');
+                        }
                       },
                     ),
                     Text(

@@ -95,7 +95,7 @@ class _PostListState extends State<PostList> {
                 commentAmount: counts['comments'],
                 likeAmount: counts['likes'],
                 saveAmount: counts['saves'],
-                user: user);
+                user: user, likedUsers: postData['likedUsers'], savedUsers: postData['savedUsers']);
 
             return Container(
               child: Column(

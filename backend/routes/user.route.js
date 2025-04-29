@@ -11,6 +11,7 @@ import {
   savePost,
   signUp,
   unfollow,
+  unlikePost,
   updateAccountSettings,
   updateProfile,
 } from '../controllers/user.controller.js';
@@ -42,6 +43,7 @@ router.put('/save-post/:postId', authMiddleware, savePost);
 
 //USER LIKES POST
 router.put('/like-post/:postId', authMiddleware, likePost);
+router.put('/unlike-post/:postId', authMiddleware, unlikePost);
 
 //UPDATE USER PROFILE
 router.put('/update-profile', authMiddleware, updateProfile);

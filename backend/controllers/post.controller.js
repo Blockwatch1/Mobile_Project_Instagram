@@ -210,8 +210,9 @@ export const editPost = async (req, res) => {
 };
 
 //READ OPERATIONS
-export const getPosts = async (_req, res) => {
-    console.log('hello')
+export const getPosts = async (req, res) => {
+  const userId = req?.user?.userId;
+
   try {
     const posts = await prisma.post.findMany({
       include: {
@@ -220,7 +221,7 @@ export const getPosts = async (_req, res) => {
             pfpPath: true,
             name: true,
             username: true,
-            userId: true
+            userId: true,
           },
         },
         _count: {
@@ -230,10 +231,16 @@ export const getPosts = async (_req, res) => {
             savedUsers: true,
           },
         },
+        likedUsers: {
+          where: { userId },
+          select: { userId: true },
+        },
+        savedUsers: {
+          where: { userId },
+          select: { userId: true },
+        },
       },
     });
-
-    console.log(posts)
 
     if (!posts) {
       return res.status(400).json({

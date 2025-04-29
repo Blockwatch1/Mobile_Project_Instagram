@@ -57,6 +57,7 @@ class PostSection extends StatelessWidget {
           user: _user,
           imageUrl: imageUrl,
           description: description,
+            likedUsers: _posts[index]['likedUsers'], savedUsers: _posts[index]['savedUsers']
         );
 
         return Container(
