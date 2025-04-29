@@ -573,6 +573,14 @@ export const follow = async (req, res) => {
   const { followingId } = req.params;
   const userId = req.user?.userId;
 
+  if (userId === Number(followingId)) {
+    return res.status(400).json({
+      message: 'You cannot follow yourself',
+      success: false,
+      data: null,
+    });
+  }
+
   try {
     const [followUser, addFollower] = await prisma.$transaction([
       prisma.user.update({
@@ -626,7 +634,7 @@ export const unfollow = async (req, res) => {
 
   try {
     const [unfollowUser, removeFollower] = await prisma.$transaction([
-      await prisma.user.update({
+      prisma.user.update({
         where: { userId },
         data: {
           following: {
@@ -636,7 +644,7 @@ export const unfollow = async (req, res) => {
           },
         },
       }),
-      await prisma.user.update({
+      prisma.user.update({
         where: { userId: Number(unfollowingId) },
         data: {
           followedBy: {
@@ -647,6 +655,14 @@ export const unfollow = async (req, res) => {
         },
       }),
     ]);
+
+    if (!unfollowUser || !removeFollower) {
+      return res.status(200).json({
+        message: 'Could not unfollow user',
+        success: false,
+        data: null,
+      });
+    }
 
     return res.status(200).json({
       message: 'Unfollowed user successfully',
