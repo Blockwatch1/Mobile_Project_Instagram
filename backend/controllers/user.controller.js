@@ -120,7 +120,7 @@ export const logIn = async (req, res) => {
       },
     });
 
-    console.log('login was successfull')
+    console.log('login was successfull');
 
     return res.status(200).json({
       message: 'Login successful',
@@ -631,7 +631,7 @@ export const unfollow = async (req, res) => {
         data: {
           following: {
             disconnect: {
-              Number(unfollowingId),
+              userId: Number(unfollowingId),
             },
           },
         },
@@ -647,14 +647,6 @@ export const unfollow = async (req, res) => {
         },
       }),
     ]);
-
-    if (!unfollowUser || !removeFollower) {
-      return res.status(200).json({
-        message: 'Could not unfollow user',
-        success: false,
-        data: null,
-      });
-    }
 
     return res.status(200).json({
       message: 'Unfollowed user successfully',
