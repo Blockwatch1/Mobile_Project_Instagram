@@ -130,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Column(
         children: [
-          TopSection(user: _user, isSameUser: _isSameUser),
+          Topsection(user: _user, isSameUser: _isSameUser),
           Divider(
             color: Colors.grey.withOpacity(0.3),
             thickness: 0.5,

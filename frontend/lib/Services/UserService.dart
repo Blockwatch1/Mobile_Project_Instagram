@@ -51,5 +51,25 @@ class UserService {
     }
   }
 
+  Future<ActionResponse> putNoBody(String path, String? token) async {
+    final String starting = '$_baseUrl/user';
+
+    try {
+
+      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse('$starting/$path'), token: token);
+
+
+      final response = await http.put(httpConfigObj.uri, headers: httpConfigObj.headers);
+
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);
+
+      return actionResponse;
+
+    } catch(e){
+      print('API call failed: $e');
+      throw Exception('Failed to sign up: $e');
+    }
+  }
 
 }

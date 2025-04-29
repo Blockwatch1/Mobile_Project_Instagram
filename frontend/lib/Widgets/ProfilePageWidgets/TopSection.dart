@@ -1,15 +1,122 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:insta/Models/ActionResponse.dart';
+import 'package:insta/Services/UserService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Models/User.dart';
 
-class TopSection extends StatelessWidget {
+class Topsection extends StatefulWidget {
   final User? _user;
-  final bool isSameUser;
-  const TopSection({super.key, required user, required this.isSameUser})
-      : _user = user;
+  final bool _isSameUser;
+  const Topsection({super.key, required user, required isSameUser}) : _user = user, _isSameUser = isSameUser;
+
+  @override
+  State<Topsection> createState() => _TopsectionState();
+}
+
+class _TopsectionState extends State<Topsection> {
+
+  bool _loading = false;
+  bool _isFollowing = false;
+  UserService service = UserService();
+  
+  Future<void> _followUser() async {
+    setState(() {
+      _loading = true;
+    });
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      
+      if(widget._user?.userId != null) {
+        ActionResponse follow = await service.putNoBody('follow/${widget._user!.userId}', token);
+
+        if(follow.success){
+          setState(() {
+            _loading = false;
+            _isFollowing = true;
+          });
+        }
+
+      }
+
+      setState(() {
+        _loading = false;
+      });
+      return;
+      
+    } catch(e) {
+      setState(() {
+        _loading = false;
+      });
+      throw e;
+    }
+  }
+
+  Future<void> _checkIsFollowing() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userInfo = prefs.getString('user');
+      dynamic myUserId;
+      if(userInfo != null) {
+        Map<String, dynamic> userInfoDecoded = jsonDecode(userInfo);
+        myUserId = userInfoDecoded['userId'];
+      } else {
+        setState(() {
+          _loading = false;
+        });
+        return;
+      }
+
+      List<dynamic>? followers = widget._user?.followedBy;
+
+      if(followers != null) {
+        if(followers.length < 1){
+          setState(() {
+            _loading = false;
+          });
+
+          return;
+        }
+
+        //check if current user is part of this array
+        for(Map<String, dynamic> follower in followers) {
+          if(follower['userId'] == myUserId){
+            setState(() {
+              _isFollowing = true;
+              _loading = false;
+            });
+            return;
+          }
+        }
+      }
+
+      setState(() {
+        _loading = false;
+      });
+      return;
+
+    } catch(e) {
+      setState(() {
+        _isFollowing = false;
+      });
+      throw e;
+    }
+  }
+
+  @override
+  void initState() {
+    //fetch if current user follows this user
+    super.initState();
+    _checkIsFollowing();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +154,13 @@ class TopSection extends StatelessWidget {
                 ],
               ),
               child: CircleAvatar(
-                backgroundImage: (_user?.pfpPath != null)
-                    ? NetworkImage(_user!.pfpPath!)
+                backgroundImage: (widget._user?.pfpPath != null)
+                    ? NetworkImage(widget._user!.pfpPath!)
                     : null,
-                child: (_user?.pfpPath == null)
+                child: (widget._user?.pfpPath == null)
                     ? Text(
-                  _user!.name!.isNotEmpty
-                      ? _user!.name![0].toUpperCase()
+                  widget._user!.name!.isNotEmpty
+                      ? widget._user!.name![0].toUpperCase()
                       : '',
                   style: const TextStyle(
                     color: Colors.white,
@@ -71,7 +178,7 @@ class TopSection extends StatelessWidget {
 
             // Username
             Text(
-              "@${_user?.username}",
+              "@${widget._user?.username}",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
@@ -80,7 +187,7 @@ class TopSection extends StatelessWidget {
             ),
 
             // Bio
-            if (_user?.bio != null && _user!.bio!.isNotEmpty)
+            if (widget._user?.bio != null && widget._user!.bio!.isNotEmpty)
               Container(
                 margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
                 padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
@@ -93,7 +200,7 @@ class TopSection extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "${_user?.bio}",
+                  "${widget._user?.bio}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
@@ -117,7 +224,7 @@ class TopSection extends StatelessWidget {
                   // Posts count
                   _buildStatColumn(
                     context,
-                    "${_user?.posts?.length ?? 0}",
+                    "${widget._user?.posts?.length ?? 0}",
                     "posts",
                     onTap: () {},
                   ),
@@ -127,12 +234,12 @@ class TopSection extends StatelessWidget {
                   // Followers count
                   _buildStatColumn(
                     context,
-                    "${_user?.followedBy?.length ?? 0}",
+                    "${widget._user?.followedBy?.length ?? 0}",
                     "followers",
                     onTap: () {
                       Map<String, dynamic> args = {
-                        'followers': _user?.followedBy,
-                        'name': _user?.name
+                        'followers': widget._user?.followedBy,
+                        'name': widget._user?.name
                       };
                       Navigator.of(context).pushNamed('/followersList', arguments: args);
                     },
@@ -143,12 +250,12 @@ class TopSection extends StatelessWidget {
                   // Following count
                   _buildStatColumn(
                     context,
-                    "${_user?.following?.length ?? 0}",
+                    "${widget._user?.following?.length ?? 0}",
                     "following",
                     onTap: () {
                       Map<String, dynamic> args = {
-                        'followings': _user?.following,
-                        'name': _user?.name
+                        'followings': widget._user?.following,
+                        'name': widget._user?.name
                       };
                       Navigator.of(context).pushNamed('/followingsList', arguments: args);
                     },
@@ -162,7 +269,10 @@ class TopSection extends StatelessWidget {
             // Follow/Edit Button
             GestureDetector(
               onTap: () {
-                // Add your follow/edit logic here
+                if(!widget._isSameUser){
+                  //follow functionality
+                  _followUser();
+                }
               },
               child: Container(
                 width: double.infinity,
@@ -183,15 +293,17 @@ class TopSection extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Text(
-                  isSameUser ? "Edit Profile" : "Follow",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                child: _loading ? const CircularProgressIndicator() :
+                  Text(
+                    widget._isSameUser ? "Edit Profile" :
+                    _isFollowing ? "Unfollow" : "Follow",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
               ),
             ),
           ],
