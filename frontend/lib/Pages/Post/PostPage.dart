@@ -83,18 +83,21 @@ class _PostPageState extends State<PostPage> {
           ),
         ),
       ),
-        bottomNavigationBar:  BottomCommentTextField(commentController: _commentController)
+        bottomNavigationBar:  BottomCommentTextField(post: widget._post,commentController: _commentController)
     );
   }
 }
 
 class BottomCommentTextField extends StatefulWidget {
+  PostModel _post;
   BottomCommentTextField({
     super.key,
     required TextEditingController commentController,
-  }) : _commentController = commentController;
+    required PostModel post,
+  })  : _commentController = commentController,
+        _post = post;
 
-  final TextEditingController _commentController;
+  TextEditingController _commentController;
   FocusNode _commentFocusNode = FocusNode();
   @override
   State<BottomCommentTextField> createState() {
@@ -133,10 +136,16 @@ class _CommentTextFieldState extends State<BottomCommentTextField>{
             contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             suffixIcon: IconButton(
               icon: Icon(Icons.send, color: Colors.blueAccent),
-              onPressed: () {
+              onPressed: () async{
                 String commentText = widget._commentController.text;
                 if (commentText.isNotEmpty) {
+                  CommentService service = CommentService();
+                  SharedPreferences prefs =  await SharedPreferences.getInstance();
+                  service.sendComment(widget._post.postId,widget._commentController.text, prefs.getString('token'));
+                  print("lek hl token ma a7leha : ${prefs.getString('token')}");
+                  print("lek hl comment ma a7le : ${widget._commentController.text}");
                   widget._commentController.clear();
+                  Navigator.of(context).pushReplacementNamed('/postPage', arguments: widget._post);
                   FocusScope.of(context).unfocus();
                 }
               },

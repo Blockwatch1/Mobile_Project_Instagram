@@ -31,5 +31,38 @@ class CommentService {
       print('API call failed: $e');
       throw Exception('Failed to fetch comments: $e');
     }
+
+  }
+  Future<ActionResponse> sendComment(int postId,String text,String? token) async{
+    final String starting = '$_baseUrl/comment/create/$postId';
+
+    try {
+      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse(starting), token: token);
+
+      final response = await http.post(httpConfigObj.uri, headers: httpConfigObj.headers,
+          body:
+          jsonEncode(
+              {
+                "content" : text
+              }
+          )
+      );
+      print("lek hl response : ${response.body}");
+
+      if(response.statusCode != 200) {
+        print('THERE HAS BEEN SOMETHING WRONG IN POSTING YOUR COMMENT\n\n: ${response.statusCode}');
+      }
+
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);
+
+      return actionResponse;
+
+    } catch(e){
+      print('API call failed: $e');
+      throw Exception('Failed to fetch comments: $e');
+    }
+
+
   }
 }
