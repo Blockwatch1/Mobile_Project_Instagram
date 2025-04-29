@@ -12,7 +12,7 @@ import '../Models/User.dart';
 class ProfilePage extends StatefulWidget {
   final dynamic _userId;
   Map<String, dynamic>? _myUser = {};
-  ProfilePage({super.key, required userId}): _userId = userId;
+  ProfilePage({super.key, required userId}) : _userId = userId;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -28,10 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dynamic jsonUser = prefs.getString('user');
 
-    if(jsonUser != null) {
+    if (jsonUser != null) {
       widget._myUser = jsonDecode(jsonUser);
-      print('MY USER: ${widget._myUser}');
-      print(_user?.userId);
       if (widget._myUser?['userId'] == widget._userId) {
         setState(() {
           _isSameUser = true;
@@ -45,13 +43,15 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         _loading = true;
       });
-      
-      if(widget._userId != null) {
+
+      if (widget._userId != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String? token = prefs.getString('token');
-        ActionResponse userResponse = await _fetchUserService.getNoBody('${widget._userId}', token);
+        ActionResponse userResponse =
+        await _fetchUserService.getNoBody('${widget._userId}', token);
 
-        if(userResponse.success && userResponse.data is Map<String, dynamic>) {
+        if (userResponse.success &&
+            userResponse.data is Map<String, dynamic>) {
           User newUser = User.fromJson(userResponse.data);
           setState(() {
             _user = newUser;
@@ -59,11 +59,10 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       }
 
-      
       setState(() {
         _loading = false;
       });
-    } catch(e) {
+    } catch (e) {
       setState(() {
         _loading = false;
       });
@@ -72,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _fetchUser();
     _checkIfSameUser();
@@ -80,24 +79,39 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    if(_loading) {
-      return Center(
-        child: const CircularProgressIndicator(),
+    if (_loading) {
+      return Scaffold(
+        backgroundColor: Color(0xFF121212),
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Colors.purpleAccent,
+          ),
+        ),
       );
     }
+
     return Scaffold(
+      backgroundColor: Color(0xFF121212),
       appBar: AppBar(
-        leading: IconButton( 
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
-        title: Center(child: Text("${_user?.name}", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),),
+        title: Text(
+          "${_user?.name}",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
         actions: [
-          Container(
-            child: _isSameUser == true ?
+          if (_isSameUser)
             IconButton(
               onPressed: () {
                 Map<String, dynamic> emailAndPass = {
@@ -108,19 +122,39 @@ class _ProfilePageState extends State<ProfilePage> {
                   'lastUsernameChange': _user?.lastUsernameChange,
                   'name': _user?.name
                 };
-
-                print(emailAndPass);
                 Navigator.of(context).pushNamed('/accountSettings', arguments: emailAndPass);
               },
-              icon: Icon(Icons.settings),
-            ) : null,
-          )
+              icon: Icon(Icons.settings, color: Colors.white),
+            )
         ],
       ),
-
       body: Column(
         children: [
-          TopSection(user: _user, isSameUser: _isSameUser,),
+          TopSection(user: _user, isSameUser: _isSameUser),
+          Divider(
+            color: Colors.grey.withOpacity(0.3),
+            thickness: 0.5,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.grid_on,
+                  color: Colors.purpleAccent,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  "Posts",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: PostSection(posts: _user?.posts, user: _user),
           )
