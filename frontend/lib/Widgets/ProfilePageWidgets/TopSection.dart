@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:insta/EditProfilePage.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Services/UserService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -284,12 +285,17 @@ class _TopsectionState extends State<Topsection> {
             GestureDetector(
               onTap: () {
                 if(!widget._isSameUser){
-                  //follow functionality
                   if(!_isFollowing) {
                     _followUnfollowUser('follow');
                   } else {
                     _followUnfollowUser('unfollow');
                   }
+                }else{
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context){
+                        return EditProfilePage(user: widget._user!);
+                      })
+                  );
                 }
               },
               child: Container(
