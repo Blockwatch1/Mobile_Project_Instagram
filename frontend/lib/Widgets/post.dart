@@ -26,6 +26,9 @@ class _PostState extends State<Post> {
   bool isSaved = false;
   UserService _service = UserService();
 
+  int? _likeAmount = 0;
+  int? _saveAmount = 0;
+
   void handleCommentClick() {
     Navigator.of(context).pushNamed('/postPage', arguments: widget._post);
   }
@@ -105,6 +108,10 @@ class _PostState extends State<Post> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _likeAmount = widget._post.likeAmount;
+      _saveAmount = widget._post.saveAmount;
+    });
     _likedSavedPost();
   }
 
@@ -274,18 +281,20 @@ class _PostState extends State<Post> {
                         if(isLiked) {
                           setState(() {
                             isLiked = false;
+                            _likeAmount = _likeAmount !- 1;
                           });
                           _likeUnlikePost('Unlike');
                         } else {
                           setState(() {
                             isLiked = true;
+                            _likeAmount = _likeAmount !+ 1;
                           });
                           _likeUnlikePost('Like');
                         }
                       },
                     ),
                     Text(
-                      widget._post.likeAmount.toString(),
+                      _likeAmount.toString(),
                       style: TextStyle(
                         color: Colors.white70,
                         fontWeight: FontWeight.w500,
