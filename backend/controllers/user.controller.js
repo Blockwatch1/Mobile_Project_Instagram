@@ -231,11 +231,11 @@ export const getUserProfileInfo = async (req, res) => {
           },
         },
         likedUsers: {
-          where: { userId },
+          where: { userId: myUserId },
           select: { userId: true },
         },
         savedUsers: {
-          where: { userId },
+          where: { userId: myUserId },
           select: { userId: true },
         },
       },

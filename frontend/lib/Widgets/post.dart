@@ -44,9 +44,11 @@ class _PostState extends State<Post> {
 
     try {
       //check for likes
+      print('POST NUMBER ${widget._post.postId}');
       if(widget._post.likedUsers != null) {
-
+      print('${widget._post.postId} has liked users');
         if(widget._post.likedUsers!.length >= 1) {
+          print('${widget._post.postId} has length');
           for(Map<String, dynamic> user in widget._post.likedUsers!){
             if(user['userId'] == myUserId){
               setState(() {
