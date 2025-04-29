@@ -22,7 +22,7 @@ class _TopsectionState extends State<Topsection> {
   bool _isFollowing = false;
   UserService service = UserService();
   
-  Future<void> _followUser() async {
+  Future<void> _followUnfollowUser(String type) async {
     setState(() {
       _loading = true;
     });
@@ -32,13 +32,27 @@ class _TopsectionState extends State<Topsection> {
       String? token = prefs.getString('token');
       
       if(widget._user?.userId != null) {
-        ActionResponse follow = await service.putNoBody('follow/${widget._user!.userId}', token);
+        if(type == 'follow') {
+          //state is false
+          ActionResponse follow = await service.putNoBody('follow/${widget._user!.userId}', token);
 
-        if(follow.success){
-          setState(() {
-            _loading = false;
-            _isFollowing = true;
-          });
+          if(follow.success){
+            setState(() {
+              _loading = false;
+              _isFollowing = true;
+              //now he is following him, so state is true which renders "Unfollow"
+            });
+          }
+        } else {
+          ActionResponse unfollow = await service.putNoBody('unfollow/${widget._user!.userId}', token);
+          //state is true and "Unfollow" is rendered
+          if(unfollow.success){
+            print('UNFOLLOWED!');
+            setState(() {
+              _loading = false;
+              _isFollowing = false;
+            });
+          }
         }
 
       }
@@ -271,7 +285,11 @@ class _TopsectionState extends State<Topsection> {
               onTap: () {
                 if(!widget._isSameUser){
                   //follow functionality
-                  _followUser();
+                  if(!_isFollowing) {
+                    _followUnfollowUser('follow');
+                  } else {
+                    _followUnfollowUser('unfollow');
+                  }
                 }
               },
               child: Container(

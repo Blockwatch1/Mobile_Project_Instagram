@@ -631,7 +631,7 @@ export const unfollow = async (req, res) => {
         data: {
           following: {
             disconnect: {
-              userId,
+              Number(unfollowingId),
             },
           },
         },
