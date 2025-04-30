@@ -34,8 +34,6 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-User? test =null;
-
 class _HomePageState extends State<HomePage> {
   PostService service = PostService();
   Map<String, dynamic>? _userData;
@@ -55,7 +53,6 @@ class _HomePageState extends State<HomePage> {
     User? testUser = User.fromJson(response.data);
     setState(() {
       _userData = userMap;
-      test = testUser;
     });
 
   }
@@ -64,7 +61,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _checkForSession();
-
   }
 
   @override
@@ -94,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(test?.pfpPath??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
+                  backgroundImage: NetworkImage(_userData?['pfpPath'] ??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
                 ),
               ),
             ],

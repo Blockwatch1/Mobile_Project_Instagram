@@ -17,6 +17,7 @@ class _PostListState extends State<PostList> {
   List<dynamic>? _posts;
   bool loading = false;
 
+
   PostService _postService = PostService();
 
   Future<void> _fetchPosts() async {
@@ -24,7 +25,7 @@ class _PostListState extends State<PostList> {
       loading = true;
       _posts = null;
     });
-
+    print('fetching posts');
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
@@ -52,7 +53,6 @@ class _PostListState extends State<PostList> {
   @override
   void initState() {
     super.initState();
-
     _fetchPosts();
   }
 
