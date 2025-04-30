@@ -48,9 +48,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     Map<String, dynamic> userMap = jsonDecode(userJson);
-    UserService service = UserService();
-     ActionResponse? response = await service.getNoBody("${userMap['userId']}", prefs.getString('token'));
-    User? testUser = User.fromJson(response.data);
+    // UserService service = UserService();
+    //  ActionResponse? response = await service.getNoBody("${userMap['userId']}", prefs.getString('token'));
+    //commented fetching userData from database becuase it contains everything about the user
     setState(() {
       _userData = userMap;
     });

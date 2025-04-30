@@ -14,104 +14,357 @@ class CreatePostPage extends StatefulWidget {
 class _addPostPageState extends State<CreatePostPage> {
   bool _loading = false;
   PostService service = PostService();
-  Widget UrlField = const SizedBox(width: 0,height: 0,);
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _imageUrlController = TextEditingController();
+  bool isThread = false;
 
-  bool isThread=false;
-  Future<void> sendPost()async{
+  Future<void> sendPost() async {
     setState(() {
       _loading = true;
     });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    ActionResponse response = await service.addPostOrThread('create-post', prefs.getString('token'),_descriptionController.text , _imageUrlController.text, isThread);
 
-    if(response.success) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    ActionResponse response = await service.addPostOrThread(
+        'create-post',
+        prefs.getString('token'),
+        _descriptionController.text,
+        _imageUrlController.text,
+        isThread
+    );
+
+    if (response.success) {
       setState(() {
         _loading = false;
       });
       Navigator.of(context).pushReplacementNamed('/home');
       return;
     }
+
+    setState(() {
+      _loading = false;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-    UrlField = !isThread?  Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextField(controller: _imageUrlController,keyboardType: TextInputType.url,
-        decoration: InputDecoration(
-
-          hintText: "Image Url",
-          contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 16),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20)
+    return Scaffold(
+      backgroundColor: Color(0xFF121212),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          "Create Post",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Insta",
           ),
-
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-    ): const SizedBox(width: 0,height: 0,);
-    return Scaffold(
-      appBar: AppBar(title: Text("Make a new Post"),),
-      body: Expanded(child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 30,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: TextField(controller: _descriptionController,keyboardType: TextInputType.multiline,
-              minLines: 6,
-              maxLines: 16,
-              decoration: InputDecoration(
-                  hintText:  "What's on your mind?",
-                  contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 16),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20)
-                  )
-              ),
-            ),
-          ),
-          UrlField,
-          Row(children: [const SizedBox(width: 20,),Text("Thread?",style: TextStyle(fontSize: 20),textAlign: TextAlign.start,),],),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 10,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Radio(value: false, groupValue: isThread,activeColor: Colors.blue, onChanged:(value) {
-                setState(() {
-                  isThread=value!;
-                });
-              }, ),
-              Text("No"),
-              Radio(value: true, groupValue: isThread,activeColor:Colors.blue, onChanged:(value) {
-                setState(() {
-                  isThread=value!;
-                  print("is thread? $isThread");
-                });
-              }, ),
-              Text("Yes")
-            ],
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: (){
-                  sendPost();
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10,horizontal: 60),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
+              // Description Field
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF1E1E1E),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Colors.purpleAccent.withOpacity(0.3),
+                    width: 1.5,
                   ),
-                  alignment: Alignment.center,
-                  child: _loading == true ? const CircularProgressIndicator() : Text("Post",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.black),),
                 ),
-              )
+                margin: EdgeInsets.only(bottom: 24),
+                child: TextField(
+                  controller: _descriptionController,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 6,
+                  maxLines: 16,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: "What's on your mind?",
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    contentPadding: EdgeInsets.all(16),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+
+              // (only shown if not a thread)
+              if (!isThread)
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1E1E1E),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.purpleAccent.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  margin: EdgeInsets.only(bottom: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: _imageUrlController,
+                        keyboardType: TextInputType.url,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: "Image URL",
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          contentPadding: EdgeInsets.all(16),
+                          border: InputBorder.none,
+                          suffixIcon: Icon(
+                            Icons.image,
+                            color: Colors.purpleAccent,
+                          ),
+                        ),
+                        onChanged: (value) {
+
+                          setState(() {});
+                        },
+                      ),
+
+                      // Image Preview
+                      if (_imageUrlController.text.isNotEmpty)
+                        Container(
+                          height: 200,
+                          width: double.infinity,
+                          margin: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              _imageUrlController.text,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.error_outline,
+                                        color: Colors.grey[400],
+                                        size: 40,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        "Invalid image URL",
+                                        style: TextStyle(
+                                          color: Colors.grey[400],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.purpleAccent,
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
+              // Thread Option
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF1E1E1E),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Colors.purpleAccent.withOpacity(0.3),
+                    width: 1.5,
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                margin: EdgeInsets.only(bottom: 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Post Type",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isThread = false;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: !isThread
+                                    ? Colors.purpleAccent.withOpacity(0.2)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: !isThread
+                                      ? Colors.purpleAccent
+                                      : Colors.grey.withOpacity(0.3),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.photo,
+                                    color: !isThread
+                                        ? Colors.purpleAccent
+                                        : Colors.grey,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Regular Post",
+                                    style: TextStyle(
+                                      color: !isThread
+                                          ? Colors.purpleAccent
+                                          : Colors.grey,
+                                      fontWeight: !isThread
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isThread = true;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: isThread
+                                    ? Colors.purpleAccent.withOpacity(0.2)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: isThread
+                                      ? Colors.purpleAccent
+                                      : Colors.grey.withOpacity(0.3),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.chat_bubble_outline,
+                                    color: isThread
+                                        ? Colors.purpleAccent
+                                        : Colors.grey,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Thread",
+                                    style: TextStyle(
+                                      color: isThread
+                                          ? Colors.purpleAccent
+                                          : Colors.grey,
+                                      fontWeight: isThread
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              // Post Button
+              GestureDetector(
+                onTap: _loading ? null : sendPost,
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFFE040FB),
+                        Color(0xFF9C27B0),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.purpleAccent.withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: _loading
+                        ? SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                        : Text(
+                      "Post",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
-          )
-        ],
-      )),
+          ),
+        ),
+      ),
     );
   }
 }

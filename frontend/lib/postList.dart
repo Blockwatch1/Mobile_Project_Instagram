@@ -25,7 +25,7 @@ class _PostListState extends State<PostList> {
       loading = true;
       _posts = null;
     });
-    print('fetching posts');
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
