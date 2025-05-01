@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(_userData?['pfpPath'] ??"https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
+                  backgroundImage: NetworkImage(_userData?['pfpPath'] ?? "https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
                 ),
               ),
             ],

@@ -4,8 +4,8 @@ class CommentModel {
   final dynamic commentId;
   final String content;
   final bool isReply;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  final String? createdAt;
+  final String? updatedAt;
   final bool? isEdited;
 
   final CommentModel? parentComment;

@@ -29,8 +29,7 @@ class _PostListState extends State<PostList> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
-      ActionResponse postResponse =
-          await _postService.GET('get-posts', prefs.getString('token'));
+      ActionResponse postResponse = await _postService.GET('get-posts', prefs.getString('token'));
 
       if (postResponse.success && postResponse.data != null) {
         setState(() {
@@ -60,7 +59,7 @@ class _PostListState extends State<PostList> {
   Widget build(BuildContext context) {
     if (loading && (_posts == null || _posts!.isEmpty)) {
       return Center(
-        child: CircularProgressIndicator(),
+        child: const CircularProgressIndicator(),
       );
     } else if (_posts == null || _posts!.isEmpty) {
 

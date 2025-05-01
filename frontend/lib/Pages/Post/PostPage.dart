@@ -8,7 +8,7 @@ import 'package:insta/comments.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostPage extends StatefulWidget {
-  final PostModel _post;
+  final PostModel? _post;
 
   const PostPage({super.key, required post}) : _post = post;
 
@@ -33,9 +33,8 @@ class _PostPageState extends State<PostPage> {
     });
 
     try {
-      ActionResponse commentResponse = await _commentService.GET('get-comments/${widget._post.postId}', token);
-      print(commentResponse.success);
-      print(commentResponse.data);
+      ActionResponse commentResponse = await _commentService.GET('get-comments/${widget._post?.postId}', token);
+
       if (commentResponse.success) {
         setState(() {
           _comments = commentResponse.data;
@@ -62,28 +61,37 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    var testComments = [
-      CommentModel(commentId: 1, isReply: false, content: 'Hellooo', user: widget._post.user!, isEdited: false, replyAmount: 0, postId: widget._post.postId)
-    ];
+    if(_loading) {
+      return Center(
+        child: const CircularProgressIndicator(),
+      );
+    }
+
+    if(widget._post == null) {
+      return Center(
+        child: const Text('Error finding post', style: TextStyle(fontFamily: "Insta", fontSize: 50),),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(onPressed: () => {Navigator.of(context).pop()}, icon: Icon(Icons.arrow_back)),
-        title: Text("Post"),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => _fetchPostComments(),
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              Post(post: widget._post),
-              SizedBox(height: 10,),
-              CommentList(comments: _comments),
-            ],
+        appBar: AppBar(
+          leading: IconButton(onPressed: () => {Navigator.of(context).pop()}, icon: Icon(Icons.arrow_back)),
+          title: Text("Post"),
+        ),
+        body: RefreshIndicator(
+          onRefresh: () => _fetchPostComments(),
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Post(post: widget._post!),
+                SizedBox(height: 10,),
+                CommentList(comments: _comments),
+              ],
+            ),
           ),
         ),
-      ),
-        bottomNavigationBar:  BottomCommentTextField(post: widget._post,commentController: _commentController)
+        bottomNavigationBar:  BottomCommentTextField(post: widget._post! ,commentController: _commentController)
     );
   }
 }
