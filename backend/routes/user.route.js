@@ -24,6 +24,8 @@ router.post('/signup', signUp);
 
 router.post('/login', logIn);
 
+router.get('/logout', authMiddleware);
+
 //DELETE OPERATIONS
 
 router.delete('/delete-user/:userId', authMiddleware, deleteUser);

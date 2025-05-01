@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insta/Pages/Auth/loginPage.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -216,11 +217,12 @@ class _AccountSettingsState extends State<AccountSettings> {
                     icon: Icons.logout,
                     onTap: () async{
                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                      prefs.remove('user');
-                      prefs.remove('token');
-                      Navigator.of(context).popUntil((route) {
-                        return route.isFirst;
-                      },);
+                      await prefs.remove('user');
+                      await prefs.remove('token');
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Loginpage()),
+                          (Route<dynamic> route) => false
+                      );
                     },
                   ),
 
