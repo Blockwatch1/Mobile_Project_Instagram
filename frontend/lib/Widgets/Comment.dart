@@ -1,16 +1,22 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Models/CommentModel.dart';
+import 'package:insta/Services/CommentService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/User.dart';
-import 'package:timeago/timeago.dart' as timeago; // Import timeago
+import 'package:timeago/timeago.dart' as timeago;
 
 class CommentWidget extends StatefulWidget {
   final User user;
   final CommentModel comment;
+  final Function deleteComment;
 
   const CommentWidget({
     super.key,
     required this.user,
     required this.comment,
+    required this.deleteComment
   });
 
   @override
@@ -18,6 +24,73 @@ class CommentWidget extends StatefulWidget {
 }
 
 class _CommentWidgetState extends State<CommentWidget> {
+  dynamic _myUserId;
+  bool _isLiked = false;
+  CommentService _commentService = CommentService();
+  String? _token;
+  bool _loading = false;
+
+  Future<void> _getMyUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? user = prefs.getString('user');
+
+    String? token = prefs.getString('token');
+    if(token != null) {
+      setState(() {
+        _token = prefs.getString('token');
+      });
+    }
+
+    if(user != null){
+      Map<String, dynamic> userDecoded = jsonDecode(user);
+      setState(() {
+        _myUserId = userDecoded['userId'];
+      });
+    }
+  }
+
+  void _isLikedByUser() {
+
+  }
+
+  Future<void> _likeComment() async {
+
+  }
+
+  Future<void> _deleteComment() async {
+    setState(() {
+      _loading = true;
+    });
+    try {
+        if(widget.comment.commentId != null) {
+          ActionResponse delete = await _commentService.DELETE_NO_BODY('${widget.comment.commentId}', _token);
+
+          if(delete.success) {
+            setState(() {
+              _loading = false;
+            });
+            widget.deleteComment(widget.comment.commentId);
+          }
+        } else {
+          setState(() {
+            _loading = false;
+          });
+          print("Comment Id needed!\n");
+        }
+    } catch(e) {
+      setState(() {
+        _loading = false;
+      });
+      throw e;
+    }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _getMyUserId();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -143,7 +216,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                     // Like button
                     GestureDetector(
                       onTap: () {
-                        // Like comment functionality
+                        _likeComment();
                       },
                       child: Row(
                         children: [
@@ -199,7 +272,7 @@ class _CommentWidgetState extends State<CommentWidget> {
 
                     // Timestamp using timeago
                     Text(
-                      timeago.format(widget.comment.createdAt ?? DateTime.now()),
+                      timeago.format(DateTime.parse(widget.comment.createdAt!)),
                       style: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 12,
@@ -232,7 +305,7 @@ class _CommentWidgetState extends State<CommentWidget> {
               // Reply functionality
             },
           ),
-          if (widget.user.userId == 'currentUserId') // Replace with actual check
+          if (widget.user.userId == _myUserId)
             ListTile(
               leading: Icon(Icons.edit, color: Colors.white),
               title: Text(
@@ -244,16 +317,16 @@ class _CommentWidgetState extends State<CommentWidget> {
                 // Edit functionality
               },
             ),
-          if (widget.user.userId == 'currentUserId') // Replace with actual check
+          if (widget.user.userId == _myUserId)
             ListTile(
-              leading: Icon(Icons.delete, color: Colors.red),
+              leading: _loading ? const CircularProgressIndicator() : Icon(Icons.delete, color: Colors.red),
               title: Text(
                 'Delete comment',
                 style: TextStyle(color: Colors.red),
               ),
               onTap: () {
                 Navigator.pop(context);
-                // Delete functionality
+                _deleteComment();
               },
             ),
           ListTile(

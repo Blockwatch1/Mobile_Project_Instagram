@@ -12,21 +12,43 @@ class CommentList extends StatefulWidget {
 }
 
 class _CommentsListState extends State<CommentList> {
+  List<dynamic>? _comments;
+
+  void _setComments() {
+    setState(() {
+      _comments = widget.comments;
+    });
+  }
+
+  void _deleteComment(dynamic commentId) {
+    if(_comments != null){
+      Iterable<dynamic> filteredNumbers = _comments!.where((comment) => comment['commentId'] != commentId);
+      List<dynamic> newList = filteredNumbers.toList();
+      setState(() {
+        _comments = newList;
+      });
+    }
+
+    return;
+  }
+
   void initState() {
     super.initState();
+    _setComments();
   }
+
   @override
   Widget build(BuildContext context) {
-    if(widget.comments == null || widget.comments!.isEmpty) {
+    if(_comments == null || _comments!.isEmpty) {
       return _noCommentsBuilder();
     }
 
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: widget.comments!.length,
+      itemCount: _comments!.length,
       itemBuilder: (context, index) {
-        final Map<String, dynamic> commentData = widget.comments![index];
+        final Map<String, dynamic> commentData = _comments![index];
         Map<String, dynamic> counts = {
           'replies': commentData['replies']
         };
@@ -42,12 +64,12 @@ class _CommentsListState extends State<CommentList> {
           user: user,
           replyAmount: counts['replies'] ?? 0,
           isEdited: commentData['isEdited'] ?? false,
-          createdAt: commentData['createdAt'] ?? DateTime.now(),
+          createdAt: commentData['createdAt'] ?? '',
           updatedAt: commentData['updatedAt'] ?? '',
         );
 
 
-        return CommentWidget(user: user, comment: comment);
+        return CommentWidget(user: user, comment: comment, deleteComment: _deleteComment,);
       },
     );
   }
