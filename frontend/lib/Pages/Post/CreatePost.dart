@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +21,26 @@ class _addPostPageState extends State<CreatePostPage> {
   TextEditingController _imageUrlController = TextEditingController();
   bool isThread = false;
 
+  File? _selectedFile;
+  String? selectedText;
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false
+    );
+
+    if(result != null) {
+      setState(() {
+        _selectedFile = File(result.files.single.path!);
+      });
+    } else {
+      setState(() {
+        _selectedFile = null;
+      });
+    }
+  }
+
   Future<void> sendPost() async {
     setState(() {
       _loading = true;
@@ -25,11 +48,11 @@ class _addPostPageState extends State<CreatePostPage> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     ActionResponse response = await service.addPostOrThread(
-        'create-post',
-        prefs.getString('token'),
-        _descriptionController.text,
-        _imageUrlController.text,
-        isThread
+        path: 'create-post',
+        token: prefs.getString('token'),
+        description: _descriptionController.text,
+        isThread: isThread,
+        selectedFilePath: _selectedFile?.path
     );
 
     if (response.success) {
@@ -85,6 +108,11 @@ class _addPostPageState extends State<CreatePostPage> {
                 ),
                 margin: EdgeInsets.only(bottom: 24),
                 child: TextField(
+                  onChanged: (value){
+                    setState(() {
+                      selectedText = value;
+                    });
+                  },
                   controller: _descriptionController,
                   keyboardType: TextInputType.multiline,
                   minLines: 6,
@@ -114,30 +142,23 @@ class _addPostPageState extends State<CreatePostPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextField(
-                        controller: _imageUrlController,
-                        keyboardType: TextInputType.url,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintText: "Image URL",
-                          hintStyle: TextStyle(color: Colors.grey[400]),
-                          contentPadding: EdgeInsets.all(16),
-                          border: InputBorder.none,
-                          suffixIcon: Icon(
-                            Icons.image,
-                            color: Colors.purpleAccent,
-                          ),
-                        ),
-                        onChanged: (value) {
+                      Container(
+                        child: ListTile(
+                          leading: Text("Pick an image", style: TextStyle(color: Colors.grey[400], fontSize: 17),),
+                          trailing: GestureDetector(
+                            onTap: () => _pickFile(),
+                            child: Icon(
+                              Icons.image,
+                              color: Colors.purpleAccent,
+                            ),
+                          )
 
-                          setState(() {});
-                        },
+                        )
                       ),
 
                       // Image Preview
-                      if (_imageUrlController.text.isNotEmpty)
+                      if (_selectedFile != null)
                         Container(
-                          height: 200,
                           width: double.infinity,
                           margin: EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -146,8 +167,8 @@ class _addPostPageState extends State<CreatePostPage> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              _imageUrlController.text,
+                            child: Image.file(
+                              _selectedFile!,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Center(
@@ -167,18 +188,6 @@ class _addPostPageState extends State<CreatePostPage> {
                                         ),
                                       ),
                                     ],
-                                  ),
-                                );
-                              },
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.purpleAccent,
-                                    value: loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                        : null,
                                   ),
                                 );
                               },
@@ -319,48 +328,50 @@ class _addPostPageState extends State<CreatePostPage> {
               ),
 
               // Post Button
-              GestureDetector(
-                onTap: _loading ? null : sendPost,
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFFE040FB),
-                        Color(0xFF9C27B0),
+              if((isThread && selectedText != null && !selectedText!.isEmpty) || (!isThread && _selectedFile != null))
+                GestureDetector(
+                  onTap: _loading ? null : sendPost,
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFE040FB),
+                          Color(0xFF9C27B0),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.purpleAccent.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: Offset(0, 2),
+                        ),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.purpleAccent.withOpacity(0.3),
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: _loading
-                        ? SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
-                        : Text(
-                      "Post",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    child: Center(
+                      child: _loading
+                          ? SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                          : Text(
+                        "Post",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
+                )
+              ,
             ],
           ),
         ),

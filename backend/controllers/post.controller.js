@@ -1,18 +1,56 @@
 import { PrismaClient } from '../lib/generated/prisma/client.js';
 const prisma = new PrismaClient();
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 //CREATE OPERATIONS (A post can be a thread or a post, if it is a thread, it will not have an image url)
 export const createPost = async (req, res) => {
   const user = req?.user;
-  const { description, imageUrl, isThread } = req.body;
+  const { description, isThread } = req.body;
+
+  const isThreadBoolean = isThread === 'true';
+
+  const file = req?.file;
 
   const createPostQueryObject = {
     description,
     userId: user.userId,
   };
 
-  if (!isThread) {
-    createPostQueryObject.imageUrl = imageUrl;
+  if (!isThreadBoolean) {
+    if (file) {
+      try {
+        const formData = new FormData();
+
+        const base64Image = file.buffer.toString('base64');
+        formData.append('image', base64Image);
+
+        console.log('Uploading image to ImgBB...');
+
+        const imageBBResponse = await fetch(
+          `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_BB_API_KEY}`,
+          {
+            method: 'POST',
+            body: formData,
+          },
+        );
+
+        const result = await imageBBResponse.json();
+        console.log('ImgBB response:', result);
+
+        if (result && result.data && result.data.url) {
+          createPostQueryObject.imageUrl = result.data.url;
+          console.log('Image URL:', createPostQueryObject.imageUrl);
+        } else {
+          console.error('Invalid ImgBB response:', result);
+        }
+      } catch (imageError) {
+        console.error('Error uploading image:', imageError);
+      }
+    } else {
+      console.log('No file attached to the request');
+    }
   }
 
   try {
@@ -36,11 +74,11 @@ export const createPost = async (req, res) => {
       data: createPost,
     });
   } catch (err) {
-    console.error(err);
+    console.error('Database error:', err);
     return res.status(500).json({
       success: false,
       error: {
-        details: err,
+        details: err.message,
         description: 'Could not create post',
       },
       data: null,

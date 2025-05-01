@@ -8,11 +8,14 @@ import {
   getPosts,
   getUserSavedPosts,
 } from '../controllers/post.controller.js';
+import { storage } from '../helpers/imageUpload.js';
+import multer from 'multer';
 
 export const postRouter = Router();
+const upload = multer({ storage });
 
 //CREATE OPERATIONS
-postRouter.post('/create-post', authMiddleware, createPost);
+postRouter.post('/create-post', authMiddleware, upload.single('image'), createPost);
 
 //DELETE OPERATIONS
 postRouter.delete('/delete-post/:postId', authMiddleware, deletePost);
