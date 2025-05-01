@@ -42,6 +42,8 @@ class _CommentsListState extends State<CommentList> {
           user: user,
           replyAmount: counts['replies'] ?? 0,
           isEdited: commentData['isEdited'] ?? false,
+          createdAt: commentData['createdAt'] ?? DateTime.now(),
+          updatedAt: commentData['updatedAt'] ?? '',
         );
 
 
