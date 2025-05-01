@@ -63,6 +63,7 @@ class RouteGenerator {
       case '/createPost':
         return MaterialPageRoute(builder: (_) => const CreatePostPage());
 
+
       default:
         return _errorRoute();
     }

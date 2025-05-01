@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:insta/Models/ActionResponse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Services/UserService.dart';
 
@@ -22,10 +25,19 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _errorMessage;
 
   final UserService _authService = UserService();
+  Future<void> _checkForSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userJson = prefs.getString('user');
+    print("user : $userJson");
 
+    if (prefs.getString('token') != null && userJson != null) {
+      Navigator.of(context).pushNamed('/home');
+    }
+  }
   @override
   void initState() {
     super.initState();
+    _checkForSession();
   }
 
   @override

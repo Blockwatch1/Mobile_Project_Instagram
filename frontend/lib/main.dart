@@ -17,12 +17,13 @@ Future<void> main() async {
   } catch (e) {
     print("Error loading .env file: $e");
   }
+
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark(),
-      initialRoute: '/home',
+      initialRoute: '/signup',
       onGenerateRoute: RouteGenerator.generateRoute
     ));
 }

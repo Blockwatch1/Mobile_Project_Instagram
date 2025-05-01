@@ -26,7 +26,7 @@ class _LoginpageState extends State<Loginpage> {
     super.initState();
   }
 
-  void addUserToLocalStorage(String? token, dynamic userData) async {
+   Future<void> addUserToLocalStorage(String? token, dynamic userData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (token != null) {
       await prefs.setString('token', token);
@@ -61,11 +61,9 @@ class _LoginpageState extends State<Loginpage> {
         if (!mounted) return;
 
         if(response.token != null && response.user != null) {
-          addUserToLocalStorage(response.token, response.user);
+          await addUserToLocalStorage(response.token, response.user);
+          Navigator.pushReplacementNamed(context, '/home');
         }
-        
-        Navigator.pushReplacementNamed(context, '/home');
-
         setState(() {
           _loading = false;
         });
