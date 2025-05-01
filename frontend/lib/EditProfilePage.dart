@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Pages/ProfilePage.dart';
 import 'package:insta/Routes/RouteGenerator.dart';
 import 'package:insta/Services/UserService.dart';
@@ -20,16 +23,74 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool _loading = false;
-  TextEditingController _pfpController = TextEditingController();
   TextEditingController _bioController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _usernameController = TextEditingController();
 
+  String _newName = '';
+  String _newUsername = '';
+  String? _newPfpPath;
+  String? _newBio;
+
+
+  File? _selectedFile;
+
+  String? userPfpPath;
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false
+    );
+
+    if(result != null) {
+      setState(() {
+        _selectedFile = File(result.files.single.path!);
+      });
+    } else {
+      setState(() {
+        _selectedFile = null;
+      });
+    }
+  }
+
+  Future<void> updateUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if(_newName.isNotEmpty) {
+      await prefs.setString('name', _newName);
+    }
+
+    if(_newUsername.isNotEmpty) {
+      await prefs.setString('username', _newUsername);
+    }
+
+    if(_newBio != null && _newBio!.isNotEmpty) {
+      await prefs.setString('bio', _newBio!);
+    }
+
+    if(_newPfpPath != null && _newPfpPath!.isNotEmpty) {
+      await prefs.setString('name', _newPfpPath!);
+    }
+  }
+
+  Future<void> setPfpPath() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userJson = prefs.getString('user');
+
+    if(userJson != null) {
+      Map<String, dynamic> userMap = jsonDecode(userJson);
+      setState(() {
+        userPfpPath = userMap['pfpPath'];
+      });
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with current user data
-    _pfpController.text = widget.user.pfpPath ?? '';
+    setPfpPath();
     _bioController.text = widget.user.bio ?? '';
     _nameController.text = widget.user.name ?? '';
     _usernameController.text = widget.user.username ?? '';
@@ -37,7 +98,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void dispose() {
-    _pfpController.dispose();
     _bioController.dispose();
     _nameController.dispose();
     _usernameController.dispose();
@@ -92,24 +152,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ],
                       ),
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: Colors.purpleAccent.withOpacity(0.3),
-                        backgroundImage: (_pfpController.text.isNotEmpty)
-                            ? NetworkImage(_pfpController.text)
-                            : null,
-                        child: (_pfpController.text.isEmpty)
-                            ? Text(
-                          widget.user.name!.isNotEmpty
-                              ? widget.user.name![0].toUpperCase()
-                              : '?',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                            : null,
+                      child: GestureDetector(
+                        onTap: _pickFile,
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.purpleAccent.withOpacity(0.3),
+                          backgroundImage: (widget.user.pfpPath != null)
+                              ? NetworkImage(widget.user.pfpPath!)
+                              : null,
+                          child: (widget.user.pfpPath == null || (widget.user.pfpPath != null && widget.user.pfpPath!.isEmpty))
+                              ? Text(
+                            widget.user.name!.isNotEmpty
+                                ? widget.user.name![0].toUpperCase()
+                                : '?',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                              : null,
+                        ),
                       ),
                     ),
                     SizedBox(height: 8),
@@ -262,53 +325,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
 
-              // Profile Picture URL Field
-              Container(
-                margin: EdgeInsets.only(bottom: 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                      child: Text(
-                        "Profile Picture URL",
-                        style: TextStyle(
-                          color: Colors.purpleAccent,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1E1E1E),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.purpleAccent.withOpacity(0.3),
-                          width: 1.5,
-                        ),
-                      ),
-                      child: TextField(
-                        controller: _pfpController,
-                        keyboardType: TextInputType.url,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          hintText: "Enter your New Profile Picture URL",
-                          hintStyle: TextStyle(color: Colors.grey[400]),
-                          prefixIcon: Icon(Icons.image, color: Colors.purpleAccent),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                        ),
-                        onChanged: (value) {
-                          // Update UI to show new profile image
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
               //update
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -322,21 +338,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         });
                         UserService service =  UserService();
                         SharedPreferences prefs = await SharedPreferences.getInstance();
-                        if(_usernameController.text.isNotEmpty) {
-                          service.updateProfile(widget.user.userId, {
-                            "name": _nameController.text,
-                            "username": _usernameController.text,
-                            "pfpPath": _pfpController.text,
-                            "bio": _bioController.text
-                          }, prefs.getString('token'));
-                        } else {
-                          service.updateProfile(widget.user.userId, {
-                            "name": _nameController.text,
-                            "username": null,
-                            "pfpPath": _pfpController.text,
-                            "bio": _bioController.text
-                          }, prefs.getString('token'));
+
+                        ActionResponse response = await service.updateProfile({
+                          'name': _nameController.text ?? null,
+                          'username': _nameController.text ?? null,
+                          'bio': _bioController.text ?? null,
+                          'image': _selectedFile?.path
+                        }, prefs.getString('token'));
+
+                        if(response.success) {
+                          setState(() {
+                            _newName = response.data['name'] ?? widget.user.name;
+                            _newBio = response.data['bio'] ?? widget.user.bio;
+                            _newUsername = response.data['username'] ?? widget.user.username;
+                            _newPfpPath = response.data['pfpPath'] ?? widget.user.pfpPath;
+                          });
                         }
+
                         setState(() {
                           _loading=false;
                         });
@@ -375,14 +393,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           strokeWidth: 2,
                         ),
                       )
-                          : Text(
-                        "Update",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          : GestureDetector(
+                        onTap: updateUserInfo,
+                        child: Text(
+                          "Update",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
+                      )
                     ),
                   ),
                 ],

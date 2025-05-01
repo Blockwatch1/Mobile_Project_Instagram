@@ -15,8 +15,12 @@ import {
   updateAccountSettings,
   updateProfile,
 } from '../controllers/user.controller.js';
+import multer from 'multer';
+import { storage } from '../helpers/imageUpload.js';
 
 export const router = Router();
+
+const upload = multer({ storage });
 
 //AUTHENTICATION ENDPOINTS
 
@@ -48,7 +52,7 @@ router.put('/like-post/:postId', authMiddleware, likePost);
 router.put('/unlike-post/:postId', authMiddleware, unlikePost);
 
 //UPDATE USER PROFILE
-router.put('/update-profile', authMiddleware, updateProfile);
+router.put('/update-profile', authMiddleware, upload.single('image'), updateProfile);
 
 //UPDATE FOLLOWINGS LIST BY FOLLOWING/UNFOLLOWING A USER
 router.put('/follow/:followingId', authMiddleware, follow);

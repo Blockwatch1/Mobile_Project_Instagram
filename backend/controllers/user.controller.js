@@ -1,6 +1,9 @@
 import bcryptjs from 'bcryptjs';
 import { PrismaClient } from '../lib/generated/prisma/client.js';
 import { generateJWT } from '../helpers/auth/jwt.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const prisma = new PrismaClient();
 
@@ -466,97 +469,78 @@ export const unlikePost = async (req, res) => {
 export const updateProfile = async (req, res) => {
   const userId = req.user?.userId;
 
-  const { name, username, pfpPath, bio } = req.body;
+  const file = req?.file;
+
+  const { name, username, bio } = req.body;
+
+  const updateObject = {
+    name: null,
+    username: null,
+    pfpPath: null,
+    bio: null,
+  };
+
+  if (name) updateObject.name = name;
+  if (username) {
+    const userSettings = await prisma.user.findUnique({
+      where: { userId },
+      select: {
+        lastUsernameChange: true,
+      },
+    });
+
+    const fourteenDays = 14 * 24 * 60 * 60 * 1000;
+    const now = new Date();
+    if (
+      userSettings?.lastUsernameChange &&
+      now.getTime() - userSettings.lastUsernameChange.getTime() <= fourteenDays
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'You can only change your username once every 14 days',
+        data: null,
+      });
+    }
+
+    updateObject.username = username;
+    updateObject.lastUsernameChange = new Date();
+  }
+  if (bio) updateObject.bio = bio;
 
   try {
     const successReponse = {
       success: true,
-      data: {
-        name: null,
-        username: null,
-        pfpPath: null,
-        bio: null,
-      },
-      message: '',
     };
 
-    if (name) {
-      const updateName = await prisma.user.update({
-        where: { userId },
-        data: {
-          name,
-        },
-      });
+    if (file) {
+      const formData = new FormData();
+      const base64Image = file.buffer.toString('base64');
+      formData.append('image', base64Image);
 
-      if (updateName) {
-        successReponse.message = successReponse.message + 'Updated name successfully\n';
-        successReponse.data.name = name;
+      console.log('Uploading image to ImgBB...');
+
+      const imageBBResponse = await fetch(
+        `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_BB_API_KEY}`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
+
+      const result = await imageBBResponse.json();
+      console.log('ImgBB response:', result);
+
+      if (result && result.data && result.data.url) {
+        updateObject.pfpPath = result.data.url;
       }
     }
 
-    if (username) {
-      //check the last time the user changed his username
-      const userSettings = await prisma.user.findUnique({
-        where: { userId },
-        select: {
-          lastUsernameChange: true,
-        },
-      });
+    const updatedUser = await prisma.user.update({
+      where: { userId },
+      data: updateObject,
+    });
 
-      const fourteenDays = 14 * 24 * 60 * 60 * 1000;
-      const now = new Date();
-      if (
-        userSettings?.lastUsernameChange &&
-        now.getTime() - userSettings.lastUsernameChange.getTime() <= fourteenDays
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: 'You can only change your username once every 14 days',
-          data: null,
-        });
-      }
-
-      const updateUsername = await prisma.user.update({
-        where: { userId },
-        data: {
-          username,
-          lastUsernameChange: new Date(),
-        },
-      });
-
-      if (updateUsername) {
-        successReponse.message = successReponse.message + 'Updated username successfully\n';
-        successReponse.data.username = username;
-      }
-    }
-
-    if (pfpPath) {
-      const updatePfp = await prisma.user.update({
-        where: { userId },
-        data: {
-          pfpPath,
-        },
-      });
-
-      if (updatePfp) {
-        successReponse.message = successReponse.message + 'Updated profile picture successfully\n';
-        successReponse.data.pfpPath = pfpPath;
-      }
-    }
-
-    if (bio) {
-      const updateBio = await prisma.user.update({
-        where: { userId },
-        data: {
-          bio,
-        },
-      });
-
-      if (updateBio) {
-        successReponse.message = successReponse.message + 'Updated bio successfully\n';
-        successReponse.data.bio = bio;
-      }
-    }
+    successReponse.data = updatedUser;
 
     return res.status(200).json(successReponse);
   } catch (err) {
