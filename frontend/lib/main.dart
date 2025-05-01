@@ -17,12 +17,13 @@ Future<void> main() async {
   } catch (e) {
     print("Error loading .env file: $e");
   }
+
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark(),
-      initialRoute: '/home',
+      initialRoute: '/signup',
       onGenerateRoute: RouteGenerator.generateRoute
     ));
 }
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     String? userJson = prefs.getString('user');
 
     if (prefs.getString('token') == null || userJson == null) {
-      Navigator.of(context).pushNamed('/login');
+      Navigator.of(context).pushReplacementNamed('/login');
       return;
     }
 

@@ -218,9 +218,10 @@ class _AccountSettingsState extends State<AccountSettings> {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.remove('user');
                       prefs.remove('token');
-                      Navigator.of(context).popUntil((route) {
-                        return route.isFirst;
-                      },);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/signup',
+                            (Route<dynamic> route) => route.isFirst,
+                      );
                     },
                   ),
 
