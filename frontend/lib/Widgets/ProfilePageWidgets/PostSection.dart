@@ -4,15 +4,15 @@ import 'package:insta/Models/User.dart';
 import 'package:insta/Widgets/post.dart';
 
 class PostSection extends StatelessWidget {
-  final List<dynamic> _posts;
+  final List<dynamic>? _posts;
   final User _user;
-  const PostSection({super.key, required posts, required user})
+  const PostSection({super.key, posts, required user})
       : _posts = posts,
         _user = user;
 
   @override
   Widget build(BuildContext context) {
-    if (_posts.isEmpty) {
+    if (_posts == null || _posts.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +54,7 @@ class PostSection extends StatelessWidget {
         PostModel post = PostModel(
           postId: postId,
           likeAmount: counts['likes'],
-          saveAmount: counts['saves'], // Fixed this from 'likes' to 'saves'
+          saveAmount: counts['saves'],
           commentAmount: counts['comments'],
           user: _user,
           imageUrl: imageUrl,

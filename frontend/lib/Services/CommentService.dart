@@ -65,4 +65,26 @@ class CommentService {
 
 
   }
+  Future<ActionResponse> DELETE_NO_BODY(String path, String? token) async {
+    final String starting = '$_baseUrl/comment';
+
+    try {
+      final httpConfigObj = HTTPConfig.giveHeaders(Uri.parse('$starting/$path'), token: token);
+
+      final response = await http.delete(httpConfigObj.uri, headers: httpConfigObj.headers);
+
+      if(response.statusCode != 200) {
+        print('THERE HAS BEEN SOMETHING WRONG IN THE FETCHING REQUEST\n\n: ${response.statusCode}');
+      }
+
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      final ActionResponse actionResponse = ActionResponse.fromJson(responseBody);
+
+      return actionResponse;
+    } catch(e){
+      print('API call failed: $e');
+      throw Exception('Failed to fetch comments: $e');
+    }
+
+  }
 }

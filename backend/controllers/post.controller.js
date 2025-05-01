@@ -213,6 +213,8 @@ export const editPost = async (req, res) => {
 export const getPosts = async (req, res) => {
   const userId = req?.user?.userId;
 
+  console.log('testing post endpoint');
+
   try {
     const posts = await prisma.post.findMany({
       include: {
