@@ -88,6 +88,7 @@ export const createPost = async (req, res) => {
 
 //DELETE OPERATIONS
 export const deletePost = async (req, res) => {
+  console.log('IM HERE!')
   try {
     const { postId } = req.params;
     const userId = req?.user.userId;

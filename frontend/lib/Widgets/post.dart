@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:insta/Models/ActionResponse.dart';
 import 'package:insta/Models/PostModel.dart';
+import 'package:insta/Services/PostService.dart';
 import 'package:insta/Services/UserService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -25,12 +27,39 @@ class _PostState extends State<Post> {
   bool isLiked = false;
   bool isSaved = false;
   UserService _service = UserService();
+  PostService _postService = PostService();
+
+  dynamic _myUserId;
+  String? _token;
 
   int? _likeAmount = 0;
   int? _saveAmount = 0;
 
+  bool _loading = false;
+
   void handleCommentClick() {
     Navigator.of(context).pushNamed('/postPage', arguments: widget._post);
+  }
+
+  Future<void> _setMyUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? userJson = prefs.getString('user');
+
+    String? token = prefs.getString('token');
+    if(token != null) {
+      setState(() {
+        _token = token;
+      });
+    }
+
+    if(userJson != null) {
+      Map<String, dynamic> userData = jsonDecode(userJson);
+      setState(() {
+        _myUserId = userData['userId'];
+      });
+    }
+
   }
 
   Future<void> _likedSavedPost() async {
@@ -105,9 +134,38 @@ class _PostState extends State<Post> {
     }
   }
 
+  Future<void> _deletePost() async {
+    setState(() {
+      _loading = true;
+    });
+    try {
+      ActionResponse delete_post = await _postService.deleteNoBody('delete-post/${widget._post.postId}', _token);
+
+      if(delete_post.success) {
+        setState(() {
+          _loading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${delete_post.message}')),
+        );
+      }
+    } catch(e) {
+      setState(() {
+        _loading = false;
+      });
+      throw e;
+    }
+  }
+
+  void _handleDeletePost() {
+    _deletePost();
+    Navigator.pushReplacementNamed(context, '/home');
+  }
+
   @override
   void initState() {
     super.initState();
+    _setMyUserId();
     setState(() {
       _likeAmount = widget._post.likeAmount;
       _saveAmount = widget._post.saveAmount;
@@ -203,10 +261,41 @@ class _PostState extends State<Post> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.more_vert, color: Colors.grey[400]),
+                  icon: Icon(
+                    Icons.more_horiz,
+                    color: Colors.grey[400],
+                    size: 18,
+                  ),
                   onPressed: () {
-                    // Show options menu
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Color(0xFF1E1E1E),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                      ),
+                      builder: (context) => Container(
+                         padding: EdgeInsets.symmetric(vertical: 16),
+                         child: Column(
+                           mainAxisSize: MainAxisSize.min,
+                           children: [
+                             ListTile(
+                               leading: Icon(Icons.share),
+                               title: Text("Share"),
+                             ),
+
+                             if(widget._post.user!.userId == _myUserId)
+                               _loading ? const CircularProgressIndicator() : ListTile(leading: IconButton(onPressed: () => _handleDeletePost(), icon: Icon(Icons.delete, color: Colors.red,)), title: Text("Delete"),),
+                           ],
+                         ),
+                       ),
+                    );
                   },
+                  constraints: BoxConstraints(
+                    minWidth: 24,
+                    minHeight: 24,
+                  ),
+                  padding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.compact,
                 ),
               ],
             ),
@@ -337,6 +426,24 @@ class _PostState extends State<Post> {
       ),
     );
   }
+
+  // Widget _buildCommentOptions(Function deletePost, bool loading) {
+  //   return Container(
+  //     padding: EdgeInsets.symmetric(vertical: 16),
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         ListTile(
+  //           leading: Icon(Icons.share),
+  //           title: Text("Share"),
+  //         ),
+  //
+  //         if(widget._post.user!.userId == _myUserId)
+  //           loading ? const CircularProgressIndicator() : ListTile(leading: IconButton(onPressed: () => deletePost, icon: Icon(Icons.delete, color: Colors.red,)), title: Text("Delete"),),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 class PostText extends StatefulWidget {
@@ -411,3 +518,4 @@ class _PostTextState extends State<PostText> {
     );
   }
 }
+

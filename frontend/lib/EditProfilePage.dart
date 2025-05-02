@@ -116,14 +116,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         if (response.data != null && response.data['user'] != null) {
 
           prefs.setString('user', jsonEncode(response.data['user']));
-        } else {
-
-
-          if (updateData.containsKey('name')) await prefs.setString('name', updateData['name']);
-          if (updateData.containsKey('username')) await prefs.setString('username', updateData['username']);
-          if (updateData.containsKey('bio')) await prefs.setString('bio', updateData['bio']);
-
-
         }
 
 

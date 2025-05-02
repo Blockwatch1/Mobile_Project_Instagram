@@ -149,7 +149,7 @@ class _LoginpageState extends State<Loginpage> {
               ElevatedButton(
                 onPressed: _loading ? null : _login,
                 child: _loading
-                    ? const CircularProgressIndicator(color: Colors.white)
+                    ? Container(child: const CircularProgressIndicator(color: Colors.white, ), width: 24, height: 24,)
                     : const Text("Submit"),
               ),
               const SizedBox(height: 20),
