@@ -29,9 +29,11 @@ class _SignUpPageState extends State<SignUpPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userJson = prefs.getString('user');
     print("user : $userJson");
-
-    if (prefs.getString('token') != null && userJson != null) {
-      Navigator.of(context).pushNamed('/home');
+    String? token = prefs.getString('token');
+    if (token != null && userJson != null) {
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
     }
   }
   @override

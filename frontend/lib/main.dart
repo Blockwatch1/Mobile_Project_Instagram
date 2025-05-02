@@ -44,29 +44,28 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userJson = prefs.getString('user');
 
-    if (prefs.getString('token') == null || userJson == null) {
-      Navigator.of(context).pushReplacementNamed('/login');
-      return;
-    }
+
 
     // setState(() {
     //   _loading = true;
     // });
-    Map<String, dynamic> userMap = jsonDecode(userJson);
-    print('HELLOOOOOO $userMap');
-    UserService service = UserService();
-    ActionResponse? response = await service.getNoBody("get-info/shared-preferences", prefs.getString('token'));
-    if(response.success){
-      userMap['name'] = response.data['name'];
-      userMap['username'] = response.data['username'];
-      userMap['pfpPath'] = response.data['pfpPath'];
-      userMap['bio'] = response.data['bio'];
-      userMap['userId'] = response.data['userId'];
+    if(userJson != null) {
+      Map<String, dynamic> userMap = jsonDecode(userJson);
+      print('HELLOOOOOO $userMap');
+      UserService service = UserService();
+      ActionResponse? response = await service.getNoBody("get-info/shared-preferences", prefs.getString('token'));
+      if(response.success){
+        userMap['name'] = response.data['name'];
+        userMap['username'] = response.data['username'];
+        userMap['pfpPath'] = response.data['pfpPath'];
+        userMap['bio'] = response.data['bio'];
+        userMap['userId'] = response.data['userId'];
 
-      setState(() {
-        _userData = userMap;
-        _loading = false;
-      });
+        setState(() {
+          _userData = userMap;
+          _loading = false;
+        });
+      }
     }
 
   }
