@@ -277,7 +277,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                       await prefs.remove('user');
                       await prefs.remove('token');
                       Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/signup',
+                        '/login',
                             (Route<dynamic> route) => route.isFirst,
                       );
                     },

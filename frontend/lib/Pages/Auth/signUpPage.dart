@@ -32,8 +32,6 @@ class _SignUpPageState extends State<SignUpPage> {
     String? token = prefs.getString('token');
     if (token != null && userJson != null) {
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-    } else {
-      Navigator.pushReplacementNamed(context, '/login');
     }
   }
   @override
