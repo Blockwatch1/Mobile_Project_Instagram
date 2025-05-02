@@ -3,11 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSettings extends StatefulWidget {
-  final String _email;
-  final String _password;
-  final String _name;
+  final String? _email;
+  final String? _password;
+  final String? _name;
   final dynamic _userId;
-  final String _lastLogin;
+  final String? _lastLogin;
   final String? _lastUsernameChange;
   const AccountSettings({
     super.key,
@@ -45,8 +45,68 @@ class _AccountSettingsState extends State<AccountSettings> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    if (widget._email == null || widget._password == null || widget._name == null || widget._userId == null || widget._lastLogin == null) {
+      return Scaffold(
+        backgroundColor: Color(0xFF121212),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF9C27B0),
+                  Color(0xFFE040FB),
+                ],
+              ),
+            ),
+          ),
+          title: Text(
+            "Account Settings",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontFamily: "Insta",
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 60,
+                color: Colors.redAccent,
+              ),
+              SizedBox(height: 16),
+              Text(
+                "Error loading account data.",
+                style: TextStyle(
+                  color: Colors.redAccent,
+                  fontSize: 18,
+                ),
+              ),
+              Text(
+                "Please try again later.",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     String formattedLastLogin = _formatDate(widget._lastLogin);
     String formattedLastUsernameChange = _formatDate(widget._lastUsernameChange);
 
@@ -81,10 +141,8 @@ class _AccountSettingsState extends State<AccountSettings> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Profile Header
-            // Profile Header
             Container(
-              width: MediaQuery.of(context).size.width, // Ensure full width
+              width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.symmetric(vertical: 30),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -102,7 +160,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                     radius: 50,
                     backgroundColor: Colors.purpleAccent.withOpacity(0.5),
                     child: Text(
-                      widget._name.isNotEmpty ? widget._name[0].toUpperCase() : "?",
+                      widget._name!.isNotEmpty ? widget._name![0].toUpperCase() : "?",
                       style: TextStyle(
                         fontSize: 40,
                         color: Colors.white,
@@ -112,7 +170,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    widget._name,
+                    widget._name!,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -121,7 +179,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    widget._email,
+                    widget._email!,
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
@@ -151,13 +209,13 @@ class _AccountSettingsState extends State<AccountSettings> {
 
                   _buildInfoCard(
                     title: "Display Name",
-                    value: widget._name,
+                    value: widget._name!,
                     icon: Icons.person,
                   ),
 
                   _buildInfoCard(
                     title: "Email Address",
-                    value: widget._email,
+                    value: widget._email!,
                     icon: Icons.email,
                   ),
 
@@ -199,7 +257,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                     title: "Edit Profile",
                     icon: Icons.edit,
                     onTap: () {
-                      // Add your edit profile logic here
+
                     },
                   ),
 
@@ -207,7 +265,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                     title: "Change Password",
                     icon: Icons.lock,
                     onTap: () {
-                      // Add your change password logic here
+
                     },
                   ),
 

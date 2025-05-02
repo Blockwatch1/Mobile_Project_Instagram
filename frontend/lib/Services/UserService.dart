@@ -74,7 +74,7 @@ class UserService {
       throw Exception('Failed to sign up: $e');
     }
   }
-  Future<ActionResponse> updateProfile(Map<String,String?>data, String? token) async{
+  Future<ActionResponse> updateProfile(Map<String,dynamic>? data, String? token) async{
     final String starting = '$_baseUrl/user/update-profile';
 
     try {
@@ -85,24 +85,24 @@ class UserService {
       var request = http.MultipartRequest('PUT', httpConfigObj.uri);
       request.headers['Authorization'] = httpConfigObj.headers['Authorization']!;
 
-      if(data['name'] != null) {
-        request.fields['name'] = data['name']!;
+      if(data?['name'] != null) {
+        request.fields['name'] = data?['name']!;
       }
 
-      if(data['username'] != null) {
-        request.fields['username'] = data['username']!;
+      if(data?['username'] != null) {
+        request.fields['username'] = data?['username']!;
       }
 
-      if(data['bio'] != null) {
-        request.fields['bio'] = data['bio']!;
+      if(data?['bio'] != null) {
+        request.fields['bio'] = data?['bio']!;
       }
 
-      if (data['image'] != null) {
-        final file = File(data['image']!);
+      if (data?['image'] != null) {
+        final file = File(data?['image']!);
 
         if (await file.exists()) {
           final fileBytes = await file.readAsBytes();
-          final fileName = data['image']!.split('/').last;
+          final fileName = data?['image']!.split('/').last;
 
           final fileExtension = fileName.split('.').last.toLowerCase();
           String mimeType;
@@ -133,7 +133,7 @@ class UserService {
 
           print('Added file: $fileName with mime type: $mimeType');
         } else {
-          print('File does not exist: ${data['image']!}');
+          print('File does not exist: ${data?['image']!}');
           return ActionResponse(success: false, message: "Image file not found");
         }
       }

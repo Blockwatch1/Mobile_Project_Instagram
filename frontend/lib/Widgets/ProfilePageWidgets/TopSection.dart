@@ -135,6 +135,30 @@ class _TopsectionState extends State<Topsection> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(widget._user == null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error,
+              size: 60,
+              color: Colors.grey,
+            ),
+            SizedBox(height: 16),
+            Text(
+              "Can't find User, go back to main page",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(

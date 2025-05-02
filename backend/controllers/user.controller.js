@@ -342,6 +342,48 @@ export const getUsersListOnSearch = async (req, res) => {
   }
 };
 
+export const sharedUserInfo = async (req, res) => {
+  const userId = req?.user?.userId;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { userId },
+      select: {
+        username: true,
+        email: true,
+        bio: true,
+        pfpPath: true,
+        name: true,
+        userId: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(200).json({
+        message: 'Could not retrieve user information',
+        success: false,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Retrieved user information successfully',
+      success: true,
+      data: user,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: {
+        details: err,
+        description: 'Could not retrieve user information',
+      },
+      data: null,
+    });
+  }
+};
+
 //PUT OPERATIONS
 export const savePost = async (req, res) => {
   const { postId } = req.params;
@@ -473,12 +515,7 @@ export const updateProfile = async (req, res) => {
 
   const { name, username, bio } = req.body;
 
-  const updateObject = {
-    name: null,
-    username: null,
-    pfpPath: null,
-    bio: null,
-  };
+  const updateObject = {};
 
   if (name) updateObject.name = name;
   if (username) {

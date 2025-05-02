@@ -5,13 +5,36 @@ import 'package:insta/Widgets/post.dart';
 
 class PostSection extends StatelessWidget {
   final List<dynamic>? _posts;
-  final User _user;
+  final User? _user;
   const PostSection({super.key, posts, required user})
       : _posts = posts,
         _user = user;
 
   @override
   Widget build(BuildContext context) {
+    if (_user == null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.photo_library_outlined,
+              size: 60,
+              color: Colors.grey,
+            ),
+            SizedBox(height: 16),
+            Text(
+              "Can't find User Posts",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     if (_posts == null || _posts.isEmpty) {
       return Center(
         child: Column(

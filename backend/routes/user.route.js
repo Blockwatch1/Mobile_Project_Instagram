@@ -9,6 +9,7 @@ import {
   likePost,
   logIn,
   savePost,
+  sharedUserInfo,
   signUp,
   unfollow,
   unlikePost,
@@ -41,6 +42,9 @@ router.get('/:userId', authMiddleware, getUserProfileInfo);
 
 //GET USERS BASED ON SEARCH (username)
 router.get('/search/:nameusername', authMiddleware, getUsersListOnSearch);
+
+//GET USER INFORMATION FOR THE SHARED PREFERENCES
+router.get('/get-info/shared-preferences', authMiddleware, sharedUserInfo);
 
 //PUT OPERATIONS
 

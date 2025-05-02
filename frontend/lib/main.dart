@@ -38,6 +38,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   PostService service = PostService();
   Map<String, dynamic>? _userData;
+  bool _loading = false;
 
   Future<void> _checkForSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -48,13 +49,25 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
+    // setState(() {
+    //   _loading = true;
+    // });
     Map<String, dynamic> userMap = jsonDecode(userJson);
-    // UserService service = UserService();
-    //  ActionResponse? response = await service.getNoBody("${userMap['userId']}", prefs.getString('token'));
-    //commented fetching userData from database becuase it contains everything about the user
-    setState(() {
-      _userData = userMap;
-    });
+    print('HELLOOOOOO $userMap');
+    UserService service = UserService();
+    ActionResponse? response = await service.getNoBody("get-info/shared-preferences", prefs.getString('token'));
+    if(response.success){
+      userMap['name'] = response.data['name'];
+      userMap['username'] = response.data['username'];
+      userMap['pfpPath'] = response.data['pfpPath'];
+      userMap['bio'] = response.data['bio'];
+      userMap['userId'] = response.data['userId'];
+
+      setState(() {
+        _userData = userMap;
+        _loading = false;
+      });
+    }
 
   }
 
@@ -66,6 +79,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(_loading) {
+      return Center(
+        child: const CircularProgressIndicator(),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
           title: Row(
@@ -89,10 +109,10 @@ class _HomePageState extends State<HomePage> {
                     Map<String, dynamic> args = {'userId': _userData?['userId']};
                     Navigator.of(context).pushNamed('/profilePage', arguments: args);
                   },
-                child: CircleAvatar(
+                child: !_loading ? CircleAvatar(
                   radius: 20,
                   backgroundImage: NetworkImage(_userData?['pfpPath'] ?? "https://static.vecteezy.com/system/resources/previews/008/442/086/large_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"),
-                ),
+                ) : null,
               ),
             ],
           )

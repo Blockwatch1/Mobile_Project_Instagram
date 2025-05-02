@@ -27,15 +27,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _usernameController = TextEditingController();
 
+
   String _newName = '';
   String _newUsername = '';
   String? _newPfpPath;
   String? _newBio;
 
-
   File? _selectedFile;
 
-  String? userPfpPath;
+  @override
+  void initState() {
+    super.initState();
+    _bioController.text = widget.user.bio ?? '';
+    _nameController.text = widget.user.name ?? '';
+    _usernameController.text = widget.user.username ?? '';
+
+    _newName = widget.user.name ?? '';
+    _newBio = widget.user.bio;
+    _newPfpPath = widget.user.pfpPath;
+    _newUsername = widget.user.username ?? '';
+  }
+
+  @override
+  void dispose() {
+    _bioController.dispose();
+    _nameController.dispose();
+    _usernameController.dispose();
+    super.dispose();
+  }
 
   Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -46,63 +65,99 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if(result != null) {
       setState(() {
         _selectedFile = File(result.files.single.path!);
+        _newPfpPath = _selectedFile!.path;
       });
     } else {
       setState(() {
         _selectedFile = null;
+
+        _newPfpPath = widget.user.pfpPath;
       });
     }
   }
 
-  Future<void> updateUserInfo() async {
+  Future<void> _updateProfile() async {
+    setState(() {
+      _loading = true;
+    });
+
+    UserService service = UserService();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
 
-    if(_newName.isNotEmpty) {
-      await prefs.setString('name', _newName);
+    Map<String, dynamic> updateData = {};
+
+
+    if (_nameController.text != widget.user.name) {
+      updateData['name'] = _nameController.text;
     }
 
-    if(_newUsername.isNotEmpty) {
-      await prefs.setString('username', _newUsername);
+
+    if (_usernameController.text != widget.user.username) {
+      updateData['username'] = _usernameController.text;
     }
 
-    if(_newBio != null && _newBio!.isNotEmpty) {
-      await prefs.setString('bio', _newBio!);
+
+    if ((_bioController.text ?? '') != (widget.user.bio ?? '')) {
+      updateData['bio'] = _bioController.text;
     }
 
-    if(_newPfpPath != null && _newPfpPath!.isNotEmpty) {
-      await prefs.setString('name', _newPfpPath!);
+
+    if (_selectedFile != null) {
+      updateData['image'] = _selectedFile!.path;
     }
+
+
+    if (updateData.isNotEmpty && token != null) {
+      ActionResponse response = await service.updateProfile(updateData, token);
+
+      if (response.success) {
+
+        if (response.data != null && response.data['user'] != null) {
+
+          prefs.setString('user', jsonEncode(response.data['user']));
+        } else {
+
+
+          if (updateData.containsKey('name')) await prefs.setString('name', updateData['name']);
+          if (updateData.containsKey('username')) await prefs.setString('username', updateData['username']);
+          if (updateData.containsKey('bio')) await prefs.setString('bio', updateData['bio']);
+
+
+        }
+
+
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context){
+              return ProfilePage(userId: widget.user.userId);
+            })
+        );
+
+      } else {
+
+        print('Profile update failed: ${response.message}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update profile: ${response.message}')),
+        );
+      }
+    } else if (updateData.isEmpty) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No changes to save.')),
+      );
+    } else if (token == null) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Authentication token missing.')),
+      );
+    }
+
+
+    setState(() {
+      _loading = false;
+    });
   }
 
-  Future<void> setPfpPath() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userJson = prefs.getString('user');
-
-    if(userJson != null) {
-      Map<String, dynamic> userMap = jsonDecode(userJson);
-      setState(() {
-        userPfpPath = userMap['pfpPath'];
-      });
-    }
-
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    setPfpPath();
-    _bioController.text = widget.user.bio ?? '';
-    _nameController.text = widget.user.name ?? '';
-    _usernameController.text = widget.user.username ?? '';
-  }
-
-  @override
-  void dispose() {
-    _bioController.dispose();
-    _nameController.dispose();
-    _usernameController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +187,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Profile Image Preview
+
               Container(
                 margin: EdgeInsets.only(bottom: 24),
                 child: Column(
@@ -157,13 +212,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         child: CircleAvatar(
                           radius: 60,
                           backgroundColor: Colors.purpleAccent.withOpacity(0.3),
-                          backgroundImage: (widget.user.pfpPath != null)
+
+                          backgroundImage: _selectedFile != null
+                              ? FileImage(_selectedFile!) as ImageProvider
+                              : (widget.user.pfpPath != null
                               ? NetworkImage(widget.user.pfpPath!)
-                              : null,
-                          child: (widget.user.pfpPath == null || (widget.user.pfpPath != null && widget.user.pfpPath!.isEmpty))
+                              : null),
+                          child: (_selectedFile == null && (widget.user.pfpPath == null || widget.user.pfpPath!.isEmpty))
                               ? Text(
-                            widget.user.name!.isNotEmpty
-                                ? widget.user.name![0].toUpperCase()
+                            _nameController.text.isNotEmpty
+                                ? _nameController.text[0].toUpperCase()
                                 : '?',
                             style: TextStyle(
                               color: Colors.white,
@@ -187,7 +245,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
 
-              // Bio Field
+
               Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: Column(
@@ -235,7 +293,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
 
-              // Name Field
+
               Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: Column(
@@ -280,7 +338,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
 
-              // Username Field
+
               Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: Column(
@@ -312,7 +370,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         maxLength: 40,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          hintText: "Change your Username (leave empty for no change)",
+                          hintText: "Change your Username",
                           hintStyle: TextStyle(color: Colors.grey[400]),
                           prefixIcon: Icon(Icons.alternate_email, color: Colors.purpleAccent),
                           border: InputBorder.none,
@@ -325,46 +383,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
 
-              //update
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () async {
-                      // Keeping the exact same functionality
-                      if(_nameController.text.isNotEmpty){
-                        setState(() {
-                          _loading=true;
-                        });
-                        UserService service =  UserService();
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-
-                        ActionResponse response = await service.updateProfile({
-                          'name': _nameController.text ?? null,
-                          'username': _nameController.text ?? null,
-                          'bio': _bioController.text ?? null,
-                          'image': _selectedFile?.path
-                        }, prefs.getString('token'));
-
-                        if(response.success) {
-                          setState(() {
-                            _newName = response.data['name'] ?? widget.user.name;
-                            _newBio = response.data['bio'] ?? widget.user.bio;
-                            _newUsername = response.data['username'] ?? widget.user.username;
-                            _newPfpPath = response.data['pfpPath'] ?? widget.user.pfpPath;
-                          });
-                        }
-
-                        setState(() {
-                          _loading=false;
-                        });
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context){
-                              return ProfilePage(userId: widget.user.userId);
-                            })
-                        );
-                      }
-                    },
+                    onTap: _loading ? null : _updateProfile,
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 14, horizontal: 80),
                       decoration: BoxDecoration(
@@ -393,23 +417,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           strokeWidth: 2,
                         ),
                       )
-                          : GestureDetector(
-                        onTap: updateUserInfo,
-                        child: Text(
-                          "Update",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                          : Text(
+                        "Update",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                      )
+                      ),
                     ),
                   ),
                 ],
               ),
 
-              // Add some bottom padding
+
               SizedBox(height: 24),
             ],
           ),
